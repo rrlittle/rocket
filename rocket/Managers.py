@@ -1,30 +1,34 @@
-import tkinter.filedialog as filedialog
-from os import getcwd
-from os.path import join, abspath
-import sys
-import csv
-
+import utils
+from __init__ import basedir, srcdatdir,sinkdatdir
 
 class Manager(object):
+	''' the generic manager ensuring all managers have basic 
+		functionality like getting files and stuff
+		we'll see what all we have later
+	'''
 	def get_filepath(self, 
 		title='open file', 
 		filetype='file', 
-		initialdir='',
-		defaultextension='csv', 
+		quit=True,
+		allownew = True, 
 		**kwargs):
 		''' this is a generic function that can be extended 
 		 	it simply gets a filepath and asserts it's not empty. 
-		 	if it's empty the program quits.
+		 	if it's empty the program quits unless quit is False. 
+		 	when it will throw an error
+		 	
 		 	filetype is a string used for error messages and variable names 
-
+			
 		 	askopenfilename takes other kwargs as well you can look into
 		 	all of them provided get passed on.
+		 	- defaultextension - str expression for default extensions
+		 	- others check out utils.askopenfilename docs for more 
+			- initialdir - str path to where you would like to open 
+		 	TODO: figure out how to disallow new files being made/ allow
 		'''
 
-		print('in get_filepath opening', abspath(initialdir))
-		fpath = filedialog.askopenfilename(title=title, 
-			initialdir=join(getcwd(), initialdir),
-			defaultextension=defaultextension,
+		fpath = utils.askopenfilename(
+			title=title, 
 			**kwargs)
 		if fpath == '': 
 			print('no %s file selected. quitting'%filetype)
@@ -33,62 +37,59 @@ class Manager(object):
 		return fpath
 	
 
-class ssManager(Manager): 
+class MetaManager(Manager):
+	''' this is a class for the controller and mappingManager
+		which need to know about
+		source and sink managers. 
+
 	'''
-	'''
-	def __init__(self):
-		self.handlername = 'default' # what is the name of this handler
+	def __init__(self, source=None, sink=None, 
+		allow_instance=True, allow_class=True):
+		''' if source and sink are instances asserts they 
+			are instances of source and sink managers
+			if they are classes, asserts they are subclasses
+			of source or sink managers
 
-		self.defaultschemedir = ''
-		self.defaultdatadir = ''
+			you can specify if you want to allow instances or classes
+		'''
+		# deal with source
+		errstr = (	'if source must be a '
+					'class referance class refd '
+					'must be subclass of sourceManager')
+		if allow_class and utils.isclass(source):
+			assert issubclass(source, sourceManager), errstr 
+			self.source = source()
+		elif allow_instance: 
+			assert isinstance(source, sourceManager), errstr
+			self.source = source
+		else: raise AssertionError('Unable to set self.source')
 
-		self.fieldnames={ # bare bones that should always be in every handler
-			'name_col': 'name',
-			'missing_val_col': 'missing value',
-			'range_col': 'range',
-		}
-		
+		# deal with source
+		errstr = (	'if source must be a '
+					'class referance class refd '
+					'must be subclass of sourceManager')
+		if allow_class and utils.isclass(source):
+			assert issubclass(source, sourceManager), errstr 
+			self.source = source()
+		elif allow_instance: 
+			assert isinstance(source, sourceManager), errstr
+			self.source = source
+		else: raise AssertionError('unable to set self.sink')
 
-	# this will load a schema into the data handler. 
-	# in general we don't really know how to do it 
-	# so this will just load a file
-	# that you can use in child classes
-	# . you should really overwrite this in the real handlers
-	# because they are all going to need that. 
-	def load_schema(self, *args, 
-		title='please select a scheme file for this handler',
-		filetype='schema', 
-		initialdir='',
-		**kwargs):
-		return self.get_filepath(title=title, filetype=filetype, 
-			initialdir=initialdir)
-	
-	def load_template(self, template_file):
-		''' this parses all the things from the template_file
-			this thing knows about '''
-		raise NotImplementedError(("load_template not implemented",
-			" for this manager"))	
-
-
+class ssManager(Manager):pass
 class sourceManager(ssManager):
+	''' this should work as a wource manager
+		therefore it must implement all the things neccessary to 
+		be a source manager. they should act in a reasonable way.
+		so that any children will already hae most the things they need 
+		and they can just change the few things they need
 	'''
-	'''
-	def __init__(self):
-		ssManager.__init__(self)
-		
-		self.defaultschemedir = 'source_schemes'
-		self.defaultdatadir = 'source_datafiles'
-		
-		self.handlername = 'generic source handler'
+	defaultdatadir = srcdatdir
 
-		self.fieldnames['id_col'] = 'id'
-		self.fieldnames['name_col'] = 'source name'
-		self.fieldnames['missing_val_col'] = 'source missing value'
-
-	# this function gets the path to the source datafile.
-	# you can assert that it is in the correct format if you wish in 
-	# subclasses. 
-	def get_data_path(self):
+	def get_src_datfile(self):
+		''' this function sets self.srcpath
+			if this is already set it just passes it back
+		''' 
 		if hasattr(self, 'srcpath'): return self.srcpath
 		else:
 			self.srcpath = self.get_filepath(filetype='sourcedatafile',
@@ -96,33 +97,17 @@ class sourceManager(ssManager):
 				title='select the source data file')
 			return self.srcpath
 
-	def parse_datasource(self, path_to_source):
-		pass
-
-
 class sinkManager(ssManager):
+	'''this should work as a sink manager
+		therefore it must implement all the things neccessary to 
+		be a sink manager. they should act in a reasonable way.
+		so that any children will already hae most the things they need 
+		and they can just change the few things they need
 	'''
-	Option: you can add Size, Element Description
-	'''
-	def __init__(self):
-		ssManager.__init__(self)
-		
-		self.defaultschemedir = 'sink_schemes'
-		self.defaultdatadir = 'sink_datafiles'
-		self.handlername = 'generic sink handler'
-
-		self.fieldnames['mapping_id_col'] = 'mapping id'
-		self.fieldnames['function'] = 'function'
-		self.fieldnames['args'] = 'args'
-		self.fieldnames['name_col'] = 'sink name'
-		self.fieldnames['missing_val_col'] = 'sink missing value'
-		self.fieldnames['default_val'] = 'default value'
-
-	# this function prompts the user to enter a valid 
-	# path to a new file, or one to overwrite that 
-	# will be where the sink table gets saved when
-	# it's all over. 
+	defaultdatadir = sinkdatdir
 	def get_file_outpath(self):
+		''' this sets self.outpath
+		'''
 		if hasattr(self, 'outpath'): return self.outpath
 		else:
 			self.outpath = self.get_filepath(filetype='sinkdatafile',
@@ -131,24 +116,7 @@ class sinkManager(ssManager):
 					'save sink datafile to'))
 		return self.outpath
 
-	# writes the data in the form of 
-	# headers
-	# data lines
-	# to the file passed.
-	# this can be extended  
-	def write_outfile(self, data, sinkpath=None, outfile=None, mode='w'):
-		if outfile is None:
-			outfile = open(sinkpath, mode, newline='')
-
-		write_fieldnames = [];
-		for column in data[0]:
-			write_fieldnames.append(column.col_name)
-
-		writer = csv.DictWriter(outfile, fieldnames = write_fieldnames,
-				extrasaction='ignore')
-		writer.writeheader()
-		f = open('oggaadaboogida', 'w')
-		for row in data:
-			row = {c.col_name:c.data for c in row}
-			f.write('writing : %s\n'%row)
-			writer.writerow(row)
+	def initialize_data(self):
+		''' if self.data exist then clear it
+			create a new fresj self.data
+		'''
