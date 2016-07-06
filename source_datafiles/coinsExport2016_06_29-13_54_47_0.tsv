@@ -1,0 +1,109 @@
+queried_ursi	oldest_ursi	asmt_ursi	assessment_date	assessment_id	instrument	segment_interval	segment_instance	entry_code	site_id	source_type	rater1	successfully_completed	notes	parv-tifsaa_001m-1	parv-tiaa_002m-1	parv-tifsaa_003m-1	parv-tifsaa_004m-1	parv-tinpaa_005m-1	parv-tiaa_006m-1	parv-tippaa_007m-1	parv-tippaa_008m-1	parv-tippaa_009m-1	parv-tippaa_010m-1	parv-tinpaa_011m-1	parv-tinpaa_012m-1	parv-tinpaa_013m-1	parv-tinpaa_014m-1	parv-tiaa_015m-1	parv-tippaa_016m-1	parv-tiaa_017m-1	parv-tiaa_018m-1	parv-tifpaa_019m-1	parv-timpaa_020m-1	parv-tifpaa_021m-1	parv-timpaa_022m-1	parv-tidpaa_023m-1	parv-tidpaa_024m-1	parv-tidpaa_025m-1	parv-tidpaa_026m-1	parv-tidpaa_027m-1	parv-tifpaa_028m-1	parv-timpaa_029m-1	parv-tifpaa_030m-1	parv-timpaa_031m-1	parv-tidtaa_032m-1	parv-tidcaa_033m-1	parv-tidcaa_034m-1	parv-tidcaa_035m-1	parv-tidtaa_036m-1	parv-tidtaa_037m-1	parv-tidtaa_038m-1	parv-tiaa_039m-1	parv-titcaa_040m-1	parv-titcaa_041m-1	parv-titqaa_042m-1	parv-titqaa_43m-1	parv-titcaa_044m-1	parv-titcaa_045m-1	parv-titcaa_046m-1
+														Are Twin A’s friends more or less likely than her/him to be hard-working?	Are her/his friends more or less likely than her/him to be popular?	Are her/his friends more or less likely than her/him to skip class?	"Are her/his friends more or less likely than her/him to be regarded as a bad crowd, that is, to get into a lot of trouble?"	"Most of the time, do you think you as parents are more or less strict with Twin A than other boys’/girls’ parents are with them?"	Are you more or less likely to want her/him to tell you where s/he is and who s/he is with?	Is Twin A’s dad more or less likely than other fathers to do things with her/him that s/he really enjoys?	What about her/his mom?	Is her/his dad more or less likely than other fathers to praise her/him?	What about her/his mom?	Does Twin A’s dad tend to punish her/him more or less than other fathers do?	What about her/his mom?	Does Twin A’s dad tend to get angry with her/him more or less than other fathers do?	What about her/his mom?	Do you tend to quarrel more or less with each other than other parents do?	Are you more or less likely than other parents to be interested in what Twin A is doing?	"Most of the time, are you more or less likely than other parents to criticize her/him for things s/he has done?"	"Most of the time, are you more or less likely than other parents to care what s/he is doing?"	Who tends to get along best with their dad?	What about their mom?	Who tends to get praised more by their dad?	And by their mom?	Who gets blamed most for things by their dad?	And by their mom?	Who gets criticized more by their dad?	And by their mom?	Which of them tends to get punished more at home?	Which of them does their dad take more interest in?	And their mom?	Which of them is their dad more proud of?	And their mom?	Which of them tends to be more popular?	Which of them has friends who are more likely to be often in trouble?	Which of them has friends who are more likely to skip classes?	Which of them has friends who are more likely to be hard-working?	Which of them tends to be the leader?	Which of them is the more dominant?	Which of them is more likely to get their way with the other?	Which of them tends to be more jealous of the other?	How close would you say Twin A’s relationship is with Twin B compared to most brothers and sisters?	How well do they get on with each other compared to most brothers and sisters?	How often do they quarrel compared to most brothers or sisters?	How often do they fight compared to most brothers or sisters?	How much do they stand up for one another compared to most brothers or sisters?	How much do they tend to do things together compared to most brothers or sisters?	Do Twin A and Twin B tend to have the same or different friends?
+M53783171	M53783171																																																										
+M53721748	M53721748																																																										
+M53777116	M53777116																																																										
+M53796843	M53796843																																																										
+M53732513	M53732513																																																										
+M53728540	M53728540																																																										
+M53783733	M53783733																																																										
+M53706611	~M53706611~																																																										
+M53766486	M53766486																																																										
+M53745502	M53745502																																																										
+M53794461	M53794461																																																										
+M53717791	M53717791																																																										
+M53796599	M53796599																																																										
+M53715010	M53715010																																																										
+M53725219	M53725219																																																										
+M53753893	M53753893																																																										
+M53735877	M53735877																																																										
+M53720351	M53720351																																																										
+M53771504	M53771504																																																										
+M53798096	M53798096																																																										
+M53702771	M53702771																																																										
+M53767074	M53767074																																																										
+M53773844	M53773844																																																										
+M53768311	M53768311																																																										
+M53798247	M53798247																																																										
+M53745009	M53745009																																																										
+M53750965	M53750965																																																										
+M53728474	M53728474																																																										
+M53742433	M53742433																																																										
+M53795245	M53795245																																																										
+M53796010	M53796010																																																										
+M53791589	M53791589																																																										
+M53792462	M53792462																																																										
+M53748803	M53748803																																																										
+M53783925	M53783925																																																										
+M53787489	M53787489	M53787489	5/6/2015 10:10	14170525	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	4	2	3	3	4	4	1	1	2	3	5	5	3	2	3	2	3	3	3	3	3	3	3	3	3	3	3	4	3	3	3	4	3	3	3	4	2	3	2	4	5	5
+M53752773	M53752773	M53752773	4/25/2015 7:53	14109205	TIRE Twin A_M	parV	1	R	31	1	SELF			3	4	2	3	3	2	4	3	4	3	2	3	1	3	5	4	3	2	2	4	3	3	3	3	3	3	3	3	3	3	3	2	3	3	3	3	3	4	3	5	1	3	3	5	5	5
+M53787758	M53787758	M53787758	4/27/2015 3:08	14114425	TIRE Twin A_M	parV	1	R	31	1	SELF			4	3	3	3	5	1	5	5	5	5	1	1	1	1	5	5	5	1	2	3	3	3	6	6	3	3	6	3	3	3	3	3	3	3	3	2	2	2	3	5	1	1	1	5	5	5
+M53773526	M53773526	M53773526	7/15/2015 10:22	14665725	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	~<userSkipped>~	3	3	1	3	3	2	3	3	3	3	3	3	5	3	1	3	3	3	3	2	3	2	3	3	3	3	3	3	3	~<userSkipped>~	~<userSkipped>~	3	3	3	3	2	5	3	3	1	5	5	5
+M53704741	M53704741	M53704741	3/25/2015 15:07	13798605	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	~<userSkipped>~	4	3	2	3	3	2	3	4	3	3	3	4	4	2	4	3	2	2	3	4	1	3	1	1	1	2	4	4	4	4	4	1	4	4	5	5	4	4	2	4	5	4	3
+M53710441	M53710441																																																										
+M53741458	M53741458																																																										
+M53762618	M53762618	M53762618	3/23/2015 13:32	13755685	TIRE Twin A_M	parV	1	R	31	1	SELF			5	1	1	1	5	1	5	4	4	3	5	3	5	5	2	4	2	2	2	2	2	3	3	2	3	3	3	3	4	4	3	3	3	3	3	3	3	3	3	3	3	4	3	3	3	3
+M53771795	M53771795	M53771795	4/11/2015 19:53	13965265	TIRE Twin A_M	parV	1	R	31	1	SELF			2	3	3	3	4	2	4	3	4	4	4	4	3	3	5	4	3	2	2	3	3	3	3	2	3	3	4	3	3	3	3	3	4	3	3	1	1	2	4	5	2	3	2	5	4	3
+M53755934	M53755934																																																										
+M53796009	M53796009	M53796009	4/1/2015 19:15	13888725	TIRE Twin A_M	parV	1	R	31	1	SELF			3	2	3	2	3	3	1	3	1	3	1	3	4	3	2	3	2	2	5	2	5	3	3	3	1	3	3	4	3	5	3	4	2	2	3	4	4	4	2	4	4	4	4	3	4	3
+M53725576	M53725576	M53725576	3/28/2015 15:13	13844245	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	5	2	2	2	1	3	4	1	1	1	1	3	3	5	3	3	3	3	3	3	3	3	3	3	4	3	3	3	3	3	3	3	3	2	3	3	3	2	2	2	3	4	5
+M53701268	M53701268																																																										
+M53797811	M53797811	M53797811	4/11/2015 14:20	13964665	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	2	2	2	4	4	4	4	3	3	3	3	5	5	4	2	4	2	2	3	3	2	2	2	2	3	3	3	3	4	4	4	4	3	3	2	3	4	3	2	3	4	3	1
+M53760116	M53760116																																																										
+M53700471	M53700471																																																										
+M53749753	M53749753	M53749753	5/9/2015 13:47	14186825	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	3	3	1	5	1	4	3	3	3	3	3	3	3	2	4	3	2	3	3	3	2	3	3	3	3	4	3	2	3	3	3	3	3	2	3	4	3	2	2	3	4	5
+M53747058	M53747058	M53747058	6/9/2015 22:52	14415745	TIRE Twin A_M	parV	1	R	31	1	SELF			2	2	2	3	4	2	4	5	4	5	4	4	4	2	2	5	5	1	5	2	5	2	2	2	2	4	2	4	2	3	3	5	4	2	2	3	1	1	2	4	2	2	2	4	4	4
+M53761671	M53761671	M53761671	6/5/2015 13:56	14392765	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	4	3	4	4	4	4	3	3	3	3	4	4	3	1	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	4	3	3	4	2	2	3	5	5	3
+M53706908	M53706908	M53706908	5/18/2015 18:59	14280265	TIRE Twin A_M	parV	1	R	31	1	SELF			4	3	3	3	2	2	1	5	1	5	1	1	3	1	5	5	5	1	1	1	1	3	5	4	5	4	3	1	3	1	2	1	3	3	3	1	5	3	5	2	4	5	5	4	2	2
+M53776900	M53776900	M53776900	6/8/2015 16:33	14405685	TIRE Twin A_M	parV	1	R	31	1	SELF			1	3	2	3	2	4	~<userSkipped>~	3	~<userSkipped>~	5	~<userSkipped>~	2	~<userSkipped>~	2	~<userSkipped>~	2	5	1	6	3	6	3	6	4	6	3	4	6	3	6	3	4	3	3	3	2	3	4	3	3	3	3	3	4	4	4
+M53779833	M53779833	M53779833	6/10/2015 16:44	14427505	TIRE Twin A_M	parV	1	R	31	1	SELF			2	3	3	3	5	2	2	4	3	3	2	4	2	4	2	3	2	2	4	1	3	2	3	4	4	5	5	3	3	3	2	3	4	4	3	3	3	4	3	4	2	3	2	4	5	5
+M53776134	M53776134	M53776134	6/12/2015 14:26	14448085	TIRE Twin A_M	parV	1	R	31	1	SELF			2	3	3	3	3	3	4	4	3	3	1	3	2	3	1	5	3	2	1	3	1	2	4	4	4	3	3	1	3	3	3	3	3	3	3	3	3	3	3	5	1	4	2	5	5	3
+M53796654	M53796654	M53796654	7/9/2015 14:07	14621825	TIRE Twin A_M	parV	1	R	31	1	SELF			1	3	3	3	3	3	4	3	4	4	3	3	1	2	5	3	3	2	3	4	3	3	3	3	3	3	3	3	3	3	3	3	2	2	3	3	3	2	2	5	1	1	1	5	5	2
+M53730804	M53730804	M53730804	6/28/2015 10:42	14547065	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	2	3	5	1	2	2	4	5	5
+M53715062	M53715062	M53715062	6/27/2015 16:04	14546325	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	4	2	4	3	3	3	3	3	2	3	3	4	3	2	3	3	3	3	3	3	3	3	3	3	3	3	3	2	3	3	3	3	3	3	3	4	2	2	1	4	5	5
+M53790771	M53790771	M53790771	7/3/2015 18:41	14587745	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	2	5	5	1	2	5	3	4	1	4	3	4	3	3	2	2	4	3	4	3	3	3	3	3	3	4	3	3	3	3	3	3	3	2	2	2	2	5	1	2	2	5	5	4
+M53767433	M53767433																																																										
+M53700355	M53700355	M53700355	7/1/2015 12:25	14573905	TIRE Twin A_M	parV	1	R	31	1	SELF			3	2	3	3	4	2	2	3	3	3	3	3	4	3	2	4	3	2	4	4	3	3	2	3	2	3	2	3	3	3	3	4	3	3	3	1	1	1	2	2	4	4	4	3	2	3
+M53758815	M53758815																																																										
+M53747486	M53747486	M53747486	7/10/2015 12:40	14628185	TIRE Twin A_M	parV	1	R	31	1	SELF			2	2	3	3	3	3	3	3	4	4	1	1	1	3	5	3	5	2	3	3	3	3	~<userSkipped>~	~<userSkipped>~	~<userSkipped>~	~<userSkipped>~	4	3	3	3	3	4	4	~<userSkipped>~	3	4	3	3	3	5	2	4	4	3	5	4
+M53741965	M53741965	M53741965	7/11/2015 14:22	14634605	TIRE Twin A_M	parV	1	R	31	1	SELF			4	3	3	3	4	2	1	3	2	2	1	3	4	3	2	3	2	2	2	3	2	3	3	3	3	3	3	3	3	3	3	2	3	3	2	4	3	2	3	3	3	3	3	3	3	3
+M53700499	M53700499	M53700499	7/17/2015 13:13	14687365	TIRE Twin A_M	parV	1	R	31	1	SELF			2	2	1	1	4	2	4	4	4	4	3	3	1	1	5	5	4	1	3	3	3	3	4	4	3	3	4	3	3	3	3	2	3	3	2	3	3	3	4	3	3	3	3	3	4	5
+M53768069	M53768069	M53768069	7/18/2015 12:50	14692125	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	4	4	1	6	5	6	5	6	5	6	3	3	3	5	1	6	5	6	3	6	3	6	2	2	6	3	6	3	3	3	3	3	3	3	4	2	5	1	1	1	5	5	5
+M53757807	M53757807	M53757807	7/21/2015 9:14	14705865	TIRE Twin A_M	parV	1	R	31	1	SELF			2	3	1	2	2	3	3	4	3	4	2	2	3	3	5	4	3	2	4	2	3	3	3	4	3	3	3	3	3	4	3	3	3	3	3	4	4	4	4	5	1	2	2	3	5	5
+M53758285	M53758285	M53758285	7/24/2015 12:29	14734585	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	2	2	4	2	6	5	6	4	6	3	6	2	6	4	5	1	6	2	6	3	6	3	6	3	4	6	3	6	3	2	4	4	3	4	4	3	4	4	2	3	2	4	3	3
+M53779867	M53779867	M53779867	7/25/2015 12:19	14739965	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	4	1	4	4	5	5	2	2	1	1	3	5	5	1	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	5	5
+M53747959	M53747959	M53747959	8/7/2015 13:57	14849325	TIRE Twin A_M	parV	1	R	31	1	SELF			2	3	3	2	5	1	5	5	5	4	2	3	1	2	3	5	4	1	3	3	3	3	3	3	3	3	3	3	3	3	3	4	4	3	3	3	3	2	2	5	2	3	3	3	5	4
+M53736475	M53736475	M53736475	8/9/2015 8:20	14852745	TIRE Twin A_M	parV	1	R	31	1	SELF			1	3	3	3	4	1	4	4	5	4	4	4	4	4	4	4	2	2	3	4	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	2	2	3	3	5	1	1	1	4	5	5
+M53720494	M53720494	M53720494	8/14/2015 12:30	14911665	TIRE Twin A_M	parV	1	R	31	1	SELF			4	3	3	3	4	3	3	3	3	3	3	3	4	3	5	4	3	2	3	4	3	3	3	2	3	3	3	3	3	3	3	3	3	3	3	4	2	2	3	5	1	1	1	5	5	5
+M53728063	M53728063	M53728063	8/15/2015 12:35	14917085	TIRE Twin A_M	parV	1	R	31	1	SELF			2	2	2	2	4	2	3	4	3	4	2	2	2	2	5	5	2	2	4	3	4	2	2	2	2	2	3	4	2	4	4	2	1	1	1	4	4	4	2	4	1	1	1	4	3	1
+M53700183	M53700183	M53700183	8/21/2015 12:10	14951285	TIRE Twin A_M	parV	1	R	31	1	SELF			3	4	3	3	4	2	1	3	3	4	3	3	3	3	3	3	3	3	4	4	3	3	3	3	3	3	3	3	3	3	3	4	3	3	3	3	2	2	2	5	1	3	3	5	5	4
+M53710173	M53710173	M53710173	8/29/2015 12:34	14993705	TIRE Twin A_M	parV	1	R	31	1	SELF			2	3	1	3	3	3	4	5	1	5	3	3	3	3	1	5	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	2	3	3	3	3	4	5	4	5	1	3	3	5	5	5
+M53737838	M53737838	M53737838	9/12/2015 12:18	15119965	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	3	3	4	4	4	4	3	3	3	3	5	4	3	2	3	3	3	3	3	3	3	3	3	3	3	3	3	5	3	3	3	4	3	4	3	4	3	3	3	5	5	2
+M53774122	M53774122	M53774122	9/19/2015 11:55	15159785	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	3	3	4	4	3	3	3	3	3	3	3	3	3	3	2	2	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	2	2	2	2	4	3	4	3	3	3	4
+M53737888	M53737888	M53737888	9/26/2015 14:25	15200505	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	2	2	1	1	1	5	1	4	2	1	3	1	1	5	5	1	1	3	1	3	5	3	5	3	5	2	3	1	3	1	3	3	3	1	1	1	5	4	3	4	3	5	3	4
+M53784954	M53784954	M53784954	10/24/2015 12:34	15415845	TIRE Twin A_M	parV	1	R	31	1	SELF			1	3	1	2	4	2	2	3	2	3	4	4	4	4	4	4	2	2	4	3	4	4	3	3	3	3	2	3	3	3	3	4	2	2	3	5	4	4	3	4	3	3	3	2	5	4
+M53716918	M53716918	M53716918	10/31/2015 13:31	15461085	TIRE Twin A_M	parV	1	R	31	1	SELF			3	2	3	3	3	2	4	2	4	4	3	3	3	3	3	4	3	2	5	2	2	2	4	4	2	4	4	4	2	2	2	5	4	4	4	5	5	5	2	2	4	3	4	2	1	1
+M53721739	M53721739	M53721739	11/5/2015 16:11	15505365	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	5	3	5	5	5	5	1	2	2	3	3	5	5	1	2	3	2	3	4	4	3	3	5	3	3	3	3	3	3	3	3	2	2	3	4	4	2	3	3	4	5	5
+M53720270	M53720270	M53720270	11/7/2015 12:05	15515925	TIRE Twin A_M	parV	1	R	31	1	SELF			4	3	3	3	4	3	4	5	4	5	3	3	3	3	3	5	3	1	4	2	3	2	3	4	3	3	4	3	3	3	4	4	3	3	2	5	5	4	3	5	1	1	1	5	5	5
+M53794144	M53794144	M53794144	11/15/2015 14:26	15582885	TIRE Twin A_M	parV	1	R	31	1	SELF			4	3	~<userSkipped>~	~<userSkipped>~	3	3	3	3	3	3	3	3	3	3	5	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	1	1	1	1	5	2	5	5	5	5	5
+M53769783	M53769783	M53769783	11/21/2015 12:23	15635305	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	4	2	3	4	3	3	3	3	3	3	3	5	3	1	3	3	3	3	3	3	3	3	3	3	3	3	3	4	3	3	3	4	4	2	3	3	3	3	3	3	2	2
+M53750713	M53750713	M53750713	11/28/2015 12:29	15682385	TIRE Twin A_M	parV	1	R	31	1	SELF			2	3	2	3	4	2	4	3	5	4	1	3	1	1	5	4	4	2	3	2	3	3	3	3	3	3	4	3	3	3	3	3	3	3	3	5	5	4	4	4	3	4	3	4	3	2
+M53747934	M53747934	M53747934	12/21/2015 9:01	15847745	TIRE Twin A_M	parV	1	R	31	1	SELF			5	3	3	5	5	1	3	3	3	4	2	3	3	3	5	5	3	1	3	3	2	1	5	3	5	3	5	4	2	3	3	5	3	4	3	4	5	5	3	4	3	3	3	2	3	1
+M53775753	M53775753	M53775753	12/21/2015 11:33	15849285	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	5	4	1	4	6	5	6	3	6	3	6	3	5	2	1	3	6	3	6	3	6	3	6	4	3	6	3	6	3	2	2	3	3	3	2	3	5	1	1	1	5	5	4
+M53776940	M53776940	M53776940	1/21/2016 18:38	16042505	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	2	3	2	3	4	4	4	4	2	3	2	3	5	4	5	3	3	3	3	3	3	3	3	3	4	3	3	3	3	3	3	3	3	2	2	3	3	5	1	3	2	4	5	5
+M53744781	M53744781	M53744781	1/13/2016 11:40	15966265	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	4	1	3	4	4	5	2	3	2	3	5	4	4	2	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	2	2	2	3	5	1	2	1	5	4	5
+M53747679	M53747679	M53747679	1/30/2016 11:43	16100285	TIRE Twin A_M	parV	1	R	31	1	SELF			4	3	2	2	4	1	3	3	3	4	2	2	3	3	5	4	3	2	3	4	3	3	3	4	3	3	3	2	3	3	3	5	4	4	2	5	5	4	2	2	2	2	2	3	2	2
+M53715771	M53715771	M53715771	2/6/2016 11:49	16148605	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	5	1	1	5	1	5	5	3	5	3	2	5	3	2	2	3	2	3	5	3	5	3	5	2	3	2	3	4	4	3	4	4	5	5	3	4	2	3	3	4	3	4
+M53748477	M53748477	M53748477	2/13/2016 11:44	16199525	TIRE Twin A_M	parV	1	R	31	1	SELF			3	2	3	3	4	2	4	4	3	3	3	4	2	3	4	3	2	4	5	3	4	3	1	3	3	3	2	5	3	4	2	5	5	4	3	5	5	4	4	4	2	1	1	3	4	4
+M53797471	M53797471	M53797471	2/20/2016 12:17	16247545	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	2	3	3	4	3	3	2	2	4	3	2	3	3	3	3	4	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	4	3	3	3	5	1	4	4	3	5	5
+M53798849	M53798849	M53798849	3/6/2016 13:08	16341325	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	3	1	4	4	5	5	1	1	1	1	5	5	4	1	3	3	2	3	3	3	4	4	3	3	3	3	3	4	4	4	3	3	4	3	3	5	1	1	1	3	4	2
+M53768751	M53768751	M53768751	3/26/2016 8:14	16462865	TIRE Twin A_M	parV	1	R	31	1	SELF			3	2	3	3	4	3	3	3	2	3	2	2	5	3	2	3	2	3	3	2	3	3	3	3	3	4	4	3	3	3	3	4	3	3	3	3	4	4	2	3	4	4	4	3	5	5
+M53702312	M53702312	M53702312	3/26/2016 12:22	16464125	TIRE Twin A_M	parV	1	R	31	1	SELF			2	2	3	3	2	1	1	5	4	4	3	3	2	2	4	5	5	1	3	3	3	3	3	3	3	3	3	3	3	3	3	4	3	3	3	4	3	4	3	4	2	3	3	2	5	5
+M53764293	M53764293	M53764293	4/1/2016 12:44	16513885	TIRE Twin A_M	parV	1	R	31	1	SELF			2	4	3	3	4	2	3	3	4	4	2	2	1	4	5	4	4	2	2	3	3	3	3	3	3	3	3	3	3	3	3	2	3	3	3	2	2	3	4	5	1	4	2	4	5	5
+M53711411	M53711411	M53711411	4/17/2016 14:23	16609065	TIRE Twin A_M	parV	1	R	31	1	SELF			2	3	3	3	3	1	3	4	3	3	4	4	3	3	3	4	3	2	4	4	4	4	3	3	3	3	3	4	3	3	3	2	3	3	3	2	2	3	3	2	3	3	3	3	2	2
+M53743642	M53743642	M53743642	4/28/2016 15:08	16691485	TIRE Twin A_M	parV	1	R	31	1	SELF			2	3	2	2	4	2	4	4	4	4	4	3	4	4	3	4	4	2	2	3	3	3	2	2	3	3	2	3	3	4	4	3	2	2	2	3	3	2	4	3	2	2	2	4	3	2
+M53799035	M53799035	M53799035	5/1/2016 14:06	16708565	TIRE Twin A_M	parV	1	R	31	1	SELF			3	2	3	3	3	3	3	3	5	5	2	2	3	3	3	5	5	1	2	4	3	3	3	3	3	3	3	3	3	3	3	4	3	3	3	5	5	5	4	4	2	2	2	4	4	3
+M53765456	M53765456	M53765456	5/6/2016 16:51	16749045	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	3	3	4	2	3	3	3	3	4	4	3	3	2	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	2	3	3	3	3	3	4	4	5	1	2	2	5	5	5
+M53787648	M53787648	M53787648	5/7/2016 8:35	16751745	TIRE Twin A_M	parV	1	R	31	1	SELF			2	3	3	3	4	2	2	3	3	3	3	4	3	4	2	3	2	2	3	3	3	3	3	2	3	2	3	3	3	3	3	4	3	3	2	3	3	4	2	4	3	4	3	4	5	4
+M53751191	M53751191	M53751191	5/23/2016 16:19	16862745	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	~<userSkipped>~	~<userSkipped>~	4	2	1	5	1	5	~<userSkipped>~	1	~<userSkipped>~	1	~<userSkipped>~	5	5	1	~<userSkipped>~	3	~<userSkipped>~	3	~<userSkipped>~	3	~<userSkipped>~	3	3	~<userSkipped>~	3	~<userSkipped>~	3	3	~<userSkipped>~	~<userSkipped>~	3	1	1	1	3	5	1	1	1	5	5	5
+M53728683	M53728683	M53728683	5/20/2016 17:16	16843385	TIRE Twin A_M	parV	1	R	31	1	SELF			3	3	4	3	4	2	~<userSkipped>~	4	~<userSkipped>~	4	3	5	~<userSkipped>~	4	~<userSkipped>~	4	3	2	~<userSkipped>~	3	~<userSkipped>~	3	~<userSkipped>~	3	~<userSkipped>~	3	2	~<userSkipped>~	3	~<userSkipped>~	3	4	2	2	2	4	2	2	2	4	2	3	3	4	5	4

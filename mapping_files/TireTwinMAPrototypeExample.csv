@@ -1,0 +1,65 @@
+ndar name,ndar missing value,mapping,ndar range,coins id,default value,coins name,coins missing value,function,args,coins range
+subjectkey,,1,,1,,queried_ursi,,,,
+src_subject_id,,1,,2,,oldest_ursi,,,,
+interview_date,,1,,3,,asmt_ursi,,,,
+interview_age,,1,,4,,assessment_date,,,,
+gender,,1,,5,,assessment_id,,,,
+quest_instruct,,,,,Empty',instrument,,,,
+tiret_1,9999,15,1::5,7,,segment_interval,,,,
+tiret_2,9999,16,1::5,8,,segment_instance,,,,
+tiret_3,9999,17,1::5,9,,entry_code,,,,
+tiret_4,9999,18,1::5,10,,site_id,,,,
+tiret_5,9999,19,1::5,11,,source_type,,,,
+tiret_6,9999,20,1::5,12,,rater1,,,,
+tiret_7,9999,21,1::6,13,,successfully_completed,,,,
+tiret_8,9999,22,1::6,14,,notes,,,,
+tiret_9,9999,23,1::6,15,,parv-tifsaa_001m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_10,9999,24,1::6,16,,parv-tiaa_002m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_11,9999,25,1::6,17,,parv-tifsaa_003m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_12,9999,26,1::6,18,,parv-tifsaa_004m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_13,9999,27,1::6,19,,parv-tinpaa_005m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_14,9999,28,1::6,20,,parv-tiaa_006m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_15,9999,29,1::6,21,,parv-tippaa_007m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_16,9999,30,1::6,22,,parv-tippaa_008m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_17,9999,31,1::6,23,,parv-tippaa_009m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_18,9999,32,1::6,24,,parv-tippaa_010m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_19,9999,33,1::6,25,,parv-tinpaa_011m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_20,9999,34,1::6,26,,parv-tinpaa_012m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_21,9999,35,1::6,27,,parv-tinpaa_013m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_22,9999,36,1::6,28,,parv-tinpaa_014m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_23,9999,37,1::6,29,,parv-tiaa_015m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_24,9999,38,1::6,30,,parv-tippaa_016m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_25,9999,39,1::6,31,,parv-tiaa_017m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_26,9999,40,1::6,32,,parv-tiaa_018m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_27,9999,41,1::6,33,,parv-tifpaa_019m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_28,9999,42,1::6,34,,parv-timpaa_020m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_29,9999,43,1::6,35,,parv-tifpaa_021m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_30,9999,44,1::6,36,,parv-timpaa_022m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_31,9999,45,1::6,37,,parv-tidpaa_023m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_32,9999,46,1::5,38,,parv-tidpaa_024m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_33,9999,47,1::5,39,,parv-tidpaa_025m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_34,9999,48,1::5,40,,parv-tidpaa_026m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_35,9999,49,1::5,41,,parv-tidpaa_027m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_36,9999,50,1::5,42,,parv-tifpaa_028m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_37,9999,51,1::5,43,,parv-timpaa_029m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_38,9999,52,1::5,44,,parv-tifpaa_030m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_39,9999,53,1::5,45,,parv-timpaa_031m-1,"9998,~<userSkipped>~ ",,,1::6
+tiret_40,9999,54,1::5,46,,parv-tidtaa_032m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_41,9999,55,1::5,47,,parv-tidcaa_033m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_42,9999,56,1::5,48,,parv-tidcaa_034m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_43,9999,57,1::5,49,,parv-tidcaa_035m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_44,9999,58,1::5,50,,parv-tidtaa_036m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_45,9999,59,1::5,51,,parv-tidtaa_037m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_46,9999,60,1::5,52,,parv-tidtaa_038m-1,"9998,~<userSkipped>~ ",,,1::5
+comments_misc,9999,,,53,,parv-tiaa_039m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_negpar,9999,,,54,,parv-titcaa_040m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_pospar,9999,,,55,,parv-titcaa_041m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_twclo,9999,,,56,,parv-titqaa_042m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_twqf,9999,,,57,,parv-titqaa_43m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_frsubj,9999,,,58,,parv-titcaa_044m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_dpc,9999,,,59,,parv-titcaa_045m-1,"9998,~<userSkipped>~ ",,,1::5
+tiret_mopr,9999,,,60,,parv-titcaa_046m-1,"9998,~<userSkipped>~ ",,,1::5
+tiretfapr,9999,,,,,,,,,
+tiret_domtw,9999,,,,,,,,,
+tiret_twdifpr,9999,,,,,,,,,
+respond,999,,1::4,,1,,,,,
