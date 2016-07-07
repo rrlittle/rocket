@@ -8,9 +8,9 @@
 
 	note: this was built for python 3
 '''
-import utils
 from __init__ import handlers
 from Managers import controller
+import utils
 
 
 if __name__ == '__main__': 
