@@ -1,12 +1,18 @@
+
+# import some useful stuff
 from inspect import getmembers, isclass, isfunction
 import argparse
 import tkinter
 from tkinter.filedialog import askopenfilename
 import csv
 from os.path import join, abspath
+import platform
 
+# run som setup stuff
+sytemName = platform.system()
 tkinter.Tk().withdraw()
 
+# define some useful functions
 def make_args(description, args = {}):
 	''' this returns a parser for requiring arguments
 		to run the package. 
@@ -35,3 +41,11 @@ def load_handlers():
 	return {	'sink':data_handlers.__sinkHandlers__,
 				'source':data_handlers.__sourceHandlers__,
 			}
+
+def ensure_list(possible_list):
+	''' ensures the value is a list. 
+		basically if it's not currently a list
+		wrap it up in a list'''
+
+	if not isinstance(possible_list, list): return [possible_list]
+	return possible_list

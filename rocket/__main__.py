@@ -12,11 +12,7 @@ from __init__ import handlers
 from Controller import controller
 import utils
 
-
-if __name__ == '__main__': 
-	# if this is run as a package
-	# it requires arguments
-	parser = utils.make_args('runs the rocket data mapping package',
+parser = utils.make_args('runs the rocket data mapping package',
 		args={
 			'--src':{   'choices': list(handlers['source'].keys()),
 						# choices forces existing handler
@@ -49,6 +45,11 @@ if __name__ == '__main__':
 						}
 		}
 	)
+	
+
+if __name__ == '__main__': 
+	# if this is run as a package
+	# it requires arguments
 	args = parser.parse_args()
 	src = handlers['sink'][args.source]
 	sink = handlers['sink'][args.sink]

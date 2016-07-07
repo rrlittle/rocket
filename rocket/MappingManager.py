@@ -65,12 +65,22 @@ class MappingManager(MetaManager):
 			self.sink.add_row()
 			for sinkcol in self.sink.cols:
 				try:
-					srcdat = self.src.get(sinkcol.mappers)
-					sinkdat = self.sink.convert(srcdat, 
-						src_missing_vals=self.src.missing_values)
-					self.sink[i][sinkcol] = sinkdat
-				except sinkManager.DropRowException:
-					self.sink.drop_row()
+					# get col objs from src
+					srccols = self.src.get(sinkcol.mappers) 
+					srccols = utils.ensure_list(src_col_defs)
+					
+					# get the data					
+					srcdat = [self.src[i][col] for col in srccols]
+					
+					# zip the data with it's defining objcet
+					src_datcol_zip = zip(srcdat, srccols)
+					
+					# convert it to the sink value
+					sinkcol.convert(src_datcol_zip)
+
+					# save the sink value
+					self.sink[-1][sinkcol] = sinkdat
+				except sinkManager.DropRowException: self.sink.drop_row()
 		return self.sink.data
 
 

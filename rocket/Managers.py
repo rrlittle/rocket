@@ -77,8 +77,22 @@ class MetaManager(Manager):
 		else: raise AssertionError('unable to set self.sink')
 
 
-class ssManager(Manager):pass
+class ssManager(Manager):
+	''' genetic class to give both soirce and sink 
+		managers the same functions. 
+		like __repr__ __str__ etc
+	'''
 
+	def __getitem__(self, k):
+		''' return row, index only'''
+		assert isinstance(k,int), 'ssManagers only support int indexing'
+		if not hasattr(self, 'data'): 
+			raise AttributeError(('%s has not been filled with data. run'
+				' .initialize_data or load template to do that')%self)
+			self.data[k]
+
+	def __repr__(self): return str(self)
+	def __str__(self): return self.__name__
 
 class sourceManager(ssManager):
 	''' this should work as a wource manager
@@ -108,7 +122,12 @@ class sinkManager(ssManager):
 		so that any children will already hae most the things they need 
 		and they can just change the few things they need
 	'''
+
+	class DropRowException(Exception):pass # caller should drop the current row
+
 	defaultdatadir = sinkdatdir
+	
+
 	def get_file_outpath(self):
 		''' this sets self.outpath
 		'''
@@ -122,6 +141,7 @@ class sinkManager(ssManager):
 
 	def initialize_data(self):
 		''' if self.data exist then clear it
-			create a new fresj self.data
+			create a new fresh self.data
 		'''
-		pass
+		self.data = []
+
