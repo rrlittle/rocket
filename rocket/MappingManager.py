@@ -47,7 +47,7 @@ class MappingManager(MetaManager):
 				templreader = utils.DictReader(templfile)
 				handler.load_template(templreader)
 
-	def convert(self):
+	def convert(self, clear_sink=True):
 		''' this function implements the core algorithm of rocket.
 			this sets up the core behaviour of the template files. 
 			basically it applies the function specified with the 
@@ -65,13 +65,12 @@ class MappingManager(MetaManager):
 			self.sink.add_row()
 			for sinkcol in self.sink.cols:
 				try:
-					srcdat = self.src.get(self.sink.mappers)
+					srcdat = self.src.get(sinkcol.mappers)
 					sinkdat = self.sink.convert(srcdat, 
 						src_missing_vals=self.src.missing_values)
 					self.sink[i][sinkcol] = sinkdat
 				except sinkManager.DropRowException:
 					self.sink.drop_row()
-
 		return self.sink.data
 
 

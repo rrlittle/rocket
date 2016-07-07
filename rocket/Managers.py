@@ -76,7 +76,10 @@ class MetaManager(Manager):
 			self.source = source
 		else: raise AssertionError('unable to set self.sink')
 
+
 class ssManager(Manager):pass
+
+
 class sourceManager(ssManager):
 	''' this should work as a wource manager
 		therefore it must implement all the things neccessary to 
@@ -96,6 +99,7 @@ class sourceManager(ssManager):
 				initialdir=self.defaultdatadir,
 				title='select the source data file')
 			return self.srcpath
+
 
 class sinkManager(ssManager):
 	'''this should work as a sink manager
@@ -120,3 +124,4 @@ class sinkManager(ssManager):
 		''' if self.data exist then clear it
 			create a new fresj self.data
 		'''
+		pass
