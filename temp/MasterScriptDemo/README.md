@@ -1,0 +1,148 @@
+Usage for Rocket Converter and Upload Package
+==================================================
+
+Rocket is a program that will assist in the conversion of datafiles
+from one schema to another. specifically designed to convert datafiles
+from the coins tables into the ndar format
+
+## How do I use it?
+well it's simple really. 
+
+1. run ```python rocket newtemplate```
+2. it will prompt you for a source scheme and a sink scheme (the source will be 
+    the current form of the data and the sink is the type you want to convert 
+    it too)
+3. then it will create a new mapping file which you will have to populate. (   
+    check out the <TODO> How to do a mapping file </TODO> section below for more
+    on that) 
+4. after you are satisfied with the mapping file, which defines how to convert
+    from one format to the other, close it and run ```python rocket convert```
+    and that will prompt you for a source datafile and a mapping file.
+5. it will automatically convert the source datafile (which is in the source 
+    scheme) into a sink datafile (which is in the sink scheme)
+
+Easy right!
+
+
+## How does it work internally?
+well I think it's quite elegant. The \_\_main\_\_.py contains all the 
+controlling stuff. Specifically the controller class. It makes use of two 
+important classes defined in different python files. The source manager and 
+the sink manager. These handle the incoming data and formats and the 
+outgoing data and formats respectively.
+
+the controller has 2 important functions. make_template and convert. 
+
+make_template creates a template mapping file which you must define so that
+it can figure out how to convert from the source to the sink formats. 
+
+convert uses a predefined mapping function to convert the source datafile into
+the sink format. 
+
+## The Source and Sink Managers
+these classes are very important. the source manager is in charge of 
+figuring out how to parse input datafiles and source schemas. while the sink
+manager does the same for the outputs files. 
+
+they both employ the use of subclasses to define what kind of formats we're
+talking about. 
+
+Such as:
+
+- NDAR Manager
+> to deal with the NDAR schemas (which are in a particular format on being 
+> downloaded from the NDAR site) as well as the datafiles if at some point in 
+> the future we wanted to export the NDAR data to our database or something like
+> that 
+- Coins Manager
+> to deal with the coins schemas (which are also in a particular format) and 
+> datafiles. 
+- WTP_data Manager 
+> to deal with our internal database stuff. like getting things from Gen_Family
+> various data tables etc. 
+- CSV Manager
+> to deal with arbitrary csv files like those produced by our computer tasks
+
+These managers do the prompting for schemas and such and validate that they are 
+indeed in the proper format etc. 
+
+at the moment they don't handle actually getting the schemas from the website.
+but thye point is that all that complicated stuff can be abstracted from the 
+core funtionality of the controller.
+
+## The mapping file
+all the the various managers are manipulated and orchestrated by the controller
+class of the main file.  
+
+when the main file is told to create a mapping template it will ask 
+the source and sink managers to get the schemas for their particular type.
+> i.e. the NDAR sink manager would get the NDAR schema and the COINS source 
+> manager would get the coins schema
+
+the controller would then create a csv file that you can open in excel that
+has columns that look a little like this (some extra columns may be included 
+or excluded based on what that data type [coins, NDAR, wtp_data etc] is like)
+
+
+<table>
+    <th>sink column definitions...</th>
+    <th>sink column type</th>
+    <th>sink column range</th>
+    <th>default value</th>
+    <th>missing code</th>
+    <th>func column</th>
+    <th>mapping column</th>
+    <th>source column definitions...</th>
+    <th>function args</th>
+    <th>more function args...</th>
+</table>
+
+this is a little deceiving, because it looks like the sink columns line up with
+the source columns. but that's a lie. these are really two separate lists. 
+the mapping column is a place to point to which source columns get put into 
+which sink columns. 
+
+we do assume that every row in the source datafile should be represented in the
+sink datafile. that might not be desirable. and we do have the ability to 
+extend this program to change that. but for now we haven't.
+
+below is some pseudo code to describe the algorithm to figure out the values to 
+put in the sink datafile
+
+```python
+sink_datafile = []
+for row in source_datafile:
+    sink_row = {}
+    for sink_col in mappings_file:
+        ''' sink_col is an object representing the sink attributed from the 
+            mappings file
+            it has the following attributes:
+            - name # the name of the column in the sink datafile
+            - mapping_col # the columns from the source datafile that should 
+                be used to populate this column in the sink file
+            - function # what function should be used to convert the source 
+                values to the proper sink values (defaults to simple get)  
+             ''' 
+        # get the source values from the source datafile. this can be multiple 
+        # values in the case of operations like sum, mean, etc
+        source_values = row[sink_col.mapping_col]
+
+        # if the source and sink support different value ranges
+        # we need to coerce the source into the correct sink range,
+        # this handles missing data etc. 
+        source_values_correct_range = coerce_to_sink_range(source_values) 
+
+        # convert the source values into a proper sink value. 
+        # individual sink managers have specific functions available which 
+        # will be listed in the mappings template file
+        sink_value = sink_col.function(source_values_correct_range) 
+
+        # it should be noted that sink_col.function will be the thing to handle 
+        # missing data, and already be aware of the arguments you have set in
+        # the mappings file
+        sink_row[sink_col.name] = sink_value
+        # end of for loop
+    # add this row to the end of the sink datafile
+    sink_datafile.append(sink_row)
+# at this point sink_datafile is as full as source is.  
+```     
