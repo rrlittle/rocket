@@ -1,8 +1,8 @@
 import utils
 
 basedir = utils.abspath(__file__)
-templatedrir = utils.join(basedir, 'mappping_files')
-srcdatdir = utils.join(basdir, 'source_datfiles')
+templatedir = utils.join(basedir, 'mappping_files')
+srcdatdir = utils.join(basedir, 'source_datfiles')
 srcschdir = utils.join(basedir,'source_schemes')
 sinkdatdir = utils.join(basedir, 'sink_datfiles')
 sinkschdir = utils.join(basedir, 'sink_schemes') 

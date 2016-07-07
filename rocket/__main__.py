@@ -9,7 +9,7 @@
 	note: this was built for python 3
 '''
 from __init__ import handlers
-from Managers import controller
+from Controller import controller
 import utils
 
 
