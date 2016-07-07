@@ -63,7 +63,7 @@ class MappingManager(MetaManager):
 
 		for i,row in enumerate(self.src):
 			self.sink.add_row()
-			for sinkcol in self.sink.cols:
+			for sinkcol in self.sink.templcols:
 				try:
 					# get col objs from src
 					mapperslist = utils.ensure_list(sinkcol.mappers)
@@ -83,6 +83,7 @@ class MappingManager(MetaManager):
 					self.sink[-1][sinkcol] = sinkdat
 				except sinkManager.DropRowException: self.sink.drop_row()
 		return self.sink.data
+
 
 
 
