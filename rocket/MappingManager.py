@@ -66,7 +66,8 @@ class MappingManager(MetaManager):
 			for sinkcol in self.sink.cols:
 				try:
 					# get col objs from src
-					srccols = self.src.get(sinkcol.mappers) 
+					mapperslist = utils.ensure_list(sinkcol.mappers)
+					srccols = self.src.get(*mapperslist) 
 					srccols = utils.ensure_list(src_col_defs)
 					
 					# get the data					

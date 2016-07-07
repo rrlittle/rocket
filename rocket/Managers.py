@@ -1,5 +1,5 @@
 import utils
-from __init__ import basedir, srcdatdir,sinkdatdir
+from __init__ import basedir, srcdatdir,sinkdatdir, 
 
 class Manager(object):
 	''' the generic manager ensuring all managers have basic 
@@ -83,19 +83,51 @@ class ssManager(Manager):
 		like __repr__ __str__ etc
 	'''
 
+	# for use when there is no data
+	class NoDataError(Exception): pass
+			
+	def __init__(self, **kwargs):
+		''' calls the super Manager init. then adds specific ss Manager stuff'''
+		# add self.cols they both need them
+		self.templcols = []  # ordered list of columns in the data files
+
 	def __getitem__(self, k):
 		''' return row, index only'''
 		assert isinstance(k,int), 'ssManagers only support int indexing'
 		if not hasattr(self, 'data'): 
 			raise AttributeError(('%s has not been filled with data. run'
-				' .initialize_data or load template to do that')%self)
+				' .initialize_data')%self)
 			self.data[k]
-
 	def __repr__(self): return str(self)
 	def __str__(self): return self.__name__
+	def __iter__(self): 
+		if hasattr(self, 'data'): 
+			self.row_pointer_for_iter = 0
+			return self
+		else: raise AttributeError
+	def next(self): 
+		if self.row_pointer_for_iter == len(self.data): raise StopIteration()
+		tmp = self.data[0]
+		self.row_pointer_for_iter += 1
+		return tmp
+
+
+	def get(self, *collist):
+		''' return the specified column objects from self.templcols'''
+		cols = [] # hold desired col instances
+		for col in collist: # iterate the deised collist and add desired ones
+			try:
+				i = self.templcols.index(col) # get the index of value
+				cols.append(self.templcols[i])
+			except ValueError,e:
+				errstr = ('while looking for column %s '
+					'none found in %s')%(col,self)
+				if ignore_errors: print(errstr)
+				else: raise ValueError(errstr, e)
+		return cols
 
 class sourceManager(ssManager):
-	''' this should work as a wource manager
+	''' this should work as a source manager
 		therefore it must implement all the things neccessary to 
 		be a source manager. they should act in a reasonable way.
 		so that any children will already hae most the things they need 
@@ -123,7 +155,8 @@ class sinkManager(ssManager):
 		and they can just change the few things they need
 	'''
 
-	class DropRowException(Exception):pass # caller should drop the current row
+	# caller should drop the current row
+	class DropRowException(Exception):pass 
 
 	defaultdatadir = sinkdatdir
 	

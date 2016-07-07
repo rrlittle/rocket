@@ -14,13 +14,23 @@ class Col(object):
 	def __init__(self, sshandler):
 		'''all columns need
 			- a handler. this asserts its an sshandler instance
+			- column definitions
+				- including name
 			'''
 		
+		
+		self.col_name = 'default col_name' 
 		#all columsn need to be aware of their handlers
 		assert isinstance(sshandler, ssManager), ('handlers to colum objects '
 			'must be children of ssManager')
 		self.handler = sshandler
-	
+
+	# the following are required to use this obj as keys for a dict
+	# you can also access them by their column name 
+	def __repr__(self): return self.col_name
+	def __hash__(self): return self.col_name.__hash__()
+	def __eq__(self, other): return self.col_name == other
+	def __ne__(self,other): return not self.__eq__(other)
 
 class srcCol(Col):
 	''' this adds funcitonality to columns defining specifcally
@@ -43,8 +53,9 @@ class sinkCol(Col):
 		Col.__init__(self, sinkhandler)
 		assert isinstance(self.handler, sinkManager), ('sinkCols require a',
 			' sink handler')
-		# set self.func
-		# set self.args
+		# set self.func - the function to run on the source value to convert it
+		# set self.args - the args for the function to run
+		# set self.mappers - the source columns to pull from 
 
 
 	def convert(self, src_datacol_zip):
@@ -64,3 +75,4 @@ class sinkCol(Col):
 
 		self.dat = self.func(*src_data, args=*self.args)
 		return self.dat
+
