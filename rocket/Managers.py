@@ -199,10 +199,10 @@ class sourceManager(ssManager):
 
 		# assert the file has all the expected fields
 		for col_name in self.col_defs: 
-			if col_name not in srcreader.fieldnames():
+			if col_name not in srcreader.fieldnames:
 				raise self.TemplateError('expected column %s not '
 					'found in source datafile, with fields: %s')%(
-					col_name, srcreader.fieldnames())
+					col_name, srcreader.fieldnames)
 
 		# load each row
 		for datarow in srcreader:

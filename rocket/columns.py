@@ -9,7 +9,6 @@ class Col(object):
 		implent further src/sink dependant functions
 	'''
 
-
 	# represents a data value that's missing
 	class missingVal(object): pass
 
@@ -35,8 +34,6 @@ class Col(object):
 		'''
 		for field in self.handler.template_fields:
 			self.load_attribute(field)
-
-
 
 	def load_attribute(self, fieldkeyword):
 		''' this sets the self.fieldkeyword_header attribute 
@@ -64,8 +61,6 @@ class Col(object):
 		except Exception as e:
 			raise self.handler.TemplateError(('Template not set up as expected.'
 				' could not parse it. error occured: %s')%e)
-
-
 
 	# the following are required to use this obj as keys for a dict
 	# you can also access them by their column name 
