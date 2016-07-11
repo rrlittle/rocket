@@ -2,6 +2,7 @@ from Managers import sourceManager, sinkManager, MetaManager
 import utils
 from __init__ import templatedir
 from loggers import map_log
+import ipdb
 
 class MappingManager(MetaManager):
 	''' this class is responsible for implementing the 
@@ -92,6 +93,8 @@ class MappingManager(MetaManager):
 			# go through all the columns defined in the template
 			for sinkcoldef in self.sink.col_defs: 
 				try:
+					# sinkcol maps from the id to sourceColMappers 
+					sinkcoldef.map_src(srcrow)
 					# get col objs from src
 					mapperslist = sinkcoldef.mappers 
 						# src cols required to compute the sink value
@@ -101,13 +104,12 @@ class MappingManager(MetaManager):
 					# get the data					
 					srcdat = [srcrow[col] for col in srccols]
 						# list of data values from src datafile
-					
 					# zip the data with it's defining object
 					# needed for sinkcol.convert
 					src_datcol_zip = zip(srcdat, srccols)
 					
 					# convert it to the sink value
-					sinkcol.convert(src_datcol_zip)
+					sinkcoldef.convert(src_datcol_zip)
 
 					# save the sink value to the last row
 					self.sink[-1][sinkcoldef] = sinkdat

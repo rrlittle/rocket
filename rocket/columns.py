@@ -100,6 +100,17 @@ class sinkCol(Col):
 		self.load_attributes() # load all the handlers required attributes
 		# from handler.template_fields
 		
+	def map_src(self, srcrow):
+		'''This method turn the attribute mappers into a list of corresponding srcCol Object.'''
+
+		mappers_result = []
+		mappers_id = self.mappers.split(',')
+		for srccol in srcrow:
+			if srccol.id in mappers_id:
+				mappers_result.append(srccol)
+
+		self.mappers = mappers_result
+
 
 	def convert(self, src_datacol_zip):
 		''' this will convert the src_data to a proper value for this column
@@ -107,11 +118,11 @@ class sinkCol(Col):
 
 			sets self.value and returns it. 
 		'''
-		unzip = zip(*src_datacol_zip) # list of sequences
+		
+		unzip = list(src_datacol_zip)[0] # list of sequences, not list in Python 3
 		# change them to lsits so mutable
-		srcdat = list(unzip[0]) 
-		srccols = list(unzip[1]) 
-
+		srcdat = unzip[0]
+		srccols = unzip[1]
 		self.dat = self.func(*src_data, args=[arg for arg in self.args])
 		return self.dat
 

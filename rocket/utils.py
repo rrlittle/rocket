@@ -5,9 +5,9 @@ import argparse
 import tkinter
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from csv import DictReader, DictWriter
-from os.path import join, abspath, isfile
+from os.path import join, abspath, isfile,split
 import platform
-from os import environ
+from os import environ,getcwd
 from collections import OrderedDict
 from importlib import import_module
 from sys import exit

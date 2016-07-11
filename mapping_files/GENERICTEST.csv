@@ -1,6 +1,6 @@
-default_id_col,default_colname
-1,a
-2,b
-3,c
-4,d
-5,e
+sink col id,sink col name,sink mappers,sink range,source col id,source col name,source col range
+1,a,1,1::5,1,a,1::5
+2,b,2,1::6,2,b,1::6
+3,c,3,1::7,3,c,1::7
+4,d,4,1::8,4,d,1::8
+5,e,5,1::9,5,e,1::9

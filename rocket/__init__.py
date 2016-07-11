@@ -13,13 +13,15 @@ elif utils.systemName == 'Windows':
 	except AttributeError:
 		home_dir_str = utils.environ['USERPROFILE'] + '/'
 
-basedir = utils.abspath(__file__)
+
+
+basedir,filename = utils.split(utils.abspath(__file__))
 
 templatedir = utils.join(basedir, 'mappping_files')
-srcdatdir = utils.join(basedir, 'source_datfiles')
-srcschdir = utils.join(basedir,'source_schemes')
-sinkdatdir = utils.join(basedir, 'sink_datfiles')
-sinkschdir = utils.join(basedir, 'sink_schemes') 
+srcdatdir = utils.join(basedir,' source_datfiles')
+srcschdir = utils.join(basedir,' source_schemes')
+sinkdatdir = utils.join(basedir,' sink_datfiles')
+sinkschdir = utils.join(basedir,' sink_schemes') 
 sectretdir = home_dir_str
 
 # used throughout the package to decide 

@@ -139,6 +139,9 @@ class ssManager(Manager):
 
 	def getcolumn_defs(self, *collist):
 		''' return the specified column objects from self.col_defs'''
+		#initialize ignore errors
+		ignore_errors = True
+
 		cols = [] # hold desired col instances
 		for col in collist: # iterate the whole collist and save desired ones
 			try:
@@ -188,10 +191,11 @@ class sourceManager(ssManager):
 		
 	def __init__(self):
 		''' adds sourceManager specific columns and things'''
-		
-
+		self.template_fields={}
 		self.template_fields['id'] = 'source col id'
 		self.template_fields['col_name']='source col name' 
+		self.template_fields['col_range'] ='source col range'
+
 
 	def get_src_datpath(self):
 		''' this function sets self.srcpath
@@ -250,8 +254,12 @@ class sinkManager(ssManager):
 	col_archetype = columns.sinkCol # override this for different managers
 			# srcCol and sinkCol behave slightly differently
 
-	def __init__(self): pass
-
+	def __init__(self): 
+		self.template_fields={}
+		self.template_fields['id'] = 'sink col id'
+		self.template_fields['col_name']='sink col name' 
+		self.template_fields['col_range'] = 'sink range'
+		self.template_fields['mappers'] = 'sink mappers'
 
 	def get_file_outpath(self, allownew=False):
 		''' this sets self.outpath
