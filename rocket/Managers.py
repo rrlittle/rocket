@@ -1,11 +1,16 @@
 import utils
-from __init__ import basedir, srcdatdir,sinkdatdir, 
+from __init__ import basedir, srcdatdir,sinkdatdir
+from columns import Col, sinkCol, srcCol
 
 class Manager(object):
 	''' the generic manager ensuring all managers have basic 
 		functionality like getting files and stuff
 		we'll see what all we have later
 	'''
+
+	# for use when the template doesn't look as expected
+	class TemplateError(Exception): pass
+
 	def get_filepath(self, 
 		title='open file', 
 		filetype='file', 
@@ -36,6 +41,11 @@ class Manager(object):
 		setattr(self,filetype, fpath)
 		return fpath
 	
+	def __repr__(self): return str(self)
+	def __str__(self): 
+		if hasattr(self, '__name__'):return self.__name__
+		else: return str(type(self).__name__)
+	
 
 class MetaManager(Manager):
 	''' this is a class for the controller and mappingManager
@@ -55,7 +65,8 @@ class MetaManager(Manager):
 		# deal with source
 		errstr = (	'if source must be a '
 					'class referance class refd '
-					'must be subclass of sourceManager')
+					'must be subclass of sourceManager. '
+					'not %s')%source
 		if allow_class and utils.isclass(source):
 			assert issubclass(source, sourceManager), errstr 
 			self.source = source()
@@ -67,13 +78,14 @@ class MetaManager(Manager):
 		# deal with source
 		errstr = (	'if source must be a '
 					'class referance class refd '
-					'must be subclass of sourceManager')
-		if allow_class and utils.isclass(source):
-			assert issubclass(source, sourceManager), errstr 
-			self.source = source()
+					'must be subclass of sinkManager. '
+					'not %s')%sink
+		if allow_class and utils.isclass(sink):
+			assert issubclass(sink, sinkManager), errstr 
+			self.sink = sink()
 		elif allow_instance: 
-			assert isinstance(source, sourceManager), errstr
-			self.source = source
+			assert isinstance(sink, sinkManager), errstr
+			self.sink = sink
 		else: raise AssertionError('unable to set self.sink')
 
 
@@ -85,11 +97,20 @@ class ssManager(Manager):
 
 	# for use when there is no data
 	class NoDataError(Exception): pass
+
 			
 	def __init__(self, **kwargs):
 		''' calls the super Manager init. then adds specific ss Manager stuff'''
-		# add self.cols they both need them
-		self.templcols = []  # ordered list of columns in the data files
+		self.template_fields = utils.OrderedDict()
+		self.template_fields['id'] = 'default_id_col'
+		self.template_fields['col_name']='default_colname'
+
+
+		self.col_defs = []  # ordered list of col objects in the data files
+		# used to set what type of column to use to parse the template files
+
+		self.col_archetype = Col # override this for different managers
+			# srcCol and sinkCol behave slightly differently
 
 	def __getitem__(self, k):
 		''' return row, index only'''
@@ -98,33 +119,46 @@ class ssManager(Manager):
 			raise AttributeError(('%s has not been filled with data. run'
 				' .initialize_data')%self)
 			self.data[k]
-	def __repr__(self): return str(self)
-	def __str__(self): return self.__name__
 	def __iter__(self): 
 		if hasattr(self, 'data'): 
 			self.row_pointer_for_iter = 0
 			return self
 		else: raise AttributeError
+
 	def next(self): 
 		if self.row_pointer_for_iter == len(self.data): raise StopIteration()
 		tmp = self.data[0]
 		self.row_pointer_for_iter += 1
 		return tmp
 
-
-	def get(self, *collist):
-		''' return the specified column objects from self.templcols'''
+	def getcolumn_defs(self, *collist):
+		''' return the specified column objects from self.col_defs'''
 		cols = [] # hold desired col instances
-		for col in collist: # iterate the deised collist and add desired ones
+		for col in collist: # iterate the whole collist and save desired ones
 			try:
-				i = self.templcols.index(col) # get the index of value
-				cols.append(self.templcols[i])
-			except ValueError,e:
+				i = self.col_defs.index(col) # get the index of value
+				cols.append(self.col_defs[i])
+			except ValueError as e:
 				errstr = ('while looking for column %s '
 					'none found in %s')%(col,self)
 				if ignore_errors: print(errstr)
 				else: raise ValueError(errstr, e)
 		return cols
+
+	def load_template(self, templ_csv_reader):
+		''' both managers need to be able to load a template
+			and parse it to get what they need out of it. 
+			however they need very different things. 
+			so this just ensures both have them...
+
+			they both need to load the template
+		'''
+		self.col_defs = []
+		for tempmlate_row in templ_csv_reader:
+			# use the column to parse the row as we would like it to be 
+			c = self.col_archetype(self,template_row) 
+			self.col_defs.append(c)
+
 
 class sourceManager(ssManager):
 	''' this should work as a source manager
@@ -161,8 +195,13 @@ class sinkManager(ssManager):
 	defaultdatadir = sinkdatdir
 	
 
-	def get_file_outpath(self):
+	def get_file_outpath(self, allownew=False):
 		''' this sets self.outpath
+			this is called if the class doesn't know where to put the 
+			outpath
+			it can also be called in preperation
+
+			allownew allows new files to be created
 		'''
 		if hasattr(self, 'outpath'): return self.outpath
 		else:

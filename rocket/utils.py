@@ -4,12 +4,14 @@ from inspect import getmembers, isclass, isfunction
 import argparse
 import tkinter
 from tkinter.filedialog import askopenfilename
-import csv
+from csv import DictReader, DictWriter
 from os.path import join, abspath
 import platform
+from os import environ
+from collections import OrderedDict
 
 # run som setup stuff
-sytemName = platform.system()
+systemName = platform.system()
 tkinter.Tk().withdraw()
 
 # define some useful functions

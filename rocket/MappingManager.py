@@ -42,10 +42,31 @@ class MappingManager(MetaManager):
 			to parse the template file. each managaer will 
 			take the columns they know about. 
 		'''
+		templ_path = self.get_template()
 		for handler in [self.source, self.sink]:
-			with open(self.templ_path, errors='replace') as templfile:
+			with open(templ_path, errors='replace') as templfile:
 				templreader = utils.DictReader(templfile)
 				handler.load_template(templreader)
+
+	def check_valid_src_sink_combo(self):
+		''' ensures that src and sink do not have colliding fieldnames
+			if they do there will be an issue with parsing and creating the 
+			template all the headers must template headers must be unique'''
+		# generate list of all the headers
+		srctemplateheaders = list(self.source.template_fields.values())
+		sinktemplateheaders = list(self.sink.template_fields.values())
+		templateheaders = srctemplateheaders + sinktemplateheaders
+		# find collisions
+		collisions = []
+		tmp = []
+		for header in templateheaders:
+			if header not in tmp: tmp.append(header)
+			else: collisions.append(header)
+		# and raise error if there are any collisions
+		if len(collisions != 0): 
+			raise self.TemplateError(('collisions detected in src and'
+				' sink hndler template_fieldnames. pleae modify these fields '
+				'to ensure unique headers: %s')%collisions) 
 
 	def convert(self, clear_sink=True):
 		''' this function implements the core algorithm of rocket.
@@ -61,27 +82,34 @@ class MappingManager(MetaManager):
 
 		self.src.load_data() # ensure src has data
 
-		for i,row in enumerate(self.src):
-			self.sink.add_row()
-			for sinkcol in self.sink.templcols:
+		for srcrow in self.src: 
+			self.sink.add_row() # we want to fill in a new row
+
+			# go through all the columns defined in the template
+			for sinkcoldef in self.sink.col_defs: 
 				try:
 					# get col objs from src
-					mapperslist = utils.ensure_list(sinkcol.mappers)
-					srccols = self.src.get(*mapperslist) 
-					srccols = utils.ensure_list(src_col_defs)
+					mapperslist = sinkcoldef.mappers 
+						# src cols required to compute the sink value
+					srccols = self.src.getcolumn_defs(*mapperslist) 
+						# list of columns in the source datafile we need to grab
 					
 					# get the data					
-					srcdat = [self.src[i][col] for col in srccols]
+					srcdat = [srcrow[col] for col in srccols]
+						# list of data values from src datafile
 					
-					# zip the data with it's defining objcet
+					# zip the data with it's defining object
+					# needed for sinkcol.convert
 					src_datcol_zip = zip(srcdat, srccols)
 					
 					# convert it to the sink value
 					sinkcol.convert(src_datcol_zip)
 
-					# save the sink value
-					self.sink[-1][sinkcol] = sinkdat
-				except sinkManager.DropRowException: self.sink.drop_row()
+					# save the sink value to the last row
+					self.sink[-1][sinkcoldef] = sinkdat
+				except sinkManager.DropRowException: 
+					# drop the row if it should't be included in the dataset
+					self.sink.drop_row()
 		return self.sink.data
 
 

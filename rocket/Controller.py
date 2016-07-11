@@ -29,12 +29,11 @@ class controller(MetaManager):
 			mapping manager to parse it using the source and sink
 			managers
 		'''
-		self.sink.get_outfile(allownew=True) # ensure sink knows where its goin
-		self.source.get_src_datfile() # ensure source knows where it's comin
-		self.mapper.get_template() # ensure mapper has a template
-
+		
 		# parse the template, setting up src and sink
-		self.mapper.parse_tempate() 
+		# different managers will prompt the user for what they need when they 
+		# need it. So I don't have to do it here
+		self.mapper.parse_template() 
 
 		# fill sink with converted data from source
 		self.mapper.convert()

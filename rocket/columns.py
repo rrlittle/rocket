@@ -7,23 +7,64 @@ class Col(object):
 		this will be extended by a sourceCol and sinkCol, which will each 
 		implent further src/sink dependant functions
 	'''
-	class missingVal(object):
-		''' represents a data value that's missing'''
-		pass
 
-	def __init__(self, sshandler):
+
+	# represents a data value that's missing
+	class missingVal(object): pass
+
+	def __init__(self, sshandler, template_row):
 		'''all columns need
 			- a handler. this asserts its an sshandler instance
 			- column definitions
-				- including name
+				i.e. the row from the template. source coluns and sink columns 
+					require different things. but they all need:
+					-  name
 			'''
 		
-		
-		self.col_name = 'default col_name' 
 		#all columsn need to be aware of their handlers
 		assert isinstance(sshandler, ssManager), ('handlers to colum objects '
 			'must be children of ssManager')
 		self.handler = sshandler
+
+	def load_attributes(self):
+		''' loads all the attributes the handler knows about and 
+			therefore needs
+			this shoud be called after init, 
+			but children of this should call it automatically in their init
+		'''
+		for field in self.handler.template_fields:
+			self.load_attribute(field)
+
+
+
+	def load_attribute(self, fieldkeyword):
+		''' this sets the self.fieldkeyword_header attribute 
+			& self.fieldkeyword attribute. 
+
+			the fieldkeyword_header is the column name from the manager
+			the fieldkeyword is the value from the template for this row
+			
+			this throws a templateError if it can't find either the keyword in
+			this manager or the indicated column in the template
+		'''
+		try:
+			header = fieldkeyword + '_header'
+			setattr(self, header, self.handler.fieldnames[fieldkeyword])
+			# make the value available right now
+			thisheader = getattr(self, header) 
+
+			# for evey important field in a given hadler it should have a parse
+			# function for that field called parse_'field'(fieldvalue)
+			parser_name = 'parse_' + fieldkeyword 
+			parser = getattr(self.handler, parser_name)
+			val = template_row[thisheader]
+			setattr(self, fieldkeyword, parser(val))
+
+		except Exception as e:
+			raise self.handler.TemplateError(('Template not set up as expected.'
+				' could not parse it. error occured: %s')%e)
+
+
 
 	# the following are required to use this obj as keys for a dict
 	# you can also access them by their column name 
@@ -36,26 +77,28 @@ class srcCol(Col):
 	''' this adds funcitonality to columns defining specifcally
 		to sink cols.
 	'''
-	def __init__(self, sourcehandler, **kwargs):
+	def __init__(self, sourcehandler, template_row, **kwargs):
 		''' sourceCol requires some special things'''
-		Col.__init__(self, sourcehandler)
+		Col.__init__(self, sourcehandler, template_row)
 		assert isinstance(self.handler, sourceManager), ('sinkCols require a',
 			' source handler')
-		# set missingVals
-
+		
+		self.load_attributes() # load all the handlers required attributes
+		# from handler.template_fields
 
 class sinkCol(Col):
 	''' this adds funcitonality to columns defining specifcally
 		to sink cols.
 	'''
-	def __init__(self, sinkhandler,**kwargs):
+	def __init__(self, sinkhandler,template_row, **kwargs):
 		'''sinkCol requires the handler to be a sinkManager'''
-		Col.__init__(self, sinkhandler)
+		Col.__init__(self, sinkhandler, template_row)
 		assert isinstance(self.handler, sinkManager), ('sinkCols require a',
 			' sink handler')
-		# set self.func - the function to run on the source value to convert it
-		# set self.args - the args for the function to run
-		# set self.mappers - the source columns to pull from 
+
+		self.load_attributes() # load all the handlers required attributes
+		# from handler.template_fields
+		
 
 
 	def convert(self, src_datacol_zip):
