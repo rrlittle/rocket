@@ -1,7 +1,6 @@
 import utils
 from __init__ import basedir, srcdatdir,sinkdatdir
-from columns import Col, sinkCol, srcCol
-
+import columns
 class Manager(object):
 	''' the generic manager ensuring all managers have basic 
 		functionality like getting files and stuff
@@ -109,7 +108,7 @@ class ssManager(Manager):
 		self.col_defs = []  # ordered list of col objects in the data files
 		# used to set what type of column to use to parse the template files
 
-		self.col_archetype = Col # override this for different managers
+		self.col_archetype = columns.Col # override this for different managers
 			# srcCol and sinkCol behave slightly differently
 
 	def __getitem__(self, k):
@@ -154,10 +153,16 @@ class ssManager(Manager):
 			they both need to load the template
 		'''
 		self.col_defs = []
-		for tempmlate_row in templ_csv_reader:
+		for template_row in templ_csv_reader:
 			# use the column to parse the row as we would like it to be 
 			c = self.col_archetype(self,template_row) 
 			self.col_defs.append(c)
+
+	def initialize_data(self):
+		''' if self.data exist then clear it
+			create a new fresh self.data
+		'''
+		self.data = []
 
 
 class sourceManager(ssManager):
@@ -169,7 +174,7 @@ class sourceManager(ssManager):
 	'''
 	defaultdatadir = srcdatdir
 
-	def get_src_datfile(self):
+	def get_src_datpath(self):
 		''' this function sets self.srcpath
 			if this is already set it just passes it back
 		''' 
@@ -180,6 +185,32 @@ class sourceManager(ssManager):
 				title='select the source data file')
 			return self.srcpath
 
+	def load_data(self, clear_src=True):
+		''' loads the source data file and stores it in self.data
+			so that it can be iterated through easily
+		'''
+		# if we want to clear the src
+		if clear_src: self.initialize_data()
+
+		# open file
+		srcpath = self.get_src_datpath()
+		srcfile = open(srcpath, errors='ignore')
+		srcreader = utils.DictReader(srcfile)
+
+		# assert the file has all the expected fields
+		for col_name in self.col_defs: 
+			if col_name not in srcreader.fieldnames():
+				raise self.TemplateError('expected column %s not '
+					'found in source datafile, with fields: %s')%(
+					col_name, srcreader.fieldnames())
+
+		# load each row
+		for datarow in srcreader:
+			row = utils.OrderedDict()
+			for col in self.col_defs:
+				col_parser_name = 'parse_' + str(col)
+				col_parser = getattr(self, parser_name, default_parser)
+				row[col] = col_parser()
 
 class sinkManager(ssManager):
 	'''this should work as a sink manager
@@ -211,9 +242,4 @@ class sinkManager(ssManager):
 					'save sink datafile to'))
 		return self.outpath
 
-	def initialize_data(self):
-		''' if self.data exist then clear it
-			create a new fresh self.data
-		'''
-		self.data = []
 

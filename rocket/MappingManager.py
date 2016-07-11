@@ -80,9 +80,9 @@ class MappingManager(MetaManager):
 		if clear_sink: # if sink is not already initialized		
 			self.sink.initialize_data() # clear any data in sink
 
-		self.src.load_data() # ensure src has data
+		self.source.load_data() # ensure src has data
 
-		for srcrow in self.src: 
+		for srcrow in self.source: 
 			self.sink.add_row() # we want to fill in a new row
 
 			# go through all the columns defined in the template
@@ -91,7 +91,7 @@ class MappingManager(MetaManager):
 					# get col objs from src
 					mapperslist = sinkcoldef.mappers 
 						# src cols required to compute the sink value
-					srccols = self.src.getcolumn_defs(*mapperslist) 
+					srccols = self.source.getcolumn_defs(*mapperslist) 
 						# list of columns in the source datafile we need to grab
 					
 					# get the data					

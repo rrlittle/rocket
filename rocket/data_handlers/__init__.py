@@ -95,6 +95,7 @@ for filepath in pyfiles: # look at each file in turn
 			and modulename.isidentifier()  # T iff str module is a var at present
 			and not iskeyword(modulename)  # if its a special keyword
 		):
+		# FYI __name__ = 'data_handlers'
 		module = load_module(__name__ + '.' + modulename)
 		if isinstance(module, dHandlerErr): 
 			if ignore_errors: 

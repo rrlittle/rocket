@@ -9,6 +9,8 @@ from os.path import join, abspath
 import platform
 from os import environ
 from collections import OrderedDict
+from importlib import import_module
+
 
 # run som setup stuff
 systemName = platform.system()

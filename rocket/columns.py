@@ -1,4 +1,5 @@
-from Managers import ssManager, sinkManager, sourceManager
+import Managers
+
 
 class Col(object):
 	''' this represents one row from the template file. 
@@ -22,7 +23,7 @@ class Col(object):
 			'''
 		
 		#all columsn need to be aware of their handlers
-		assert isinstance(sshandler, ssManager), ('handlers to colum objects '
+		assert isinstance(sshandler, Managers.ssManager), ('handlers to colum objects '
 			'must be children of ssManager')
 		self.handler = sshandler
 
@@ -80,8 +81,8 @@ class srcCol(Col):
 	def __init__(self, sourcehandler, template_row, **kwargs):
 		''' sourceCol requires some special things'''
 		Col.__init__(self, sourcehandler, template_row)
-		assert isinstance(self.handler, sourceManager), ('sinkCols require a',
-			' source handler')
+		assert isinstance(self.handler, Managers.sourceManager), (
+			'sinkCols require a source handler')
 		
 		self.load_attributes() # load all the handlers required attributes
 		# from handler.template_fields
@@ -90,16 +91,16 @@ class sinkCol(Col):
 	''' this adds funcitonality to columns defining specifcally
 		to sink cols.
 	'''
+
 	def __init__(self, sinkhandler,template_row, **kwargs):
 		'''sinkCol requires the handler to be a sinkManager'''
 		Col.__init__(self, sinkhandler, template_row)
-		assert isinstance(self.handler, sinkManager), ('sinkCols require a',
-			' sink handler')
+		assert isinstance(self.handler, Managers.sinkManager), (
+			'sinkCols require a sink handler')
 
 		self.load_attributes() # load all the handlers required attributes
 		# from handler.template_fields
 		
-
 
 	def convert(self, src_datacol_zip):
 		''' this will convert the src_data to a proper value for this column
@@ -116,6 +117,6 @@ class sinkCol(Col):
 			if srcdat[i] in srccols[i].missingVals:
 				srcdat[i] = self.missingVal()
 
-		self.dat = self.func(*src_data, args=*self.args)
+		self.dat = self.func(*src_data, args=[arg for arg in self.args])
 		return self.dat
 

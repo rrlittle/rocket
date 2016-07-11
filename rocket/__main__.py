@@ -51,13 +51,13 @@ if __name__ == '__main__':
 	# if this is run as a package
 	# it requires arguments
 	args = parser.parse_args()
-	print ('sources: %s <= %s'%(handlers['source'].keys(), args.source))
-	print ('sinks: %s <= %s'%(handlers['sink'].keys(), args.sink))
+	# print ('sources: %s <= %s'%(handlers['source'].keys(), args.source))
+	# print ('sinks: %s <= %s'%(handlers['sink'].keys(), args.sink))
 	src = handlers['source'][args.source]
 	sink = handlers['sink'][args.sink]
 
-	print('chosen source: %s'%src)
-	print('chosen sink: %s'%sink)
+	# print('chosen source: %s'%src)
+	# print('chosen sink: %s'%sink)
 	c = controller(source=src, sink=sink)
 
 	template_path = None
