@@ -26,6 +26,8 @@ class Col(object):
 			'must be children of ssManager')
 		self.handler = sshandler
 
+		self.template_row = template_row
+
 	def load_attributes(self):
 		''' loads all the attributes the handler knows about and 
 			therefore needs
@@ -47,16 +49,18 @@ class Col(object):
 		'''
 		try:
 			header = fieldkeyword + '_header'
-			setattr(self, header, self.handler.fieldnames[fieldkeyword])
+			setattr(self, header, self.handler.template_fields[fieldkeyword])
 			# make the value available right now
 			thisheader = getattr(self, header) 
 
 			# for evey important field in a given hadler it should have a parse
 			# function for that field called parse_'field'(fieldvalue)
 			parser_name = 'parse_' + fieldkeyword 
-			parser = getattr(self.handler, parser_name)
-			val = template_row[thisheader]
-			setattr(self, fieldkeyword, parser(val))
+			parser = getattr(self.handler, parser_name,  
+				self.handler.default_parser)
+
+			val = self.template_row[thisheader] # get raw value
+			setattr(self, fieldkeyword, parser(val)) # save parsed value
 
 		except Exception as e:
 			raise self.handler.TemplateError(('Template not set up as expected.'
@@ -107,10 +111,6 @@ class sinkCol(Col):
 		# change them to lsits so mutable
 		srcdat = list(unzip[0]) 
 		srccols = list(unzip[1]) 
-
-		for i in range(len(src_datacol_zip)): 
-			if srcdat[i] in srccols[i].missingVals:
-				srcdat[i] = self.missingVal()
 
 		self.dat = self.func(*src_data, args=[arg for arg in self.args])
 		return self.dat

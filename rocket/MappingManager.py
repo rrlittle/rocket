@@ -1,6 +1,7 @@
 from Managers import sourceManager, sinkManager, MetaManager
 import utils
 from __init__ import templatedir
+from loggers import map_log
 
 class MappingManager(MetaManager):
 	''' this class is responsible for implementing the 
@@ -77,9 +78,12 @@ class MappingManager(MetaManager):
 
 			the goal here is to fill up sink.data in prep for sink.write
 		'''
+		# import ipdb; ipdb.set_trace()
+		
 		if clear_sink: # if sink is not already initialized		
 			self.sink.initialize_data() # clear any data in sink
 
+		map_log.debug('loading data')
 		self.source.load_data() # ensure src has data
 
 		for srcrow in self.source: 

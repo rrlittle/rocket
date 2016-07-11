@@ -1,6 +1,8 @@
 import utils
 from __init__ import basedir, srcdatdir,sinkdatdir
 import columns
+from loggers import man_log
+
 class Manager(object):
 	''' the generic manager ensuring all managers have basic 
 		functionality like getting files and stuff
@@ -11,6 +13,7 @@ class Manager(object):
 	class TemplateError(Exception): pass
 
 	def get_filepath(self, 
+		save=False,
 		title='open file', 
 		filetype='file', 
 		quit=True,
@@ -30,14 +33,19 @@ class Manager(object):
 			- initialdir - str path to where you would like to open 
 		 	TODO: figure out how to disallow new files being made/ allow
 		'''
+		openfunc = None
+		if save: openfunc = utils.asksaveasfilename
+		else: openfunc = utils.askopenfilename
 
-		fpath = utils.askopenfilename(
+		fpath = openfunc(
 			title=title, 
 			**kwargs)
-		if fpath == '': 
+		
+		if fpath == '' or len(fpath) == 0: 
 			print('no %s file selected. quitting'%filetype)
-			sys.exit()
-		setattr(self,filetype, fpath)
+			utils.exit()
+		setattr(self, filetype, fpath)
+		man_log.debug('selected %s to be %s.'%(filetype, fpath))
 		return fpath
 	
 	def __repr__(self): return str(self)
@@ -97,6 +105,8 @@ class ssManager(Manager):
 	# for use when there is no data
 	class NoDataError(Exception): pass
 
+	col_archetype = columns.Col # override this for different managers
+		# srcCol and sinkCol behave slightly differently
 			
 	def __init__(self, **kwargs):
 		''' calls the super Manager init. then adds specific ss Manager stuff'''
@@ -104,12 +114,9 @@ class ssManager(Manager):
 		self.template_fields['id'] = 'default_id_col'
 		self.template_fields['col_name']='default_colname'
 
-
 		self.col_defs = []  # ordered list of col objects in the data files
 		# used to set what type of column to use to parse the template files
 
-		self.col_archetype = columns.Col # override this for different managers
-			# srcCol and sinkCol behave slightly differently
 
 	def __getitem__(self, k):
 		''' return row, index only'''
@@ -124,7 +131,7 @@ class ssManager(Manager):
 			return self
 		else: raise AttributeError
 
-	def next(self): 
+	def __next__(self): 
 		if self.row_pointer_for_iter == len(self.data): raise StopIteration()
 		tmp = self.data[0]
 		self.row_pointer_for_iter += 1
@@ -164,6 +171,9 @@ class ssManager(Manager):
 		'''
 		self.data = []
 
+	def default_parser(self, value): 
+		''' just a simple parser if no other is defined'''
+		return str(value)
 
 class sourceManager(ssManager):
 	''' this should work as a source manager
@@ -173,6 +183,15 @@ class sourceManager(ssManager):
 		and they can just change the few things they need
 	'''
 	defaultdatadir = srcdatdir
+	col_archetype = columns.srcCol # override this for different managers
+			# srcCol and sinkCol behave slightly differently
+		
+	def __init__(self):
+		''' adds sourceManager specific columns and things'''
+		
+
+		self.template_fields['id'] = 'source col id'
+		self.template_fields['col_name']='source col name' 
 
 	def get_src_datpath(self):
 		''' this function sets self.srcpath
@@ -180,7 +199,7 @@ class sourceManager(ssManager):
 		''' 
 		if hasattr(self, 'srcpath'): return self.srcpath
 		else:
-			self.srcpath = self.get_filepath(filetype='sourcedatafile',
+			self.srcpath = self.get_filepath(filetype='srcpath',
 				initialdir=self.defaultdatadir,
 				title='select the source data file')
 			return self.srcpath
@@ -189,6 +208,7 @@ class sourceManager(ssManager):
 		''' loads the source data file and stores it in self.data
 			so that it can be iterated through easily
 		'''
+		man_log.debug('Loading source data into %s'%type(self).__name__)
 		# if we want to clear the src
 		if clear_src: self.initialize_data()
 
@@ -206,11 +226,14 @@ class sourceManager(ssManager):
 
 		# load each row
 		for datarow in srcreader:
+			man_log.debug('parsing row %s'%datarow)
 			row = utils.OrderedDict()
 			for col in self.col_defs:
+				man_log.debug('prasing %s from %s'%(col, datarow[col]))
 				col_parser_name = 'parse_' + str(col)
-				col_parser = getattr(self, parser_name, default_parser)
-				row[col] = col_parser()
+				col_parser = getattr(self, col_parser_name, self.default_parser)
+				row[col] = col_parser(datarow[col])
+			self.data.append(row)
 
 class sinkManager(ssManager):
 	'''this should work as a sink manager
@@ -224,7 +247,11 @@ class sinkManager(ssManager):
 	class DropRowException(Exception):pass 
 
 	defaultdatadir = sinkdatdir
-	
+	col_archetype = columns.sinkCol # override this for different managers
+			# srcCol and sinkCol behave slightly differently
+
+	def __init__(self): pass
+
 
 	def get_file_outpath(self, allownew=False):
 		''' this sets self.outpath
@@ -236,10 +263,23 @@ class sinkManager(ssManager):
 		'''
 		if hasattr(self, 'outpath'): return self.outpath
 		else:
-			self.outpath = self.get_filepath(filetype='sinkdatafile',
+			self.outpath = self.get_filepath(save=True, filetype='outpath',
 				initialdir=self.defaultdatadir,
 				title=('please select a new or exisiting file to '
 					'save sink datafile to'))
 		return self.outpath
 
+	def write_outfile(self):
+		''' writes self.data to a the outfile. which the user provides'''
 
+		outpath = self.get_file_outpath()
+		outfile = open(outpath, 'w')
+		outwriter = utils.DictWriter(outfile, fieldnames = self.col_defs)
+		outwriter.writeheader()
+		for row in self.data:
+			outwriter.writerow(row) 
+
+		return outpath
+
+	def add_row(self):
+		self.data.append(utils.OrderedDict())	
