@@ -9,9 +9,7 @@ class Col(object):
 		implent further src/sink dependant functions
 	'''
 
-	# represents a data value that's missing
-	class missingVal(object): pass
-
+	
 	def __init__(self, sshandler, template_row):
 		'''all columns need
 			- a handler. this asserts its an sshandler instance
@@ -102,8 +100,12 @@ class sinkCol(Col):
 
 		# set self.func to an actual function
 		# use self.handler.globalfuncs to get func refereances or throw err
+		if self.func.strip() in self.handler.globalfuncs:
+			self.func = self.handler.globalfuncs[self.func.strip()]
+		elif self.func.strip() == '':
+			self.func = lambda x*,y**:str(x[0])
+		else raise self.handler.
 
-		
 	def map_src(self, srcrow):
 		'''This method turn the attribute mappers into a list 
 			of corresponding srcCol Object.

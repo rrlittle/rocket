@@ -12,6 +12,9 @@ from collections import OrderedDict
 from importlib import import_module, __import__
 from sys import exit
 
+# represents a data value that's missing
+class missingVal(object): pass
+
 
 class null_logging: 
 	''' an empty logger that can be used instead pf logging

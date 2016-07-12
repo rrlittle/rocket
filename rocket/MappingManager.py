@@ -1,10 +1,10 @@
-from Managers import sourceManager, sinkManager, MetaManager
+from Managers import sourceManager, sinkManager, Manager
 import utils
 from __init__ import templatedir
 from loggers import map_log
 import ipdb
 
-class MappingManager(object):
+class MappingManager(Manager):
 	''' this class is responsible for implementing the 
 		core algorithms governing the operation of
 		the conversion routine. 
@@ -44,7 +44,7 @@ class MappingManager(object):
 		# pass functions down to sink maanager for the sinkcolumns to use
 		setattr(self.sink, 'globalfuncs', self.globalfuncs)
 
-	def load_function(self):
+	def load_functions(self):
 		''' must be overwritten by Mapping manager subclasses. 
 			in order to include functions that are aware of both 
 			source and sink schemes.
@@ -145,8 +145,6 @@ class MappingManager(object):
 					# drop the row if it should't be included in the dataset
 					self.sink.drop_row()
 		return self.sink.data
-
-
 
 
 

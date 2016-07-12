@@ -1,21 +1,20 @@
-from Managers import sourceManager, sinkManager, MetaManager
+from Managers import sourceManager, sinkManager
 from MappingManager import MappingManager
 import utils 
 
-class controller(MetaManager):
+class controller(object):
 	''' this class is aware of all three types of managers.
 		source sink and mapping. 
 		this takes the responsibility of orchestrating the whole 
 		mapping from sinkt to source. 
 	'''
-	def __init__(self, source=sourceManager, sink=sinkManager):
+	def __init__(self, mappingmanager):
 		''' this initializes the controller
 			it takes a referance to a sourceManager and a sinkManager
 			class. they shold be classes not instances. 
 			I will call them thank you very much. 
 		''' 
-		MetaManager.__init__(self, source=source, sink=sink)
-		self.mapper = MappingManager(source=self.source, sink=self.sink)
+		self.mapper = MappingManager()
 		
 	def make_template(self):
 		''' this makes a new template. 

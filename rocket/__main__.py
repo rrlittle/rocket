@@ -18,16 +18,9 @@ parser = utils.make_args('runs the rocket data mapping package',
 									'action':'store',
 									'required':True,
 									'dest':'mm',
-<<<<<<< HEAD
 									'help': ('required: choose one mapping' 
 										'manager you would like to use?')
-=======
-									'help':('required: choose one mapping '
-										'manager you would like to use?'
-										)
-
->>>>>>> fixed some small bugs
-								},
+							},
 			'--template':{  'dest':'template',
 							'const':True,
 							'action':'store_const',
@@ -52,7 +45,7 @@ if __name__ == '__main__':
 	#src = handlers['source'][args.source]
 	#sink = handlers['sink'][args.sink]
 
-	mappingManager = managers[args.mm]	
+	mappingManager = mapping_managers[args.mm]	
 
 	# print('chosen source: %s'%src)
 	# print('chosen sink: %s'%sink)

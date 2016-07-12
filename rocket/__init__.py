@@ -36,4 +36,4 @@ handlers = utils.load_handlers()
 
 # loads all the mapping managers we know about 
 # so you can pass one to the controller
-mapping_managers = utils.load_map_submanagers()
+mapping_managers = utils.load_map_submanagers() 

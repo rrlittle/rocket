@@ -24,7 +24,7 @@ from os.path import dirname, join, split, splitext
 from inspect import isclass  
 
 
-__mapping_managers__ = {}
+__mapping_managers__ = {MappingManager.__name__:MappingManager}
 
 # used to indicate an error with loading files
 class mmErr(Exception):pass

@@ -153,15 +153,11 @@ class sourceManager(ssManager):
 	col_archetype = columns.srcCol # override this for different managers
 			# srcCol and sinkCol behave slightly differently
 		
-	def __init__(self):
-		''' adds sourceManager specific columns and things'''
-
 	col_archetype = columns.srcCol
 
 	def __init__(self):
-		self.template_fields={}
+		''' adds sourceManager specific columns and things'''
 		ssManager.__init__(self) # super the the init
-
 		self.template_fields['id'] = 'source col id'
 		self.template_fields['col_name']='source col name' 
 		self.template_fields['col_range'] ='source col range'
@@ -227,10 +223,13 @@ class sinkManager(ssManager):
 
 	def __init__(self): 
 		ssManager.__init__(self)
+		self.template_fields['id'] = 'sink col id'
+		self.template_fields['col_name'] = 'sink col name'
 		self.template_fields['col_range'] = 'sink range'
 		self.template_fields['mappers'] = 'sink mappers'
 		self.template_fields['func'] = 'function'
 		self.template_fields['args'] ='args'
+	
 	def get_file_outpath(self, allownew=False):
 		''' this sets self.outpath
 			this is called if the class doesn't know where to put the 
