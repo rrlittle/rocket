@@ -17,11 +17,9 @@ parser = utils.make_args('runs the rocket data mapping package',
 			'--mm':{	'choices': list(mapping_managers.keys()),
 									'action':'store',
 									'required':True,
-									'dest':'mm'
-									'help':(
-										'required: choose one mapping manager you would like to use?'
-										)
-
+									'dest':'mm',
+									'help': ('required: choose one mapping' 
+										'manager you would like to use?')
 								},
 		#	'--src':{   'choices': list(handlers['source'].keys()),
 		#				# choices forces existing handler
