@@ -113,7 +113,7 @@ def ensure_list(possible_list):
 	return possible_list
 
 
-def load_mapping_submanagers():
+def load_map_submanagers():
 	''' this loads the mapping manager subclasses from the mappingMaagers
 		package if any
 		and returns them in a list
