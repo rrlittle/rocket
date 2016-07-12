@@ -8,7 +8,7 @@
 
 	note: this was built for python 3
 '''
-from __init__ import handlers, mappingManagers
+from __init__ import mapping_managers
 from Controller import controller
 import utils
 
