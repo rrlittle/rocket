@@ -113,6 +113,15 @@ def ensure_list(possible_list):
 	return possible_list
 
 
+def load_mapping_submanagers():
+	''' this loads the mapping manager subclasses from the mappingMaagers
+		package if any
+		and returns them in a list
+	'''
+	import mapping_managers
+	# print('mapping managers : ', mapping_managers.__mapping_managers__)
+	return mapping_managers.__mapping_managers__
+
 
 
 

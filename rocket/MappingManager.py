@@ -4,7 +4,7 @@ from __init__ import templatedir
 from loggers import map_log
 import ipdb
 
-class MappingManager(MetaManager):
+class MappingManager(object):
 	''' this class is responsible for implementing the 
 		core algorithms governing the operation of
 		the conversion routine. 
@@ -13,14 +13,29 @@ class MappingManager(MetaManager):
 	'''
 	tmeplate_seperator = ','
 
-	def __init__(self, source=sourceManager(), sink = sinkManager()):
+	def __init__(self, source=sourceManager, sink = sinkManager:
 		''' it's imperative that this instance know about
 			a source and sink manager. they are the providers 
 			for all the information in the raw files. 
 			this should never be using raw info
 		'''
-		MetaManager.__init__(self, source=source, sink=sink, allow_class=False)
-		# sets self.source, self.sink to be instatiated things
+
+		# deal with source
+		errstr = (	'if source must be a '
+					'class referance class refd '
+					'must be subclass of sourceManager. '
+					'not %s')%source
+		assert issubclass(source, sourceManager), errstr 
+		self.source = source()
+		
+		# deal with source
+		errstr = (	'if source must be a '
+					'class referance class refd '
+					'must be subclass of sinkManager. '
+					'not %s')%sink
+		assert issubclass(sink, sinkManager), errstr 
+		self.sink = sink()
+		
 		
 		# make the functions of each available via utils
 		# check for naming conflicts

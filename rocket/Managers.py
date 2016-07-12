@@ -56,46 +56,6 @@ class Manager(object):
 		else: return str(type(self).__name__)
 	
 
-class MetaManager(Manager):
-	''' this is a class for the controller and mappingManager
-		which need to know about
-		source and sink managers. 
-
-	'''
-	def __init__(self, source=None, sink=None, 
-		allow_instance=True, allow_class=True):
-		''' if source and sink are instances asserts they 
-			are instances of source and sink managers
-			if they are classes, asserts they are subclasses
-			of source or sink managers
-
-			you can specify if you want to allow instances or classes
-		'''
-		# deal with source
-		errstr = (	'if source must be a '
-					'class referance class refd '
-					'must be subclass of sourceManager. '
-					'not %s')%source
-		if allow_class and utils.isclass(source):
-			assert issubclass(source, sourceManager), errstr 
-			self.source = source()
-		elif allow_instance: 
-			assert isinstance(source, sourceManager), errstr
-			self.source = source
-		else: raise AssertionError('Unable to set self.source')
-
-		# deal with source
-		errstr = (	'if source must be a '
-					'class referance class refd '
-					'must be subclass of sinkManager. '
-					'not %s')%sink
-		if allow_class and utils.isclass(sink):
-			assert issubclass(sink, sinkManager), errstr 
-			self.sink = sink()
-		elif allow_instance: 
-			assert isinstance(sink, sinkManager), errstr
-			self.sink = sink
-		else: raise AssertionError('unable to set self.sink')
 
 		
 

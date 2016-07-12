@@ -31,5 +31,8 @@ sectretdir = home_dir_str
 ignore_errors = False
 
 # loads all the handlers we know about 
-# so you can pass one to of each to the controller
+# so the mapping managers can select them
 handlers = utils.load_handlers()
+
+# loads all the mapping managers we know about 
+# so you can pass one to the controller
