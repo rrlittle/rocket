@@ -13,7 +13,7 @@ class MappingManager(object):
 	'''
 	tmeplate_seperator = ','
 
-	def __init__(self, source=sourceManager, sink = sinkManager:
+	def __init__(self, source=sourceManager, sink = sinkManager):
 		''' it's imperative that this instance know about
 			a source and sink manager. they are the providers 
 			for all the information in the raw files. 
