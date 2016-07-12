@@ -37,8 +37,10 @@ class Manager(object):
 		if save: openfunc = utils.asksaveasfilename
 		else: openfunc = utils.askopenfilename
 
+		print(kwargs)
 		fpath = openfunc(
-			title=title, 
+			title=title,
+
 			**kwargs)
 		
 		if fpath == '' or len(fpath) == 0: 
@@ -192,12 +194,13 @@ class sourceManager(ssManager):
 		
 	def __init__(self):
 		''' adds sourceManager specific columns and things'''
-<<<<<<< HEAD
+
+	col_archetype = columns.srcCol
+
+	def __init__(self):
 		self.template_fields={}
-=======
 		ssManager.__init__(self) # super the the init
 
->>>>>>> supered source manager init
 		self.template_fields['id'] = 'source col id'
 		self.template_fields['col_name']='source col name' 
 		self.template_fields['col_range'] ='source col range'
@@ -261,16 +264,13 @@ class sinkManager(ssManager):
 	col_archetype = columns.sinkCol # override this for different managers
 			# srcCol and sinkCol behave slightly differently
 
-<<<<<<< HEAD
 	def __init__(self): 
 		self.template_fields={}
 		self.template_fields['id'] = 'sink col id'
 		self.template_fields['col_name']='sink col name' 
 		self.template_fields['col_range'] = 'sink range'
 		self.template_fields['mappers'] = 'sink mappers'
-=======
-	def __init__(self): pass
->>>>>>> supered source manager init
+		self.template_fields['func'] = 'function'
 
 	def get_file_outpath(self, allownew=False):
 		''' this sets self.outpath

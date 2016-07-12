@@ -16,11 +16,15 @@ elif utils.systemName == 'Windows':
 
 
 basedir,filename = utils.split(utils.abspath(__file__))
+basedir = utils.split(basedir)[0]
+print('dirname',utils.abspath(utils.dirname(__file__)))
+print('file', utils.abspath(__file__))
+print('basedir', basedir)
 
-templatedir = utils.join(basedir, 'mappping_files')
-srcdatdir = utils.join(basedir,' source_datfiles')
+templatedir = utils.join(basedir, 'mapping_files')
+srcdatdir = utils.join(basedir,' source_datafiles')
 srcschdir = utils.join(basedir,' source_schemes')
-sinkdatdir = utils.join(basedir,' sink_datfiles')
+sinkdatdir = utils.join(basedir,' sink_datafiles')
 sinkschdir = utils.join(basedir,' sink_schemes') 
 sectretdir = home_dir_str
 
