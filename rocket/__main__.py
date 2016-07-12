@@ -8,30 +8,39 @@
 
 	note: this was built for python 3
 '''
-from __init__ import handlers
+from __init__ import handlers, mappingManagers
 from Controller import controller
 import utils
 
 parser = utils.make_args('runs the rocket data mapping package',
 		args={
-			'--src':{   'choices': list(handlers['source'].keys()),
+			'--mm':{	'choices': list(mapping_managers.keys()),
+									'action':'store',
+									'required':True,
+									'dest':'mm'
+									'help':(
+										'required: choose one mapping manager you would like to use?'
+										)
+
+								},
+		#	'--src':{   'choices': list(handlers['source'].keys()),
+		#				# choices forces existing handler
+		#				'action':'store',
+		#				'dest':'source', # args.source
+		#				'help':(	'required: choose one '
+		#							'what is the source handler '
+		#							'you would like to use?'),
+		#				'required':True,
+		#			},
+		#	'--sink':{  'choices': list(handlers['sink'].keys()), 
 						# choices forces existing handler
-						'action':'store',
-						'dest':'source', # args.source
-						'help':(	'required: choose one '
-									'what is the source handler '
-									'you would like to use?'),
-						'required':True,
-					},
-			'--sink':{  'choices': list(handlers['sink'].keys()), 
-						# choices forces existing handler
-						'action':'store',
-						'dest':'sink', # args.sink
-						'help':(	'required: choose one '
-									'what is the sink handler '
-									'you would like to use?'),
-						'required':True,
-					},
+		#				'action':'store',
+		#				'dest':'sink', # args.sink
+		#				'help':(	'required: choose one '
+		#							'what is the sink handler '
+		##							'you would like to use?'),
+		#				'required':True,
+		#			},
 			'--template':{  'dest':'template',
 							'const':True,
 							'action':'store_const',
@@ -53,12 +62,14 @@ if __name__ == '__main__':
 	args = parser.parse_args()
 	# print ('sources: %s <= %s'%(handlers['source'].keys(), args.source))
 	# print ('sinks: %s <= %s'%(handlers['sink'].keys(), args.sink))
-	src = handlers['source'][args.source]
-	sink = handlers['sink'][args.sink]
+	#src = handlers['source'][args.source]
+	#sink = handlers['sink'][args.sink]
+
+	mappingManager = managers[args.mm]	
 
 	# print('chosen source: %s'%src)
 	# print('chosen sink: %s'%sink)
-	c = controller(source=src, sink=sink)
+	c = controller(mappingManager)
 
 	template_path = None
 	if args.template:
