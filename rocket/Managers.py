@@ -178,6 +178,7 @@ class ssManager(Manager):
 		''' just a simple parser if no other is defined'''
 		return str(value)
 
+
 class sourceManager(ssManager):
 	''' this should work as a source manager
 		therefore it must implement all the things neccessary to 
@@ -191,7 +192,12 @@ class sourceManager(ssManager):
 		
 	def __init__(self):
 		''' adds sourceManager specific columns and things'''
+<<<<<<< HEAD
 		self.template_fields={}
+=======
+		ssManager.__init__(self) # super the the init
+
+>>>>>>> supered source manager init
 		self.template_fields['id'] = 'source col id'
 		self.template_fields['col_name']='source col name' 
 		self.template_fields['col_range'] ='source col range'
@@ -239,6 +245,7 @@ class sourceManager(ssManager):
 				row[col] = col_parser(datarow[col])
 			self.data.append(row)
 
+
 class sinkManager(ssManager):
 	'''this should work as a sink manager
 		therefore it must implement all the things neccessary to 
@@ -254,12 +261,16 @@ class sinkManager(ssManager):
 	col_archetype = columns.sinkCol # override this for different managers
 			# srcCol and sinkCol behave slightly differently
 
+<<<<<<< HEAD
 	def __init__(self): 
 		self.template_fields={}
 		self.template_fields['id'] = 'sink col id'
 		self.template_fields['col_name']='sink col name' 
 		self.template_fields['col_range'] = 'sink range'
 		self.template_fields['mappers'] = 'sink mappers'
+=======
+	def __init__(self): pass
+>>>>>>> supered source manager init
 
 	def get_file_outpath(self, allownew=False):
 		''' this sets self.outpath
