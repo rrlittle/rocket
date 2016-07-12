@@ -37,7 +37,7 @@ class Manager(object):
 		if save: openfunc = utils.asksaveasfilename
 		else: openfunc = utils.askopenfilename
 
-		print(kwargs)
+		# print(kwargs)
 		fpath = openfunc(
 			title=title,
 
@@ -80,14 +80,13 @@ class ssManager(Manager):
 		self.col_defs = []  # ordered list of col objects in the data files
 		# used to set what type of column to use to parse the template files
 
-
 	def __getitem__(self, k):
 		''' return row, index only'''
 		assert isinstance(k,int), 'ssManagers only support int indexing'
 		if not hasattr(self, 'data'): 
 			raise AttributeError(('%s has not been filled with data. run'
 				' .initialize_data')%self)
-			self.data[k]
+		return self.data[k]
 	def __iter__(self): 
 		if hasattr(self, 'data'): 
 			self.row_pointer_for_iter = 0
@@ -139,6 +138,7 @@ class ssManager(Manager):
 
 	def default_parser(self, value): 
 		''' just a simple parser if no other is defined'''
+		print('value',value)
 		return str(value)
 
 	
@@ -189,10 +189,11 @@ class sourceManager(ssManager):
 
 		# assert the file has all the expected fields
 		for col_name in self.col_defs: 
+			print(col_name, srcreader.fieldnames)
 			if col_name not in srcreader.fieldnames:
 				raise self.TemplateError('expected column %s not '
 					'found in source datafile, with fields: %s')%(
-					col_name, srcreader.fieldnames)
+					col_name, list(srcreader.fieldnames))
 
 		# load each row
 		for datarow in srcreader:

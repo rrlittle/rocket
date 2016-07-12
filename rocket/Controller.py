@@ -37,4 +37,4 @@ class controller(object):
 		# fill sink with converted data from source
 		self.mapper.convert()
 
-		return self.sink.write_outfile()
+		return self.mapper.sink.write_outfile()

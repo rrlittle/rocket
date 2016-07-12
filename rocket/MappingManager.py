@@ -126,6 +126,7 @@ class MappingManager(Manager):
 					# get col objs from src
 					mapperslist = sinkcoldef.mappers 
 						# src cols required to compute the sink value
+					
 					srccols = self.source.getcolumn_defs(*mapperslist) 
 						# list of columns in the source datafile we need to grab
 					
@@ -136,9 +137,11 @@ class MappingManager(Manager):
 					# needed for sinkcol.convert
 					src_datcol_zip = zip(srcdat, srccols)
 					
+					# import ipdb; ipdb.set_trace()
+					print('inpuut:',srcdat)
 					# convert it to the sink value
 					sinkdat = sinkcoldef.convert(src_datcol_zip)
-
+					print('output:',sinkdat)
 					# save the sink value to the last row
 					self.sink[-1][sinkcoldef] = sinkdat
 				except sinkManager.DropRowException: 

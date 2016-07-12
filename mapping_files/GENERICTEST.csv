@@ -1,6 +1,6 @@
 sink col id,sink col name,sink mappers,sink range,function,args,source col id,source col name,source col range
-1,a,1,1::5,,,1,a,1::5
-2,b,2,1::6,,,2,b,1::6
-3,c,3,1::7,,,3,c,1::7
-4,d,4,1::8,,,4,d,1::8
-5,e,5,1::9,,,5,e,1::9
+1,a,1,1::5,,,1,aaa,1::5
+2,b,2,1::6,,,2,bbb,1::6
+3,c,3,1::7,,,3,ccc,1::7
+4,d,4,1::8,,,4,ddd,1::8
+5,e,5,1::9,,,5,eee,1::9

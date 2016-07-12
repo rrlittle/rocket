@@ -103,8 +103,11 @@ class sinkCol(Col):
 		if self.func.strip() in self.handler.globalfuncs:
 			self.func = self.handler.globalfuncs[self.func.strip()]
 		elif self.func.strip() == '':
-			self.func = lambda x*,y**:str(x[0])
-		else raise self.handler.
+			self.func = lambda x,**y:str(x)
+		else: 
+			raise self.handler.TemplateError(('function %s for column %s is '
+			'not valid. please change the template'
+			' to a valid function or blank')%(self.func,self.col_name))
 
 	def map_src(self, srcrow):
 		'''This method turn the attribute mappers into a list 
@@ -128,10 +131,13 @@ class sinkCol(Col):
 		'''
 		
 		# list of sequences, not list in Python 3
-		unzip = list(src_datacol_zip)[0] 
+		unzip = list(src_datacol_zip)
+		
 		# change them to lsits so mutable
-		srcdat = unzip[0]
-		srccols = unzip[1]
+		srcdat = [i[0] for i in unzip]
+		srccols = [i[1] for i in unzip]
+		print('srcdat:',srcdat)
+		print('*srcdat:',*srcdat)
 		dat = self.func(*srcdat, args=[arg for arg in self.args])
 		return dat
 
