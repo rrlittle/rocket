@@ -9,7 +9,7 @@ from os.path import join, abspath, isfile,split, dirname
 import platform
 from os import environ,getcwd
 from collections import OrderedDict
-from importlib import import_module
+from importlib import import_module, __import__
 from sys import exit
 
 
@@ -111,3 +111,10 @@ def ensure_list(possible_list):
 
 	if not isinstance(possible_list, list): return [possible_list]
 	return possible_list
+
+
+def ensure_no_func_collisions(funcs1, funcs2):
+	''' checks if funcs1 and funcs2 have colliding functions.
+		which means they have the same key, but refer to different functions
+		
+	'''

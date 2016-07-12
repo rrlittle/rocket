@@ -21,6 +21,9 @@ class MappingManager(MetaManager):
 		'''
 		MetaManager.__init__(self, source=source, sink=sink, allow_class=False)
 		# sets self.source, self.sink to be instatiated things
+		# make the functions of each available via utils
+		utils.load_functions(self.sink)
+		utils.load_functions(self.source)
 
 
 	def get_template(self, allownew=False):
@@ -49,7 +52,7 @@ class MappingManager(MetaManager):
 			with open(templ_path, errors='replace') as templfile:
 				templreader = utils.DictReader(templfile)
 				handler.load_template(templreader)
-
+	
 	def check_valid_src_sink_combo(self):
 		''' ensures that src and sink do not have colliding fieldnames
 			if they do there will be an issue with parsing and creating the 
