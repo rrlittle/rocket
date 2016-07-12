@@ -21,10 +21,20 @@ class MappingManager(MetaManager):
 		'''
 		MetaManager.__init__(self, source=source, sink=sink, allow_class=False)
 		# sets self.source, self.sink to be instatiated things
+		
 		# make the functions of each available via utils
-		utils.load_functions(self.sink)
-		utils.load_functions(self.source)
+		# check for naming conflicts
+		self.globalfuncs = self.load_functions()
 
+		# pass functions down to sink maanager for the sinkcolumns to use
+		setattr(self.sink, 'globalfuncs', self.globalfuncs)
+
+	def load_function(self):
+		''' must be overwritten by Mapping manager subclasses. 
+			in order to include functions that are aware of both 
+			source and sink schemes.
+		'''
+		return {}
 
 	def get_template(self, allownew=False):
 		''' this gets the filepath to a file. which is assumed to be 
@@ -52,7 +62,7 @@ class MappingManager(MetaManager):
 			with open(templ_path, errors='replace') as templfile:
 				templreader = utils.DictReader(templfile)
 				handler.load_template(templreader)
-	
+
 	def check_valid_src_sink_combo(self):
 		''' ensures that src and sink do not have colliding fieldnames
 			if they do there will be an issue with parsing and creating the 
@@ -112,7 +122,7 @@ class MappingManager(MetaManager):
 					src_datcol_zip = zip(srcdat, srccols)
 					
 					# convert it to the sink value
-					sinkcoldef.convert(src_datcol_zip)
+					sinkdat = sinkcoldef.convert(src_datcol_zip)
 
 					# save the sink value to the last row
 					self.sink[-1][sinkcoldef] = sinkdat

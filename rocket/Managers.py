@@ -97,10 +97,7 @@ class MetaManager(Manager):
 			self.sink = sink
 		else: raise AssertionError('unable to set self.sink')
 
-		# make the functions of each available via utils
-		utils.load_functions(self.sink)
-		utils.load_functions(self.source)
-
+		
 
 class ssManager(Manager):
 	''' genetic class to give both soirce and sink 
@@ -184,24 +181,7 @@ class ssManager(Manager):
 		''' just a simple parser if no other is defined'''
 		return str(value)
 
-	def load_functions(self):
-		''' load all the functions this knows about. you can extend this 
-			to add specific functions to your handler file or rely on the 
-			functions package, but you need to register all the functions you
-			want to use. 
-
-			this needs to return a dictionary of functions
-			with the name of the function being the key and values
-			being the docstring and a referance to the function itself
-			e.g.
-			{sum: {
-				ref: function@sfjsdfjsf, 
-				doc:	this func sums a bunch of values cast 
-						as floats. takes a list of values}
-				}}
-		'''
-		return {}
-
+	
 class sourceManager(ssManager):
 	''' this should work as a source manager
 		therefore it must implement all the things neccessary to 
@@ -286,9 +266,7 @@ class sinkManager(ssManager):
 			# srcCol and sinkCol behave slightly differently
 
 	def __init__(self): 
-		self.template_fields={}
-		self.template_fields['id'] = 'sink col id'
-		self.template_fields['col_name']='sink col name' 
+		ssManager.__init__(self)
 		self.template_fields['col_range'] = 'sink range'
 		self.template_fields['mappers'] = 'sink mappers'
 		self.template_fields['func'] = 'function'

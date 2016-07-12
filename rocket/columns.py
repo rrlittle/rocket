@@ -101,6 +101,7 @@ class sinkCol(Col):
 		# from handler.template_fields
 
 		# set self.func to an actual function
+		# use self.handler.globalfuncs to get func refereances or throw err
 
 		
 	def map_src(self, srcrow):
@@ -129,6 +130,6 @@ class sinkCol(Col):
 		# change them to lsits so mutable
 		srcdat = unzip[0]
 		srccols = unzip[1]
-		self.dat = self.func(*srcdat, args=[arg for arg in self.args])
-		return self.dat
+		dat = self.func(*srcdat, args=[arg for arg in self.args])
+		return dat
 

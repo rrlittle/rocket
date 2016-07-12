@@ -113,8 +113,6 @@ def ensure_list(possible_list):
 	return possible_list
 
 
-def ensure_no_func_collisions(funcs1, funcs2):
-	''' checks if funcs1 and funcs2 have colliding functions.
-		which means they have the same key, but refer to different functions
-		
-	'''
+
+
+
