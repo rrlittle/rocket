@@ -10,7 +10,7 @@ elif utils.systemName == 'Windows':
 	try:
 		# used by waisman users alone
 		home_dir_str = utils.environ['_USR'] + '/'
-	except AttributeError:
+	except (AttributeError,KeyError):
 		home_dir_str = utils.environ['USERPROFILE'] + '/'
 
 

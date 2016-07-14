@@ -54,10 +54,7 @@ class Manager(object):
 	def __str__(self): 
 		if hasattr(self, '__name__'):return self.__name__
 		else: return str(type(self).__name__)
-	
-
-
-		
+			
 
 class ssManager(Manager):
 	''' genetic class to give both soirce and sink 

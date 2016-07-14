@@ -29,7 +29,7 @@ __mapping_managers__ = {MappingManager.__name__:MappingManager}
 # used to indicate an error with loading files
 class mmErr(Exception):pass
 
-def not_collision(classname, thismodule, mmlist):
+def not_collision(classname, _class, mmlist):
 	''' this just checks that the classname isn't already in 
 		the handler list.
 		if theres a collision and ignore_errors is true a error
@@ -37,13 +37,15 @@ def not_collision(classname, thismodule, mmlist):
 		if theres a collision and ignore_errors is False an 
 			error is raised
 	'''
-	if classname in mmlist:
+	if classname in mmlist and _class != mmlist[classname]:
 		errstr = (  'name collision in module %s '
 					'\nwith module %s'
 					'\nplease change one of them')%(
-					thismodule, mmlist[cname])
+					thismodule, mmlist[classname])
+		
 		if ignore_errors: print(errstr)
 		else: raise mmErr(errstr) 
+		
 		return False
 	return True
 

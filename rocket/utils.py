@@ -126,5 +126,37 @@ def load_map_submanagers():
 	return mapping_managers.__mapping_managers__
 
 
+def get_input(prompt, errtext='', validator=None, repeat=True):
+	''' this is a blocking function that will prompt the user for 
+		some input
+		using the prompt text,
 
+		if they don't enter valid entry as figured out by the validator
+		then the errtext will ne printed that can include {text} to use their input
+		or {err} to capture any exceptions raised by the validator
+		if it raises no exception err will = 'invalid input'
 
+		if no validtor is provided all text is acccepted
+		otehrwise validator should be a callable passed a single string the input provided
+		and should return T/F or throw an error
+
+		if repeat is True it will repeat until a valid entry is provided
+		if not, then it will return either NOne or a valid text
+	'''
+
+	while True:
+		inp = input(prompt + '\n> ').strip()
+		try:
+			# if there's not validator provided return anythin
+			if validator == None:
+				return inp
+			# if there is. it must be callable
+			if validator(inp):
+				return inp # it's valid return
+			else: raise Exception('invalid input') # invalid input
+		except Exception,e:
+			print(errtext.format(text=inp, err=e)) # print err
+
+			# eitehr continue or not
+			if repeat: continue
+			else: return None 
