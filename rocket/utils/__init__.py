@@ -121,9 +121,9 @@ def load_map_submanagers():
         package if any
         and returns them in a list
     '''
-    import mapping_managers
+    from mapping_managers import __mapping_managers__
     # print('mapping managers : ', mapping_managers.__mapping_managers__)
-    return mapping_managers.__mapping_managers__
+    return __mapping_managers__
 
 
 def get_input(prompt, errtext='', validator=None, repeat=True):
