@@ -28,7 +28,7 @@ class MappingManager(Manager):
 		assert issubclass(source, sourceManager), errstr 
 		self.source = source()
 		
-		# deal with source
+		# deal with sink
 		errstr = (	'if source must be a '
 					'class referance class refd '
 					'must be subclass of sinkManager. '
