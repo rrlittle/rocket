@@ -4,6 +4,7 @@
     Every data passed will be in the form of a list of string. If you want to do 
     numerical calculation, change that into the number. 
 '''
+
 def data_sum(srcdat, args=None):
     data_sum = 0
     for data in srcdat:
@@ -11,8 +12,8 @@ def data_sum(srcdat, args=None):
             data = float(data)
             data_sum = data_sum + data
         except ValueError:
-            print ('In the calculation of the sum, one of the data: %s is not'
-                   , 'a number' % data)
+            print (('In the calculation of the sum, one of the data: %s is not'
+                               'a number') % data)
     return data_sum
 
 
@@ -21,7 +22,7 @@ def mean(srcdat, args=None):
     mean_sum = data_sum(srcdat, args)
     mean_num = len(srcdat)
     if mean_num == 0:
-        print 'There is no data for calculating the mean'
+        print('There is no data for calculating the mean')
         return
 
     mean = mean_sum / mean_num
@@ -36,6 +37,5 @@ def recodeHBQ(srcdat, args=None):
             data = data - 1
         return data
     except ValueError:
-        print 'The data for recoding is not a number'
-
+        print( 'The data for recoding is not a number')
     return
