@@ -30,7 +30,7 @@ __sinkHandlers__ = {}
 # used to indicate an error with loading files
 class dHandlerErr(Exception):pass
 
-def not_collision(classname, thismodule, handlerlist):
+def not_collision(classname, _class, handlerlist):
 	''' this just checks that the classname isn't already in 
 		the handler list.
 		if theres a collision and ignore_errors is true a error
@@ -38,11 +38,11 @@ def not_collision(classname, thismodule, handlerlist):
 		if theres a collision and ignore_errors is False an 
 			error is raised
 	'''
-	if classname in handlerlist:
+	if classname in handlerlist and _class != handlerlist[classname]:
 		errstr = (  'name collision in module %s '
 					'\nwith module %s'
 					'\nplease change one of them')%(
-					thismodule, handlerlist[cname])
+					_class, handlerlist[classname])
 		if ignore_errors: print(errstr)
 		else: raise dHandlerErr(errstr) 
 		return False

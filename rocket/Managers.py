@@ -202,8 +202,8 @@ class sourceManager(ssManager):
 				col_parser = getattr(self, col_parser_name, self.default_parser)
 				row[col] = col_parser(datarow[col])
 			self.data.append(row)
-
-
+			
+			
 class sinkManager(ssManager):
 	'''this should work as a sink manager
 		therefore it must implement all the things neccessary to 
@@ -256,5 +256,4 @@ class sinkManager(ssManager):
 
 		return outpath
 
-	def add_row(self):
-		self.data.append(utils.OrderedDict())	
+	def add_row(self): self.data.append(utils.OrderedDict())	

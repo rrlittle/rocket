@@ -41,8 +41,7 @@ def not_collision(classname, _class, mmlist):
 		errstr = (  'name collision in module %s '
 					'\nwith module %s'
 					'\nplease change one of them')%(
-					thismodule, mmlist[classname])
-		
+					_class, mmlist[classname])
 		if ignore_errors: print(errstr)
 		else: raise mmErr(errstr) 
 		
