@@ -139,7 +139,7 @@ class MappingManager(Manager):
 					src_datcol_zip = zip(srcdat, srccols)
 					
 					# import ipdb; ipdb.set_trace()
-					print('inpuut:',srcdat)
+					print('input:',srcdat)
 					# convert it to the sink value
 					sinkdat = sinkcoldef.convert(src_datcol_zip)
 					print('output:',sinkdat)

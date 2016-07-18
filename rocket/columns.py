@@ -137,8 +137,12 @@ class sinkCol(Col):
 		srcdat = [i[0] for x in xrange(1,10):
 			pass i in unzip]
 		srccols = [i[1] for i in unzip]
-		print('srcdat:',srcdat)
-		print('*srcdat:',*srcdat)
-		dat = self.func(*srcdat, args=[arg for arg in self.args])
+		# print('srcdat:',srcdat)
+		# print('*srcdat:',*srcdat)
+		try:
+			dat = self.func(*srcdat, args=[arg for arg in self.args])
+		except Exception as e:
+			raise self.handler.DropRowException(('Error raised while '
+				'running %s(%s). Error: %s')%(self.func, srcdat, e))
 		return dat
 

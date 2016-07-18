@@ -2,9 +2,13 @@ from os import path
 from os import stat
 from subprocess import (PIPE,Popen,call)
 from ast import literal_eval
+<<<<<<< HEAD
 from dateutil import relativedelta
 from datetime import datetime
 
+=======
+from __init__ import sectretdir
+>>>>>>> b2ed046c4b9fb68666e82d4b07148eb3e166051a
 
 temp_data_path = 'ursi_data.tmp'
 
@@ -24,9 +28,12 @@ class UnitTestGender():
 		genderFinder = GenderByUrsi(data_list=  ['M53799718'])
 		genderFinder.find_gender()
 
+<<<<<<< HEAD
 def findBirthdate(ursi,args = None):
 	"""
 		This function is called in the coins2ndar load_function().
+=======
+>>>>>>> b2ed046c4b9fb68666e82d4b07148eb3e166051a
 		
 		It will return a datetime object.
 	"""
@@ -37,10 +44,13 @@ def findBirthdate(ursi,args = None):
 	birth_date = data_dict[ursi]['birth_date']
 	DOB_date = datetime.strptime(birth_date, DOB_dateformat);
 
+<<<<<<< HEAD
 	return DOB_date
 
 
 def findGuid(ursi,args = None):
+=======
+>>>>>>> b2ed046c4b9fb68666e82d4b07148eb3e166051a
 	data_dict =''
 	ursi = ''
 	GUID = ''
