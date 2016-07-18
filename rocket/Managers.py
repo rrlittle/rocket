@@ -138,7 +138,8 @@ class ssManager(Manager):
 	def default_parser(self, value): 
 		''' just a simple parser if no other is defined'''
 		print('value',value)
-		return str(value)
+		try: return int(value)
+		except: return str(value)
 
 	
 class sourceManager(ssManager):
@@ -259,3 +260,5 @@ class sinkManager(ssManager):
 		return outpath
 
 	def add_row(self): self.data.append(utils.OrderedDict())	
+
+	def parse_args

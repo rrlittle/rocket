@@ -140,9 +140,12 @@ class sinkCol(Col):
 		# print('srcdat:',srcdat)
 		# print('*srcdat:',*srcdat)
 		try:
-			dat = self.func(*srcdat, args=[arg for arg in self.args])
+			
+			if self.args.__len__()> 0:
+				self.dat = self.func(*srcdat, args=[arg for arg in self.args])
+			else: self.dat = self.func(*srcdat)
 		except Exception as e:
 			raise self.handler.DropRowException(('Error raised while '
 				'running %s(%s). Error: %s')%(self.func, srcdat, e))
-		return dat
+		return self.dat
 
