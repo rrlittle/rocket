@@ -101,7 +101,7 @@ class sinkCol(Col):
 		# set self.func to an actual function
 		# use self.handler.globalfuncs to get func refereances or throw err
 		if self.func.strip() in self.handler.globalfuncs:
-			self.func = self.handler.globalfuncs[self.func.strip()]
+			self.func = self.handler.globalfuncs[self.func.strip()]['ref']
 		elif self.func.strip() == '':
 			self.func = lambda x,**y:str(x)
 		else: 

@@ -14,7 +14,8 @@ class controller(object):
 			class. they shold be classes not instances. 
 			I will call them thank you very much. 
 		''' 
-		self.mapper = MappingManager()
+		print(mappingmanager)
+		self.mapper = mappingmanager()
 		
 	def make_template(self):
 		''' this makes a new template. 
