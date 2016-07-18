@@ -75,8 +75,7 @@ class MappingManager(Manager):
 		templ_path = self.get_template()
 		for handler in [self.source, self.sink]:
 			with open(templ_path, errors='replace') as templfile:
-				templreader = utils.DictReader(templfile)
-				handler.load_template(templreader)
+				handler.load_template(templfile)
 
 	def check_valid_src_sink_combo(self):
 		''' ensures that src and sink do not have colliding fieldnames

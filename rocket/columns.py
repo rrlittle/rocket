@@ -51,7 +51,7 @@ class Col(object):
 			# make the value available right now
 			thisheader = getattr(self, header) 
 
-			# for evey important field in a given hadler it should have a parse
+			# for every important field in a given hadler it should have a parse
 			# function for that field called parse_'field'(fieldvalue)
 			parser_name = 'parse_' + fieldkeyword 
 			parser = getattr(self.handler, parser_name,  

@@ -113,7 +113,7 @@ class ssManager(Manager):
 				else: raise ValueError(errstr, e)
 		return cols
 
-	def load_template(self, templ_csv_reader):
+	def load_template(self, templ_csv_file):
 		''' both managers need to be able to load a template
 			and parse it to get what they need out of it. 
 			however they need very different things. 
@@ -121,6 +121,8 @@ class ssManager(Manager):
 
 			they both need to load the template
 		'''
+		templ_csv_reader = utils.DictReader(templ_csv_file)
+
 		self.col_defs = []
 		for template_row in templ_csv_reader:
 			# use the column to parse the row as we would like it to be 
