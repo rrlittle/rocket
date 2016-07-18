@@ -2,7 +2,7 @@ from os import path
 from os import stat
 from subprocess import (PIPE,Popen,call)
 from ast import literal_eval
-
+from __init__ import sectretdir
 
 temp_data_path = 'ursi_data.tmp'
 
@@ -23,6 +23,7 @@ class UnitTestGender():
 		genderFinder = GenderByUrsi(data_list=  ['M53799718'])
 		genderFinder.find_gender()
 
+
 def findBirthdate(srcdat,args = None):
 	
 	try:
@@ -36,7 +37,6 @@ def findBirthdate(srcdat,args = None):
 		pass
 	
 	return birth_date
-
 
 def findGuid(srcdat,args = None):
 	data_dict =''
