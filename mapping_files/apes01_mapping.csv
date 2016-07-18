@@ -1,5 +1,5 @@
 ndar id,ndar name,ndar missing value,mapping,ndar range,coins id,default value,coins name,coins missing value,function,args,coins range
-0,subjectkey,9999,0,,0,9999,ursi,"~<userSkipped>~,~<condSkipped>~",findGuid,,
+-1,subjectkey,9999,0,,0,9999,ursi,"~<userSkipped>~,~<condSkipped>~",findGuid,,
 1,src_subject_id,9999,0,,1,9999,oldest_ursi,,,,
 2,interview_date,9999,3,,2,9999,asmt_ursi,,,,
 3,interview_age,9999,"0,3",0 :: 1260,3,9999,assessment_date,,findAge,,
