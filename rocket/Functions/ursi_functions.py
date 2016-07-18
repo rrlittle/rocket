@@ -2,16 +2,17 @@ from os import path
 from os import stat
 from subprocess import (PIPE,Popen,call)
 from ast import literal_eval
+from dateutil import relativedelta
+from datetime import datetime
 
 
 temp_data_path = 'ursi_data.tmp'
 
-def findGender(srcdat ,args = None):
+def findGender(ursi,args = None):
 
 	print('finding the gender')
 	ursi_data_manger = UrsiDataManager(temp_data_path)
 	data_dict = ursi_data_manger.get_ursi_data()
-	ursi = srcdat[0]
 
 	assert ursi !='', 'No ursi has been passed'
 	gender = data_dict[ursi]["gender"]
@@ -23,36 +24,33 @@ class UnitTestGender():
 		genderFinder = GenderByUrsi(data_list=  ['M53799718'])
 		genderFinder.find_gender()
 
-def findBirthdate(srcdat,args = None):
-	
-	try:
-		data_dict = ursi_data_manger.get_ursi_data()
+def findBirthdate(ursi,args = None):
+	"""
+		This function is called in the coins2ndar load_function().
 		
-		ursi = srcdat[0]
-		assert ursi !='', 'No ursi has been passed'
-		birth_date = data_dict[ursi]['birth_date']
+		It will return a datetime object.
+	"""
+	DOB_dateformat = "%m/%d/%Y"
+	data_dict = ursi_data_manger.get_ursi_data()
+	assert ursi !='', 'No ursi has been passed'
 
-	except AssertionError:
-		pass
-	
-	return birth_date
+	birth_date = data_dict[ursi]['birth_date']
+	DOB_date = datetime.strptime(birth_date, DOB_dateformat);
+
+	return DOB_date
 
 
-def findGuid(srcdat,args = None):
+def findGuid(ursi,args = None):
 	data_dict =''
 	ursi = ''
 	GUID = ''
 
-	try:
-		ursi_data_manger = UrsiDataManager(temp_data_path)
-		data_dict = ursi_data_manger.get_ursi_data()
-	
-		ursi = self.data_list[0]
-		assert ursi !='', 'No ursi has been passed'
+	ursi_data_manger = UrsiDataManager(temp_data_path)
+	data_dict = ursi_data_manger.get_ursi_data()
 
-		GUID = data_dict[ursi]['GUID']
-	except AssertionError:
-		pass
+	assert ursi !='', 'No ursi has been passed'
+
+	GUID = data_dict[ursi]['GUID']
 
 	return GUID
 
@@ -62,6 +60,23 @@ class UnitTestGuid():
 		guidFinder = GuidByUrsi(data_list=  ['M53799718'])
 		guidFinder.find()
 
+
+def findAge(olddate = None, recentdate = None):
+	""" both argument will be the datetime object. The ndar way to calculate the
+	age is the total 
+	"""
+
+	assert olddate != None and recentdate != None, "**** findAge goes wrong ***"
+
+	age = relativedelta.relativedelta(olddate,recentdate)
+	year = abs(age.years)
+	month = abs(age.months)
+	day = abs(age.days)
+	if day > 15:
+		month = month + 1
+
+	total_months = year*12 + month
+	return total_months
 
 class UrsiDataManager(object):
 
@@ -114,3 +129,4 @@ class UrsiDataManager(object):
 				except SyntaxError:
 					pass
 		return data_dict
+

@@ -134,7 +134,8 @@ class sinkCol(Col):
 		unzip = list(src_datacol_zip)
 		
 		# change them to lsits so mutable
-		srcdat = [i[0] for i in unzip]
+		srcdat = [i[0] for x in xrange(1,10):
+			pass i in unzip]
 		srccols = [i[1] for i in unzip]
 		print('srcdat:',srcdat)
 		print('*srcdat:',*srcdat)

@@ -4,12 +4,30 @@
     Every data passed will be in the form of a list of string. If you want to do 
     numerical calculation, change that into the number. 
 '''
+from Managers import ssManager
+
+
+def sum(*data, args = [0.8]):
+    threshold = args[0]
+    
+    numMiss = 0
+    data_sum = 0
+    for num in data:
+        if isinstance(num, ssManager.NoDataError):
+            numMiss +=1
+        else:
+            data_sum += num
+
+    if numMiss/len(data) >= threshold:
+        return data_sum
+    else: 
+        return ssManager.NoDataError;
+
 
 def data_sum(srcdat, args = None):
 
     if args == 'coerce':
-        for data in srcdat:
-            data = coerce(data) 
+        srcdat = coerce(data) 
     data_sum = 0
     for data in srcdat:
         try:
