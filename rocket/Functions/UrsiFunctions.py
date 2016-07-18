@@ -1,12 +1,15 @@
-from UrsiDataManager import UrsiDataManager
-from Functions import Functions
-import ipdb
+from os import path
+from os import stat
+from subprocess import (PIPE,Popen,call)
+from ast import literal_eval
 
+
+temp_data_path = 'ursi_data.tmp'
 
 def findGender(srcdat ,args = None):
 
 	print('finding the gender')
-	ursi_data_manger = UrsiDataManager('ursi_data.tmp')
+	ursi_data_manger = UrsiDataManager(temp_data_path)
 	data_dict = ursi_data_manger.get_ursi_data()
 	ursi = srcdat[0]
 
@@ -24,8 +27,7 @@ def findBirthdate(srcdat,args = None):
 	
 	try:
 		data_dict = ursi_data_manger.get_ursi_data()
-		ursi_data_manger = UrsiDataManager('ursi_data.tmp')
-
+		
 		ursi = srcdat[0]
 		assert ursi !='', 'No ursi has been passed'
 		birth_date = data_dict[ursi]['birth_date']
@@ -42,7 +44,8 @@ def findGuid(srcdat,args = None):
 	GUID = ''
 
 	try:
-		data_dict = self.ursi_data_manger.get_ursi_data()
+		ursi_data_manger = UrsiDataManager(temp_data_path)
+		data_dict = ursi_data_manger.get_ursi_data()
 	
 		ursi = self.data_list[0]
 		assert ursi !='', 'No ursi has been passed'
@@ -66,8 +69,7 @@ class UrsiDataManager(object):
 		self.temp_file_path = temp_file_path
 		self.data_list = []
 		self.BAT_PATH = 'R:\scripts\list_gender_birth_guid.bat'
-
-
+		
 		# prepare the file. If it doesn't exist, prepare it. If it exists, no need for doing anything
 		# Also check the empty of the file		
 		if path.exists(self.temp_file_path):
