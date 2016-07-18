@@ -48,6 +48,8 @@ class MappingManager(Manager):
 		''' must be overwritten by Mapping manager subclasses. 
 			in order to include functions that are aware of both 
 			source and sink schemes.
+			It should be a dictionary looks like {"mean":{"ref": mean }  }, mean
+			is the reference of the mean function
 		'''
 		return {}
 
