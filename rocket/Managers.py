@@ -65,6 +65,7 @@ class ssManager(Manager):
 	# for use when there is no data
 	class NoDataError(Exception): pass
 
+	delimiter = ','
 	col_archetype = columns.Col # override this for different managers
 		# srcCol and sinkCol behave slightly differently
 			
@@ -97,10 +98,11 @@ class ssManager(Manager):
 		return tmp
 
 	def getcolumn_defs(self, *collist):
-		''' return the specified column objects from self.col_defs'''
+		''' collist is: tuple of string names that are the 
+				column headers
+		return the specified column objects from self.col_defs'''
 		#initialize ignore errors
 		ignore_errors = True
-
 		cols = [] # hold desired col instances
 		for col in collist: # iterate the whole collist and save desired ones
 			try:
@@ -138,8 +140,9 @@ class ssManager(Manager):
 	def default_parser(self, value): 
 		''' just a simple parser if no other is defined'''
 		print('value',value)
-		try: return int(value)
-		except: return str(value)
+		# try: return int(value)
+		# except: return str(value)
+		return str(value)
 
 	
 class sourceManager(ssManager):
@@ -185,11 +188,12 @@ class sourceManager(ssManager):
 		# open file
 		srcpath = self.get_src_datpath()
 		srcfile = open(srcpath, errors='ignore')
-		srcreader = utils.DictReader(srcfile)
+		srcreader = utils.DictReader(srcfile, delimiter=self.delimiter)
 
 		# assert the file has all the expected fields
+		print('fieldnames,', srcreader.fieldnames)
 		for col_name in self.col_defs: 
-			print(col_name, srcreader.fieldnames)
+			print(col_name)
 			if col_name not in srcreader.fieldnames:
 				raise self.TemplateError('expected column %s not '
 					'found in source datafile, with fields: %s')%(
@@ -200,10 +204,14 @@ class sourceManager(ssManager):
 			man_log.debug('parsing row %s'%datarow)
 			row = utils.OrderedDict()
 			for col in self.col_defs:
-				man_log.debug('prasing %s from %s'%(col, datarow[col]))
-				col_parser_name = 'parse_' + str(col)
-				col_parser = getattr(self, col_parser_name, self.default_parser)
-				row[col] = col_parser(datarow[col])
+				try:
+					man_log.debug('prasing %s from %s'%(col, datarow[col]))
+					col_parser_name = 'parse_' + str(col)
+					col_parser = getattr(self, col_parser_name, self.default_parser)
+					row[col] = col_parser(datarow[col])
+				except Exception as e:
+					man_log.error('Exception while parsing %s: %s'%(col, e))
+					row[col] = self.NoDataError('%s'%e)
 			self.data.append(row)
 			
 			
@@ -260,5 +268,3 @@ class sinkManager(ssManager):
 		return outpath
 
 	def add_row(self): self.data.append(utils.OrderedDict())	
-
-	def parse_args

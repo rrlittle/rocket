@@ -122,10 +122,12 @@ class MappingManager(Manager):
 			# go through all the columns defined in the template
 			for sinkcoldef in self.sink.col_defs: 
 				try:
+					import ipdb; ipdb.set_trace()
 					# sinkcol maps from the id to sourceColMappers 
 					sinkcoldef.map_src(srcrow)
 					# get col objs from src
-					mapperslist = self.get_mapperids(sinkcoldef.mappers) 
+
+					mapperslist = sinkcoldef.mappers 
 						# src cols required to compute the sink value
 			
 					srccols = self.source.getcolumn_defs(*mapperslist) 
@@ -151,6 +153,7 @@ class MappingManager(Manager):
 		return self.sink.data
 
 	def get_mapperids(self,mapper_string):
+		print('################### %s'%mapper_string)
 		mapper_ids = []
 		if '::' not in mapper_string:
 			return mapper_string.split(',')

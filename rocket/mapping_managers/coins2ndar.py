@@ -13,7 +13,7 @@ class coins2ndar(MappingManager):
 		MappingManager.__init__(self, 
 			source = coins.coins_src, 
 			sink=ndar.ndar_snk)
-
+		print('functions', self.globalfuncs)
 	def load_functions(self):
 		functions = {}
 
@@ -25,7 +25,7 @@ class coins2ndar(MappingManager):
 
 
 		functions['mean'] = {'ref':func.mean}
-		functions['data_sum']   = {'ref':func.data_sum}
+		functions['sum']   = {'ref':func.sum}
 		functions['findGender'] = {'ref':ursi_functions.findGender}
 		functions['findGuid'] = {'ref':ursi_functions.findGuid}
 		functions['findAge'] = {'ref':findAge}
