@@ -124,7 +124,7 @@ class MappingManager(Manager):
 					# sinkcol maps from the id to sourceColMappers 
 					sinkcoldef.map_src(srcrow)
 					# get col objs from src
-					mapperslist = get_mapperids(sinkcoldef.mappers) 
+					mapperslist = self.get_mapperids(sinkcoldef.mappers) 
 						# src cols required to compute the sink value
 			
 					srccols = self.source.getcolumn_defs(*mapperslist) 
@@ -149,7 +149,7 @@ class MappingManager(Manager):
 					self.sink.drop_row()
 		return self.sink.data
 
-	def get_mapperids(mapper_string):
+	def get_mapperids(self,mapper_string):
 		mapper_ids = []
 		if '::' not in mapper_string:
 			return mapper_string.split(',')
