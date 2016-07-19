@@ -116,8 +116,8 @@ class MappingManager(Manager):
 		map_log.debug('loading data')
 		self.source.load_data() # ensure src has data
 
-		i = 0
-		for srcrow in self.source: 
+
+		for rowid,srcrow in enumerate(self.source): 
 			self.sink.add_row() # we want to fill in a new row
 
 			# go through all the columns defined in the template
@@ -152,16 +152,14 @@ class MappingManager(Manager):
 					#print('output:',sinkdat)
 					# save the sink value to the last row
 					self.sink[-1][sinkcoldef] = sinkdat
-				except sinkManager.DropRowException: 
-					# drop the row if it should't be included in the dataset in the sink
+				except sinkManager.DropRowException as e: 
+					# drop the row if it should't be included in the dataset
+					map_log.error('Dropping row %s:err at %s (%s)'%(rowid, 
+						sinkcol, e))
 					self.sink.drop_row()
-					i += 1
-					print("The number of dropRow is")
-					print(i)
 					break
-
 				except Exception as e:
-					print (e)
+					map_log.error('not droprow exception: %s'%e)
 
 		return self.sink.data
 
