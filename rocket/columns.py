@@ -115,12 +115,13 @@ class sinkCol(Col):
 		'''
 
 		mappers_result = []
-		mappers_id = self.mappers.split(',')
-		for srccol in srcrow:
-			if srccol.id in mappers_id:
-				mappers_result.append(srccol)
+		if isinstance(self.mappers,str):
+			mappers_id = self.mappers.split(',')
+			for srccol in srcrow:
+				if srccol.id in mappers_id:
+					mappers_result.append(srccol)
 
-		self.mappers = mappers_result
+			self.mappers = mappers_result
 
 
 	def convert(self, src_datacol_zip):
@@ -139,12 +140,19 @@ class sinkCol(Col):
 		# print('srcdat:',srcdat)
 		# print('*srcdat:',*srcdat)
 		try:
-			
+			#import ipdb; ipdb.set_trace()
 			if self.args.__len__()> 0:
 				self.dat = self.func(*srcdat, args=[arg for arg in self.args])
 			else: self.dat = self.func(*srcdat)
-		except Exception as e:
+		except self.handler.DropRowException as e:
 			raise self.handler.DropRowException(('Error raised while '
 				'running %s(%s). Error: %s')%(self.func, srcdat, e))
+
+		except Exception as exc:
+			return "DataError"
+
+		#	raise Exception(('Error raised while '
+			#	'running %s(%s). Error: %s')%(self.func, srcdat, e))
+
 		return self.dat
 

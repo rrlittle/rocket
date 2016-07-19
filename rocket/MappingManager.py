@@ -116,13 +116,14 @@ class MappingManager(Manager):
 		map_log.debug('loading data')
 		self.source.load_data() # ensure src has data
 
+		i = 0
 		for srcrow in self.source: 
 			self.sink.add_row() # we want to fill in a new row
 
 			# go through all the columns defined in the template
 			for sinkcoldef in self.sink.col_defs: 
 				try:
-					import ipdb; ipdb.set_trace()
+
 					# sinkcol maps from the id to sourceColMappers 
 					sinkcoldef.map_src(srcrow)
 					# get col objs from src
@@ -133,27 +134,39 @@ class MappingManager(Manager):
 					srccols = self.source.getcolumn_defs(*mapperslist) 
 						# list of columns in the source datafile we need to grab
 					
+
 					# get the data					
-					srcdat = [srcrow[col] for col in srccols]
+					srcdat = [srcrow[col.col_name] for col in srccols]
+					print(srcdat)
 						# list of data values from src datafile
 					# zip the data with it's defining object
 					# needed for sinkcol.convert
 					src_datcol_zip = zip(srcdat, srccols)
 					
 					# import ipdb; ipdb.set_trace()
-					print('input:',srcdat)
+					#print('input:',srcdat)
 					# convert it to the sink value
 					sinkdat = sinkcoldef.convert(src_datcol_zip)
-					print('output:',sinkdat)
+
+					print(sinkdat)
+					#print('output:',sinkdat)
 					# save the sink value to the last row
 					self.sink[-1][sinkcoldef] = sinkdat
 				except sinkManager.DropRowException: 
-					# drop the row if it should't be included in the dataset
+					# drop the row if it should't be included in the dataset in the sink
 					self.sink.drop_row()
+					i += 1
+					print("The number of dropRow is")
+					print(i)
+					break
+
+				except Exception as e:
+					print (e)
+
 		return self.sink.data
 
 	def get_mapperids(self,mapper_string):
-		print('################### %s'%mapper_string)
+		#print('################### %s'%mapper_string)
 		mapper_ids = []
 		if '::' not in mapper_string:
 			return mapper_string.split(',')

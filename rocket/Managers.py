@@ -75,7 +75,9 @@ class ssManager(Manager):
 		self.template_fields['id'] = 'default_id_col'
 		self.template_fields['col_name']='default_colname'
 
-		self.col_defs = []  # ordered list of col objects in the data files
+		self.col_defs = [] 
+		self.row_pointer_for_iter = 0 
+		 # ordered list of col objects in the data files
 		# used to set what type of column to use to parse the template files
 
 	def __getitem__(self, k):
@@ -93,8 +95,10 @@ class ssManager(Manager):
 
 	def __next__(self): 
 		if self.row_pointer_for_iter == len(self.data): raise StopIteration()
-		tmp = self.data[0]
+		tmp = self.data[self.row_pointer_for_iter]
 		self.row_pointer_for_iter += 1
+
+
 		return tmp
 
 	def getcolumn_defs(self, *collist):
@@ -128,8 +132,13 @@ class ssManager(Manager):
 		self.col_defs = []
 		for template_row in templ_csv_reader:
 			# use the column to parse the row as we would like it to be 
-			c = self.col_archetype(self,template_row) 
-			self.col_defs.append(c)
+			col = self.col_archetype(self,template_row) 
+
+			# if the name of the column is "", then don't append the column
+			# to the end of the list.
+			# col_name is required for every ssManager.
+			if getattr(col, 'col_name') != '':
+				self.col_defs.append(col)
 
 	def initialize_data(self):
 		''' if self.data exist then clear it
@@ -191,9 +200,9 @@ class sourceManager(ssManager):
 		srcreader = utils.DictReader(srcfile, delimiter=self.delimiter)
 
 		# assert the file has all the expected fields
-		print('fieldnames,', srcreader.fieldnames)
+		#print('fieldnames,', srcreader.fieldnames)
 		for col_name in self.col_defs: 
-			print(col_name)
+			#print(col_name)
 			if col_name not in srcreader.fieldnames:
 				raise self.TemplateError('expected column %s not '
 					'found in source datafile, with fields: %s')%(
@@ -212,8 +221,7 @@ class sourceManager(ssManager):
 				except Exception as e:
 					man_log.error('Exception while parsing %s: %s'%(col, e))
 					row[col] = self.NoDataError('%s'%e)
-			self.data.append(row)
-			
+			self.data.append(row)		
 			
 class sinkManager(ssManager):
 	'''this should work as a sink manager
@@ -268,3 +276,4 @@ class sinkManager(ssManager):
 		return outpath
 
 	def add_row(self): self.data.append(utils.OrderedDict())	
+	def drop_row(self): self.data.pop()

@@ -21,7 +21,7 @@ class coins2ndar(MappingManager):
 			''' finds the age from the ursi and the assment date
 				requires the ursi first and ass_date second'''
 			bd = ursi_functions.findBirthdate(ursi)
-			return func.findAge(oldate=bd, recentdate=ass_date)
+			return ursi_functions.findAge(olddate=bd, recentdate=ass_date)
 
 
 		functions['mean'] = {'ref':func.mean}

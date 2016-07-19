@@ -5,14 +5,15 @@ from ast import literal_eval
 from dateutil import relativedelta
 from datetime import datetime
 from __init__ import sectretdir
+from Managers import sinkManager
 
 temp_data_path = 'ursi_data.tmp'
 
 def findGender(ursi,args = None):
 
 	print('finding the gender')
-	ursi_data_manger = UrsiDataManager(temp_data_path)
-	data_dict = ursi_data_manger.get_ursi_data()
+	ursi_data_manager = UrsiDataManager(temp_data_path)
+	data_dict = ursi_data_manager.get_ursi_data()
 
 	assert ursi !='', 'No ursi has been passed'
 	gender = data_dict[ursi]["gender"]
@@ -33,7 +34,8 @@ def findBirthdate(ursi,args = None):
 		It will return a datetime object.
 	"""
 	DOB_dateformat = "%m/%d/%Y"
-	data_dict = ursi_data_manger.get_ursi_data()
+	ursi_data_manager = UrsiDataManager(temp_data_path)
+	data_dict = ursi_data_manager.get_ursi_data()
 	assert ursi !='', 'No ursi has been passed'
 
 	birth_date = data_dict[ursi]['birth_date']
@@ -45,15 +47,20 @@ def findBirthdate(ursi,args = None):
 
 def findGuid(ursi,args = None):
 	data_dict =''
-	ursi = ''
 	GUID = ''
+	ursi_data_manager = UrsiDataManager(temp_data_path)
+	data_dict = ursi_data_manager.get_ursi_data()
+	
+	try:
+		assert ursi !='', 'No ursi has been passed'
+		GUID = data_dict[ursi]['GUID']
+		
 
-	ursi_data_manger = UrsiDataManager(temp_data_path)
-	data_dict = ursi_data_manger.get_ursi_data()
+		if GUID == "NONE":
+			raise sinkManager.DropRowException()
 
-	assert ursi !='', 'No ursi has been passed'
-
-	GUID = data_dict[ursi]['GUID']
+	except Exception as e:	
+		raise sinkManager.DropRowException()
 
 	return GUID
 
