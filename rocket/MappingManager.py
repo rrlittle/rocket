@@ -114,6 +114,7 @@ class MappingManager(Manager):
 			self.sink.initialize_data() # clear any data in sink
 
 		map_log.debug('loading data')
+		# ipdb.set_trace()
 		self.source.load_data() # ensure src has data
 
 
@@ -130,28 +131,28 @@ class MappingManager(Manager):
 
 					mapperslist = sinkcoldef.mappers 
 						# src cols required to compute the sink value
-			
-					srccols = self.source.getcolumn_defs(*mapperslist) 
+
+					if mapperslist != self.sink.NoDataError:
+						srccols = self.source.getcolumn_defs(*mapperslist) 
 						# list of columns in the source datafile we need to grab
-					
-
-					# get the data					
-					srcdat = [srcrow[col.col_name] for col in srccols]
-					print(srcdat)
+			
+						# get the data					
+						srcdat = [srcrow[col.col_name] for col in srccols]
 						# list of data values from src datafile
-					# zip the data with it's defining object
-					# needed for sinkcol.convert
-					src_datcol_zip = zip(srcdat, srccols)
+						# zip the data with it's defining object
+						# needed for sinkcol.convert
+						src_datcol_zip = zip(srcdat, srccols)
 					
-					# import ipdb; ipdb.set_trace()
-					#print('input:',srcdat)
-					# convert it to the sink value
-					sinkdat = sinkcoldef.convert(src_datcol_zip)
+						# convert it to the sink value
+						sinkdat = sinkcoldef.convert(src_datcol_zip)
 
-					print(sinkdat)
-					#print('output:',sinkdat)
-					# save the sink value to the last row
-					self.sink[-1][sinkcoldef] = sinkdat
+						#print('output:',sinkdat)
+						# save the sink value to the last row
+						self.sink[-1][sinkcoldef] = sinkdat
+
+					else:
+						self.sink[-1][sinkcoldef] = sinkcoldef.default
+
 				except sinkManager.DropRowException as e:
 					# drop the row if it should't be included in the dataset
 					map_log.error('Dropping source row %s:err at %s (%s)'%(rowid, 
@@ -161,6 +162,15 @@ class MappingManager(Manager):
 				except Exception as e:
 					map_log.error('not droprow exception: %s'%e)
 
+
+
+		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDONE CONVERSION')
+		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\SINK')
+		map_log.critical('sink data: %s'%self.sink.data)
+		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSOURCE')
+		map_log.critical('source data: %s'%self.source.data)
+		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDONE')
+		
 		return self.sink.data
 
 	def get_mapperids(self,mapper_string):

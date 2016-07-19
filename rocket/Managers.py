@@ -132,13 +132,11 @@ class ssManager(Manager):
 		self.col_defs = []
 		for template_row in templ_csv_reader:
 			# use the column to parse the row as we would like it to be 
-			col = self.col_archetype(self,template_row) 
-
-			# if the name of the column is "", then don't append the column
-			# to the end of the list.
-			# col_name is required for every ssManager.
-			if getattr(col, 'col_name') != '':
-				self.col_defs.append(col)
+			try:
+				self.col_defs.append(self.col_archetype(self,template_row)) 
+			except self.col_archetype.BadColErr as e:
+				man_log.error(('%s column not created '
+					'beacause %s')%(self.col_archetype.__name__,e))
 
 	def initialize_data(self):
 		''' if self.data exist then clear it
@@ -149,9 +147,10 @@ class ssManager(Manager):
 	def default_parser(self, value, coldef): 
 		''' just a simple parser if no other is defined
 			used when parsing the template?'''
-		man_log.debug('parsing value: %s(%s)'%(coldef, value))
-
+		man_log.debug('parsing value: [%s] (%s)'%(coldef, value))
+		if hasattr(coldef, 'missing_vals'):	man_log.debug(coldef.missing_vals)
 		if hasattr(coldef, 'missing_vals') and value in coldef.missing_vals:
+			man_log.debug('replacing row[%s](%s) with NoData'%(coldef, value))
 			return self.NoDataError
 		return str(value)
 
@@ -211,18 +210,20 @@ class sourceManager(ssManager):
 					col_name, list(srcreader.fieldnames))
 
 		# load each row
-		for datarow in srcreader:
-			man_log.debug('parsing row %s'%datarow)
+		for rowid, datarow in enumerate(srcreader):
+			man_log.debug('parsing row %s : %s'%(rowid, datarow))
 			row = utils.OrderedDict()
 			for col in self.col_defs:
 				try:
 					man_log.debug('prasing %s from %s'%(col, datarow[col]))
 					col_parser_name = 'parse_' + str(col)
-					col_parser = getattr(self, col_parser_name, self.default_parser)
-					row[col] = col_parser(datarow[col])
+					col_parser = getattr(self, col_parser_name, 
+						self.default_parser)
+					row[col] = col_parser(datarow[col], col)
 				except Exception as e:
 					man_log.error('Exception while parsing %s: %s'%(col, e))
 					row[col] = self.NoDataError('%s'%e)
+			# man_log.debug('resulting row %s: %s'%(len(self.data), row))
 			self.data.append(row)		
 			
 class sinkManager(ssManager):
@@ -245,6 +246,8 @@ class sinkManager(ssManager):
 		self.template_fields['id'] = 'sink col id'
 		self.template_fields['col_name'] = 'sink col name'
 		self.template_fields['col_range'] = 'sink range'
+		self.template_fields['missing_vals'] = 'sink missing value'
+		self.template_fields['default'] = 'sink default value'
 		self.template_fields['mappers'] = 'sink mappers'
 		self.template_fields['func'] = 'function'
 		self.template_fields['args'] ='args'
@@ -269,10 +272,16 @@ class sinkManager(ssManager):
 		''' writes self.data to a the outfile. which the user provides'''
 
 		outpath = self.get_file_outpath()
+		import ipdb; ipdb.set_trace()
 		outfile = open(outpath, 'w')
 		outwriter = utils.DictWriter(outfile, fieldnames = self.col_defs)
 		outwriter.writeheader()
-		for row in self.data:
+		for rowid,row in enumerate(self.data):
+			for coldef, elem in enumerate(row):
+				if elem is self.NoDataError:
+					man_log.error('out row[%s][%s] is %s. changing it to %s'%(
+						rowid, coldef, elem, col_defs.missing_vals))
+					row[coldef] = coldef.missing_vals 
 			outwriter.writerow(row) 
 
 		return outpath

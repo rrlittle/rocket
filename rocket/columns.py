@@ -1,4 +1,5 @@
 import Managers
+from loggers import col_log
 
 
 class Col(object):
@@ -9,6 +10,7 @@ class Col(object):
 		implent further src/sink dependant functions
 	'''
 
+	class BadColErr(Exception):pass # column should not be created
 	
 	def __init__(self, sshandler, template_row):
 		'''all columns need
@@ -26,13 +28,21 @@ class Col(object):
 
 		self.template_row = template_row
 
+		self.load_attributes()
+
+		if self.col_name == '':
+			raise self.BadColErr('Col_name must be defined to be a good Col')
+		else: col_log.debug('created column %s'%self)
+
 	def load_attributes(self):
 		''' loads all the attributes the handler knows about and 
 			therefore needs
 			this shoud be called after init, 
 			but children of this should call it automatically in their init
 		'''
+		col_log.debug('loading attributes')
 		for field in self.handler.template_fields:
+			col_log.debug('loading %s'%field)
 			self.load_attribute(field)
 
 	def load_attribute(self, fieldkeyword):
@@ -60,7 +70,7 @@ class Col(object):
 
 			val = self.template_row[thisheader] # get raw value
 			setattr(self, fieldkeyword, parser(val, self)) # save parsed value
-			
+
 		except Exception as e:
 			raise self.handler.TemplateError(('Template not set up as expected.'
 				' could not parse it. error occured: %s')%e)
@@ -70,7 +80,7 @@ class Col(object):
 	def __repr__(self): 
 		if hasattr(self, 'col_name'):
 			return self.col_name
-		else: return 'col_name not set object id: %s'%id(self)
+		else: return 'col_name not set for %s: %s'%(type(self),id(self))
 	def __hash__(self): return self.col_name.__hash__()
 	def __eq__(self, other): return self.col_name == other
 	def __ne__(self,other): return not self.__eq__(other)
@@ -81,12 +91,9 @@ class srcCol(Col):
 	'''
 	def __init__(self, sourcehandler, template_row, **kwargs):
 		''' sourceCol requires some special things'''
-		Col.__init__(self, sourcehandler, template_row)
-		assert isinstance(self.handler, Managers.sourceManager), (
+		assert isinstance(sourcehandler, Managers.sourceManager), (
 			'sinkCols require a source handler')
-		
-		self.load_attributes() # load all the handlers required attributes
-		# from handler.template_fields
+		Col.__init__(self, sourcehandler, template_row)
 
 class sinkCol(Col):
 	''' this adds funcitonality to columns defining specifcally
@@ -95,22 +102,20 @@ class sinkCol(Col):
 
 	def __init__(self, sinkhandler,template_row, **kwargs):
 		'''sinkCol requires the handler to be a sinkManager'''
-		Col.__init__(self, sinkhandler, template_row)
-		assert isinstance(self.handler, Managers.sinkManager), (
+		assert isinstance(sinkhandler, Managers.sinkManager), (
 			'sinkCols require a sink handler')
-
-		self.load_attributes() # load all the handlers required attributes
-		# from handler.template_fields
+		Col.__init__(self, sinkhandler, template_row)
 
 		# set self.func to an actual function
 		# use self.handler.globalfuncs to get func refereances or throw err
+		if self.func is self.handler.NoDataError: self.func = ''
 		if self.func.strip() in self.handler.globalfuncs:
 			self.func = self.handler.globalfuncs[self.func.strip()]['ref']
 		elif self.func.strip() == '':
 			self.func = lambda x,**y:str(x)
 		else: 
-			raise self.handler.TemplateError(('function %s for column %s is '
-			'not valid. please change the template'
+			raise self.handler.TemplateError(('function %s for column '
+			'%s is not valid. please change the template'
 			' to a valid function or blank')%(self.func,self.col_name))
 
 	def map_src(self, srcrow):

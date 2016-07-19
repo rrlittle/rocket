@@ -14,7 +14,7 @@ class coins_src(sourceManager):
     	self.template_fields['missing_vals'] = 'coins missing value'
     	print(self.template_fields)
 
-    def parse_assessment_date(self, assessment_date):
+    def parse_assessment_date(self, assessment_date, coldef):
     	assessment_dateformat = "%m/%d/%Y %H:%M"
     	assessment_date = utils.datetime.strptime(assessment_date,
     		assessment_dateformat)
