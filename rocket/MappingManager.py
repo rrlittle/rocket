@@ -165,11 +165,11 @@ class MappingManager(Manager):
 
 
 		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDONE CONVERSION')
-		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\SINK')
-		map_log.critical('sink data: %s'%self.sink.data)
 		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSOURCE')
 		map_log.critical('source data: %s'%self.source.data)
 		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDONE')
+		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\SINK')
+		map_log.critical('sink data: %s'%self.sink.data)
 		
 		return self.sink.data
 

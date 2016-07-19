@@ -168,6 +168,9 @@ class sourceManager(ssManager):
 		
 	col_archetype = columns.srcCol
 
+
+	class BadSourceRowErr(Exception):pass
+
 	def __init__(self):
 		''' adds sourceManager specific columns and things'''
 		ssManager.__init__(self) # super the the init
@@ -220,11 +223,28 @@ class sourceManager(ssManager):
 					col_parser = getattr(self, col_parser_name, 
 						self.default_parser)
 					row[col] = col_parser(datarow[col], col)
+					man_log.critical('after parsing: [%s(raw) == [%s(par)? %s'%(
+						datarow[col], row[col], datarow[col] == row[col]))
 				except Exception as e:
 					man_log.error('Exception while parsing %s: %s'%(col, e))
 					row[col] = self.NoDataError('%s'%e)
-			# man_log.debug('resulting row %s: %s'%(len(self.data), row))
-			self.data.append(row)		
+			
+
+			try:
+				self.ensure_row(row, man_log)
+				self.data.append(row)		
+			except Exception as e:
+				man_log.error('Row not saved in sourceHandler. error: %s'%e)
+
+
+	def ensure_row(self, row, logger):
+		''' this function should get overridden by the source datahandler
+			so that you can check if the row is valid or not. like if the 
+			primary key is missing it should be removed. 
+			return or throw an error. 
+			feel free to use the logger to log alternative error messages.  
+		'''
+		return True
 			
 class sinkManager(ssManager):
 	'''this should work as a sink manager

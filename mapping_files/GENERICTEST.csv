@@ -1,6 +1,12 @@
-sink col id,sink col name,sink mappers,sink range,function,args,source col id,source col name,source col range
-1,a,1,1::5,,,1,aaa,1::5
-2,b,2,1::6,,,2,bbb,1::6
-3,c,3,1::7,,,3,ccc,1::7
-4,d,4,1::8,,,4,ddd,1::8
-5,e,5,1::9,,,5,eee,1::9
+ndar id,ndar name,mapping,ndar range,function,args,coins id,coins name,coins missing value
+1,guid,1,1::5,findGuid,,1,ursi,"~<userSkipped>~,~<condSkipped>~"
+2,date,2,1::6,,,2,assessment_date,"~<userSkipped>~,~<condSkipped>~"
+3,e,9,1::7,,,3,ccc,"~<userSkipped>~,~<condSkipped>~"
+4,d,7,1::8,,,4,Ccc – hgrd,"~<userSkipped>~,~<condSkipped>~"
+5,c,4,1::9,,,5,ccc – pilot,"~<userSkipped>~,~<condSkipped>~"
+6,t,"3,4,5",,sum,,6,ddd – hgrd,"~<userSkipped>~,~<condSkipped>~"
+,,,,,,7,ddd,"~<userSkipped>~,~<condSkipped>~"
+,,,,,,8,ddd – pilot,"~<userSkipped>~,~<condSkipped>~"
+,,,,,,9,eee,"~<userSkipped>~,~<condSkipped>~"
+,,,,,,10,eee,"~<userSkipped>~,~<condSkipped>~"
+,,,,,,11,eee - pilot,"~<userSkipped>~,~<condSkipped>~"

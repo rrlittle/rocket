@@ -157,7 +157,9 @@ class sinkCol(Col):
 			raise self.handler.DropRowException(('Error raised while '
 				'running %s(%s). Error: %s')%(self.func, srcdat, e))
 
-		except Exception as exc:
+		except Exception as e:
+			col_log.err('err while converting %s with %s: %s'%(self,
+				src_datacol_zip, e))
 			return self.handler.NoDataError
 
 		#	raise Exception(('Error raised while '

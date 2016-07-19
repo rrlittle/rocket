@@ -19,3 +19,9 @@ class coins_src(sourceManager):
     	assessment_date = utils.datetime.strptime(assessment_date,
     		assessment_dateformat)
     	return assessment_date
+
+    def ensure_row(self, row, logger):
+    	''' source data rows must have an ursi that is not missing 
+    		in order for it to work.
+    	'''
+    	pass
