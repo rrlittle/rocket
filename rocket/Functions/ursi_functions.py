@@ -57,10 +57,11 @@ def findGuid(ursi,args = None):
 		
 
 		if GUID == "NONE":
-			raise sinkManager.DropRowException()
+			raise sinkManager.DropRowException(('No guid found '
+				'matching ursi %s')%ursi)
 
 	except Exception as e:	
-		raise sinkManager.DropRowException()
+		raise sinkManager.DropRowException(e)
 
 	return GUID
 

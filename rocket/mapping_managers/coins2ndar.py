@@ -13,7 +13,8 @@ class coins2ndar(MappingManager):
 		MappingManager.__init__(self, 
 			source = coins.coins_src, 
 			sink=ndar.ndar_snk)
-		print('functions', self.globalfuncs)
+		# print('functions', self.globalfuncs)
+	
 	def load_functions(self):
 		functions = {}
 

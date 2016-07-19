@@ -146,11 +146,13 @@ class ssManager(Manager):
 		'''
 		self.data = []
 
-	def default_parser(self, value): 
-		''' just a simple parser if no other is defined'''
-		print('value',value)
-		# try: return int(value)
-		# except: return str(value)
+	def default_parser(self, value, coldef): 
+		''' just a simple parser if no other is defined
+			used when parsing the template?'''
+		man_log.debug('parsing value: %s(%s)'%(coldef, value))
+
+		if hasattr(coldef, 'missing_vals') and value in coldef.missing_vals:
+			return self.NoDataError
 		return str(value)
 
 	
@@ -173,7 +175,7 @@ class sourceManager(ssManager):
 		self.template_fields['id'] = 'source col id'
 		self.template_fields['col_name']='source col name' 
 		self.template_fields['col_range'] ='source col range'
-
+		self.template_fields['missing_vals'] = 'source missing values'
 
 	def get_src_datpath(self):
 		''' this function sets self.srcpath

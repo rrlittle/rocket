@@ -152,10 +152,10 @@ class MappingManager(Manager):
 					#print('output:',sinkdat)
 					# save the sink value to the last row
 					self.sink[-1][sinkcoldef] = sinkdat
-				except sinkManager.DropRowException as e: 
+				except sinkManager.DropRowException as e:
 					# drop the row if it should't be included in the dataset
-					map_log.error('Dropping row %s:err at %s (%s)'%(rowid, 
-						sinkcol, e))
+					map_log.error('Dropping source row %s:err at %s (%s)'%(rowid, 
+						sinkcoldef, e))
 					self.sink.drop_row()
 					break
 				except Exception as e:

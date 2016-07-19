@@ -45,6 +45,7 @@ class Col(object):
 			this throws a templateError if it can't find either the keyword in
 			this manager or the indicated column in the template
 		'''
+		# import ipdb; ipdb.set_trace()
 		try:
 			header = fieldkeyword + '_header'
 			setattr(self, header, self.handler.template_fields[fieldkeyword])
@@ -58,15 +59,18 @@ class Col(object):
 				self.handler.default_parser)
 
 			val = self.template_row[thisheader] # get raw value
-			setattr(self, fieldkeyword, parser(val)) # save parsed value
-
+			setattr(self, fieldkeyword, parser(val, self)) # save parsed value
+			
 		except Exception as e:
 			raise self.handler.TemplateError(('Template not set up as expected.'
 				' could not parse it. error occured: %s')%e)
 
 	# the following are required to use this obj as keys for a dict
 	# you can also access them by their column name 
-	def __repr__(self): return self.col_name
+	def __repr__(self): 
+		if hasattr(self, 'col_name'):
+			return self.col_name
+		else: return 'col_name not set object id: %s'%id(self)
 	def __hash__(self): return self.col_name.__hash__()
 	def __eq__(self, other): return self.col_name == other
 	def __ne__(self,other): return not self.__eq__(other)
@@ -149,7 +153,7 @@ class sinkCol(Col):
 				'running %s(%s). Error: %s')%(self.func, srcdat, e))
 
 		except Exception as exc:
-			return "DataError"
+			return self.handler.NoDataError
 
 		#	raise Exception(('Error raised while '
 			#	'running %s(%s). Error: %s')%(self.func, srcdat, e))
