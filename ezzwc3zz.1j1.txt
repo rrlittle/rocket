@@ -1,0 +1,28 @@
+﻿Things I have changed:
+
+1: I have implemented a method called drop_row in the sink manager. Now after the DropRowException is catched, the new row in the sink data list will be deleted. 
+2: Add break after the call of the drop_row in the Mapping Manager, so that the srcrow with the wrong data will cease to be processd.
+3: To avoid all of the error in the function to be treated as DropRowException in the mapping manager, I set a multiple exception in the convert where self.func is called. Now the function has to specify itself to throw a DropRowException. Other exception will only return for the DataError as the value for that column.
+4: Change findGuid to throw DropRowException if it can't find Guid or an ursi is not passed in
+5: I have added one line in the columns on 140, to get rid of all of those columns whose name is ""(nothing)
+6: Modify the __next__ in the sourcemanager to make it work.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   debug.log
+#	modified:   rocket/Functions/ursi_functions.py
+#	modified:   rocket/Managers.py
+#	modified:   rocket/MappingManager.py
+#	modified:   rocket/columns.py
+#	modified:   rocket/mapping_managers/coins2ndar.py
+#	modified:   sink_datafiles/generic example out.csv
+#	new file:   source_datafiles/New Microsoft Excel Worksheet.xlsx
+#	modified:   source_datafiles/apes-twcoinsExport2016_01_07-09_10_11_0.tsv
+#	new file:   ursi_data.tmp
+#
+
