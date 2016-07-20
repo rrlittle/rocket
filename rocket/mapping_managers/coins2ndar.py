@@ -18,7 +18,7 @@ class coins2ndar(MappingManager):
 	def load_functions(self):
 		functions = {}
 
-		def findAge(ursi, ass_date,args=None):
+		def findAge(ursi, ass_date, args=None):
 			''' finds the age from the ursi and the assment date
 				requires the ursi first and ass_date second'''
 			bd = ursi_functions.findBirthdate(ursi)
@@ -31,3 +31,4 @@ class coins2ndar(MappingManager):
 		functions['findGuid'] = {'ref':ursi_functions.findGuid}
 		functions['findAge'] = {'ref':findAge}
 		return functions
+

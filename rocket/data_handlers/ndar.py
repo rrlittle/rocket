@@ -11,3 +11,7 @@ class ndar_snk(sinkManager):
 		self.template_fields['mappers'] = 'mapping'
 		self.template_fields['missing_vals'] = 'ndar missing value'
 		self.template_fields['default'] = 'default value'
+
+
+	def interview_date_write_formatter(self, dateobj):
+		return dateobj.strftime('%m/%d/%Y')

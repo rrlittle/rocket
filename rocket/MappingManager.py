@@ -76,6 +76,8 @@ class MappingManager(Manager):
 		'''
 		templ_path = self.get_template()
 		for handler in [self.source, self.sink]:
+			map_log.debug(('loading template into '
+				'handler %s')%type(handler).__name__)
 			with open(templ_path, errors='replace') as templfile:
 				handler.load_template(templfile)
 
@@ -113,7 +115,7 @@ class MappingManager(Manager):
 		if clear_sink: # if sink is not already initialized		
 			self.sink.initialize_data() # clear any data in sink
 
-		map_log.debug('loading data')
+		map_log.critical('loading data')
 		# ipdb.set_trace()
 		self.source.load_data() # ensure src has data
 
@@ -188,7 +190,6 @@ class MappingManager(Manager):
 				return mapper_ids
 			except ValueError:
 				raise sinkManager.DropRowException
-
 
 
 

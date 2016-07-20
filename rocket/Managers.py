@@ -67,7 +67,7 @@ class ssManager(Manager):
 
 	delimiter = ','
 	col_archetype = columns.Col # override this for different managers
-		# srcCol and sinkCol behave slightly differently
+	# srcCol and sinkCol behave slightly differently
 			
 	def __init__(self, **kwargs):
 		''' calls the super Manager init. then adds specific ss Manager stuff'''
@@ -147,23 +147,21 @@ class ssManager(Manager):
 	def default_parser(self, value, coldef): 
 		''' just a simple parser if no other is defined
 			used when parsing the template?'''
-		man_log.debug('parsing value: [%s] (%s)'%(coldef, value))
-		missing =list()
+		man_log.debug('parsing [%s] from (%s)'%(coldef, value))
+		missing =[] # updated below if exists
 
 		if hasattr(coldef, 'missing_vals'): 
-			man_log.debug(coldef.missing_vals)
+			man_log.debug('checking if %s in missing vals: %s'%(value, 
+				coldef.missing_vals))
 			missing = coldef.missing_vals.split(",")
 
-		#if value == "~<condSkipped>~":
-			#import ipdb; ipdb.set_trace()
-
 		if hasattr(coldef, 'missing_vals') and value in missing:
-			#import ipdb; ipdb.set_trace()
 			man_log.debug('replacing row[%s](%s) with NoData'%(coldef, value))
 			return self.NoDataError
+		man_log.debug('parse result is (%s)'%value)
 		return str(value)
 
-	
+
 class sourceManager(ssManager):
 	''' this should work as a source manager
 		therefore it must implement all the things neccessary to 
@@ -171,14 +169,16 @@ class sourceManager(ssManager):
 		so that any children will already hae most the things they need 
 		and they can just change the few things they need
 	'''
+	
 	defaultdatadir = srcdatdir
 	col_archetype = columns.srcCol # override this for different managers
-			# srcCol and sinkCol behave slightly differently
+	# srcCol and sinkCol behave slightly differently
 		
 	col_archetype = columns.srcCol
 
 
-	class BadSourceRowErr(Exception):pass
+	class BadSourceRowErr(Exception):
+		pass
 
 	def __init__(self):
 		''' adds sourceManager specific columns and things'''
@@ -203,7 +203,7 @@ class sourceManager(ssManager):
 		''' loads the source data file and stores it in self.data
 			so that it can be iterated through easily
 		'''
-		man_log.debug('Loading source data into %s'%type(self).__name__)
+		man_log.critical('Loading source data into %s'%type(self).__name__)
 		# if we want to clear the src
 		if clear_src: self.initialize_data()
 
@@ -213,9 +213,8 @@ class sourceManager(ssManager):
 		srcreader = utils.DictReader(srcfile, delimiter=self.delimiter)
 
 		# assert the file has all the expected fields
-		#print('fieldnames,', srcreader.fieldnames)
+		man_log.debug('expected fieldnames: %s'%self.col_defs)
 		for col_name in self.col_defs: 
-			#print(col_name)
 			if col_name not in srcreader.fieldnames:
 				raise self.TemplateError('expected column %s not '
 					'found in source datafile, with fields: %s')%(
@@ -227,18 +226,17 @@ class sourceManager(ssManager):
 			row = utils.OrderedDict()
 			for col in self.col_defs:
 				try:
-					man_log.debug('prasing %s from %s'%(col, datarow[col]))
 					col_parser_name = 'parse_' + str(col)
+					man_log.debug('parsing %s from %s using %s'%(col,
+					 datarow[col], col_parser_name))
 					col_parser = getattr(self, col_parser_name, 
 						self.default_parser)
-					#import ipdb; ipdb.set_trace()
 					row[col] = col_parser(datarow[col.col_name], col)
 				except Exception as e:
 					man_log.error('Exception while parsing %s: %s'%(col, e))
 					row[col] = self.NoDataError('%s'%e)
-			# man_log.debug('resulting row %s: %s'%(len(self.data), row))
 			self.data.append(row)       
-			
+	
 class sinkManager(ssManager):
 	'''this should work as a sink manager
 		therefore it must implement all the things neccessary to 
@@ -252,7 +250,7 @@ class sinkManager(ssManager):
 
 	defaultdatadir = sinkdatdir
 	col_archetype = columns.sinkCol # override this for different managers
-			# srcCol and sinkCol behave slightly differently
+	# srcCol and sinkCol behave slightly differently
 
 	def __init__(self): 
 		ssManager.__init__(self)
@@ -285,19 +283,38 @@ class sinkManager(ssManager):
 		''' writes self.data to a the outfile. which the user provides'''
 
 		outpath = self.get_file_outpath()
-		import ipdb; ipdb.set_trace()
 		outfile = open(outpath, 'w')
 		outwriter = utils.DictWriter(outfile, fieldnames = self.col_defs)
 		outwriter.writeheader()
 		for rowid,row in enumerate(self.data):
-			for coldef, elem in enumerate(row):
+			for coldef, elem in row.items():
 				if elem is self.NoDataError:
 					man_log.error('out row[%s][%s] is %s. changing it to %s'%(
-						rowid, coldef, elem, col_defs.missing_vals))
+						rowid, coldef, elem, coldef.missing_vals))
 					row[coldef] = coldef.missing_vals 
+				else: 
+					formatter = getattr(self, coldef+'_write_formatter', 
+						self.default_write_formatter)
+					man_log.debug('trying formatter %s'%(
+							coldef+'_write_formatter'))
+					man_log.debug('formatting row[%s][%s](%s) with %s'%(rowid,
+						coldef,row[coldef], formatter.__name__))
+					row[coldef] = formatter(row[coldef])
+					man_log.debug('writing row[%s][%s] is %s'%(rowid, coldef, 
+						row[coldef]))
 			outwriter.writerow(row) 
 
 		return outpath
 
 	def add_row(self): self.data.append(utils.OrderedDict())    
 	def drop_row(self): self.data.pop()
+
+	def default_write_formatter(self, value):
+		''' this is the default output formatter. you can overwrite this 
+			in your handlers to format any specific columns however you like. 
+			you will need to know what you expect and what to output. 
+			which really depends on the column.
+
+			name the function {colname}_write_formatter.
+		'''
+		return str(value) 

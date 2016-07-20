@@ -69,6 +69,9 @@ class Col(object):
 				self.handler.default_parser)
 
 			val = self.template_row[thisheader] # get raw value
+
+			col_log.debug('parsing %s from %s using %s'%(fieldkeyword, 
+				val, parser.__name__))
 			setattr(self, fieldkeyword, parser(val, self)) # save parsed value
 
 		except Exception as e:
@@ -77,6 +80,7 @@ class Col(object):
 
 	# the following are required to use this obj as keys for a dict
 	# you can also access them by their column name 
+	def __str__(self): return self.__repr__()
 	def __repr__(self): 
 		if hasattr(self, 'col_name'):
 			return self.col_name
@@ -84,7 +88,7 @@ class Col(object):
 	def __hash__(self): return self.col_name.__hash__()
 	def __eq__(self, other): return self.col_name == other
 	def __ne__(self,other): return not self.__eq__(other)
-
+	def __add__(self, other): return self.__str__() + str(other)
 class srcCol(Col):
 	''' this adds funcitonality to columns defining specifcally
 		to sink cols.
@@ -112,7 +116,7 @@ class sinkCol(Col):
 		if self.func.strip() in self.handler.globalfuncs:
 			self.func = self.handler.globalfuncs[self.func.strip()]['ref']
 		elif self.func.strip() == '':
-			self.func = lambda x,**y:str(x)
+			self.func = lambda *x: x[0]
 		else: 
 			raise self.handler.TemplateError(('function %s for column '
 			'%s is not valid. please change the template'
@@ -149,21 +153,30 @@ class sinkCol(Col):
 		# print('srcdat:',srcdat)
 		# print('*srcdat:',*srcdat)
 		try:
-			#import ipdb; ipdb.set_trace()
-			if self.args.__len__()> 0:
+			col_log.debug('CONVERTING %s for handler %s'%(self, 
+				self.handler))
+			col_log.debug('FROM dat (%s) using %s with args (%s)'%(
+				srcdat,self.func.__name__, self.args))
+
+			if self.args.__len__() > 0:
+				col_log.debug('CALLING %s(%s, %s)'%(self.func.__name__, 
+					srcdat, [arg for arg in self.args])) 
 				self.dat = self.func(*srcdat, args=[arg for arg in self.args])
-			else: self.dat = self.func(*srcdat)
+			else: 
+				col_log.debug('CALLING %s(%s)'%(self.func.__name__, srcdat)) 
+				self.dat = self.func(*srcdat)
 		except self.handler.DropRowException as e:
 			raise self.handler.DropRowException(('Error raised while '
 				'running %s(%s). Error: %s')%(self.func, srcdat, e))
 
 		except Exception as e:
-			col_log.err('err while converting %s with %s: %s'%(self,
+			col_log.error('err while converting %s with %s: %s'%(self,
 				src_datacol_zip, e))
 			return self.handler.NoDataError
 
 		#	raise Exception(('Error raised while '
 			#	'running %s(%s). Error: %s')%(self.func, srcdat, e))
 
+		col_log.debug('CONVERTED TO (%s)'%self.dat)
 		return self.dat
 
