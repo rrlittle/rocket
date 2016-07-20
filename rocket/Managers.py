@@ -20,18 +20,18 @@ class Manager(object):
 		allownew = True, 
 		**kwargs):
 		''' this is a generic function that can be extended 
-		 	it simply gets a filepath and asserts it's not empty. 
-		 	if it's empty the program quits unless quit is False. 
-		 	when it will throw an error
-		 	
-		 	filetype is a string used for error messages and variable names 
+			it simply gets a filepath and asserts it's not empty. 
+			if it's empty the program quits unless quit is False. 
+			when it will throw an error
 			
-		 	askopenfilename takes other kwargs as well you can look into
-		 	all of them provided get passed on.
-		 	- defaultextension - str expression for default extensions
-		 	- others check out utils.askopenfilename docs for more 
+			filetype is a string used for error messages and variable names 
+			
+			askopenfilename takes other kwargs as well you can look into
+			all of them provided get passed on.
+			- defaultextension - str expression for default extensions
+			- others check out utils.askopenfilename docs for more 
 			- initialdir - str path to where you would like to open 
-		 	TODO: figure out how to disallow new files being made/ allow
+			TODO: figure out how to disallow new files being made/ allow
 		'''
 		openfunc = None
 		if save: openfunc = utils.asksaveasfilename
@@ -115,7 +115,7 @@ class ssManager(Manager):
 			except ValueError as e:
 				errstr = ('while looking for column %s '
 					'none found in %s')%(col,self)
-				if ignore_errors: print(errstr)
+				if ignore_errors: pass #print(errstr)
 				else: raise ValueError(errstr, e)
 		return cols
 
@@ -148,8 +148,17 @@ class ssManager(Manager):
 		''' just a simple parser if no other is defined
 			used when parsing the template?'''
 		man_log.debug('parsing value: [%s] (%s)'%(coldef, value))
-		if hasattr(coldef, 'missing_vals'):	man_log.debug(coldef.missing_vals)
-		if hasattr(coldef, 'missing_vals') and value in coldef.missing_vals:
+		missing =list()
+
+		if hasattr(coldef, 'missing_vals'): 
+			man_log.debug(coldef.missing_vals)
+			missing = coldef.missing_vals.split(",")
+
+		#if value == "~<condSkipped>~":
+			#import ipdb; ipdb.set_trace()
+
+		if hasattr(coldef, 'missing_vals') and value in missing:
+			#import ipdb; ipdb.set_trace()
 			man_log.debug('replacing row[%s](%s) with NoData'%(coldef, value))
 			return self.NoDataError
 		return str(value)
@@ -222,29 +231,13 @@ class sourceManager(ssManager):
 					col_parser_name = 'parse_' + str(col)
 					col_parser = getattr(self, col_parser_name, 
 						self.default_parser)
-					row[col] = col_parser(datarow[col], col)
-					man_log.critical('after parsing: [%s(raw) == [%s(par)? %s'%(
-						datarow[col], row[col], datarow[col] == row[col]))
+					#import ipdb; ipdb.set_trace()
+					row[col] = col_parser(datarow[col.col_name], col)
 				except Exception as e:
 					man_log.error('Exception while parsing %s: %s'%(col, e))
 					row[col] = self.NoDataError('%s'%e)
-			
-
-			try:
-				self.ensure_row(row, man_log)
-				self.data.append(row)		
-			except Exception as e:
-				man_log.error('Row not saved in sourceHandler. error: %s'%e)
-
-
-	def ensure_row(self, row, logger):
-		''' this function should get overridden by the source datahandler
-			so that you can check if the row is valid or not. like if the 
-			primary key is missing it should be removed. 
-			return or throw an error. 
-			feel free to use the logger to log alternative error messages.  
-		'''
-		return True
+			# man_log.debug('resulting row %s: %s'%(len(self.data), row))
+			self.data.append(row)       
 			
 class sinkManager(ssManager):
 	'''this should work as a sink manager
@@ -306,5 +299,5 @@ class sinkManager(ssManager):
 
 		return outpath
 
-	def add_row(self): self.data.append(utils.OrderedDict())	
+	def add_row(self): self.data.append(utils.OrderedDict())    
 	def drop_row(self): self.data.pop()
