@@ -202,6 +202,12 @@ class sourceManager(ssManager):
 	def load_data(self, clear_src=True):
 		''' loads the source data file and stores it in self.data
 			so that it can be iterated through easily
+
+			NOTE. IF datafile lives on a server through a vpn. this runs
+			REALLY REALLY SLOWLY...
+			we should pull the file and use readlines to save them to 
+			memory and close the file to speed things up. rather than querying
+			every time.
 		'''
 		man_log.critical('Loading source data into %s'%type(self).__name__)
 		# if we want to clear the src

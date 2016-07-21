@@ -20,3 +20,4 @@ class coins_src(sourceManager):
     		assessment_dateformat)
     	return assessment_date
 
+    

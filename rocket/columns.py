@@ -158,7 +158,7 @@ class sinkCol(Col):
 			col_log.debug('FROM dat (%s) using %s with args (%s)'%(
 				srcdat,self.func.__name__, self.args))
 
-			if self.args.__len__() > 0:
+			if hasattr(self.args,'__len__') and self.args.__len__() > 0:
 				col_log.debug('CALLING %s(%s, %s)'%(self.func.__name__, 
 					srcdat, [arg for arg in self.args])) 
 				self.dat = self.func(*srcdat, args=[arg for arg in self.args])
