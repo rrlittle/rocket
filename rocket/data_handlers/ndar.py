@@ -1,5 +1,5 @@
 from Managers import sinkManager
-
+from loggers import man_log
 class ndar_snk(sinkManager):
 	''' ndar sink manager
 	'''
@@ -13,5 +13,7 @@ class ndar_snk(sinkManager):
 		self.template_fields['default'] = 'default value'
 
 
-	def interview_date_write_formatter(self, dateobj):
+	def interview_date_write_formatter(self, dateobj, coldef):
+		if isinstance(dateobj, self.NoDataError):
+			return coldef.missing_vals
 		return dateobj.strftime('%m/%d/%Y')

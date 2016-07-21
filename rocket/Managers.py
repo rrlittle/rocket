@@ -305,7 +305,7 @@ class sinkManager(ssManager):
 							coldef+'_write_formatter'))
 					man_log.debug('formatting row[%s][%s](%s) with %s'%(rowid,
 						coldef,row[coldef], formatter.__name__))
-					row[coldef] = formatter(row[coldef])
+					row[coldef] = formatter(row[coldef], coldef)
 					man_log.debug('writing row[%s][%s] is %s'%(rowid, coldef, 
 						row[coldef]))
 			outwriter.writerow(row) 
@@ -315,7 +315,7 @@ class sinkManager(ssManager):
 	def add_row(self): self.data.append(utils.OrderedDict())    
 	def drop_row(self): self.data.pop()
 
-	def default_write_formatter(self, value):
+	def default_write_formatter(self, value, coldef):
 		''' this is the default output formatter. you can overwrite this 
 			in your handlers to format any specific columns however you like. 
 			you will need to know what you expect and what to output. 
