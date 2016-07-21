@@ -323,4 +323,6 @@ class sinkManager(ssManager):
 
 			name the function {colname}_write_formatter.
 		'''
+		if isinstance(dateobj, self.NoDataError):
+			return coldef.missing_vals
 		return str(value) 
