@@ -25,8 +25,5 @@ class ndar_snk(sinkManager):
 		for coldef, elem in datarow.items():
 			if coldef.required: 
 				if isinstance(elem, self.NoDataError):
-<<<<<<< HEAD
 					raise coldef.DropRowException('%s'%elem)
-=======
-					raise coldef.DropRowException('%s'%elem)
->>>>>>> removed extraneous break
+
