@@ -155,7 +155,7 @@ class MappingManager(Manager):
 					else:
 						self.sink[-1][sinkcoldef] = sinkcoldef.default
 
-				# after the row is done use ensure row
+				a# after the row is done use ensure row
 				self.ensure_row(self.sink.data[-1]) # raise drop row exception if row not right
 
 			except sinkManager.DropRowException as e:
