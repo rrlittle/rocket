@@ -131,11 +131,12 @@ class ssManager(Manager):
 
 		self.col_defs = []
 		for template_row in templ_csv_reader:
+
 			# use the column to parse the row as we would like it to be 
 			try:
 				self.col_defs.append(self.col_archetype(self,template_row)) 
 			except self.col_archetype.BadColErr as e:
-				man_log.error(('%s column not created '
+				man_log.debug(('%s column not created '
 					'beacause %s')%(self.col_archetype.__name__,e))
 
 	def initialize_data(self):
@@ -157,7 +158,8 @@ class ssManager(Manager):
 
 		if hasattr(coldef, 'missing_vals') and value in missing:
 			man_log.debug('replacing row[%s](%s) with NoData'%(coldef, value))
-			return self.NoDataError
+			return self.NoDataError(('value %s identified as a missing '
+				'value for col %s')%(value, coldef))
 		man_log.debug('parse result is (%s)'%value)
 		return str(value)
 
@@ -209,7 +211,7 @@ class sourceManager(ssManager):
 			memory and close the file to speed things up. rather than querying
 			every time.
 		'''
-		man_log.critical('Loading source data into %s'%type(self).__name__)
+		man_log.info('Loading source data into %s'%type(self).__name__)
 		# if we want to clear the src
 		if clear_src: self.initialize_data()
 
@@ -228,6 +230,7 @@ class sourceManager(ssManager):
 
 		# load each row
 		for rowid, datarow in enumerate(srcreader):
+			man_log.info('loading row %s'%rowid)
 			man_log.debug('parsing row %s : %s'%(rowid, datarow))
 			row = utils.OrderedDict()
 			for col in self.col_defs:
@@ -239,7 +242,7 @@ class sourceManager(ssManager):
 						self.default_parser)
 					row[col] = col_parser(datarow[col.col_name], col)
 				except Exception as e:
-					man_log.error('Exception while parsing %s: %s'%(col, e))
+					man_log.debug('Exception while parsing %s: %s'%(col, e))
 					row[col] = self.NoDataError('%s'%e)
 			self.data.append(row)       
 	
@@ -288,9 +291,20 @@ class sinkManager(ssManager):
 	def write_outfile(self):
 		''' writes self.data to a the outfile. which the user provides'''
 
+		outfile = None
 		outpath = self.get_file_outpath()
-		outfile = open(outpath, 'w')
-		outwriter = utils.DictWriter(outfile, fieldnames = self.col_defs)
+
+		
+		try:
+			outfile = open(outpath, 'w', newline = "")
+		except PermissionError as e:
+			input(('%s was not opened successfully. perhaps it is open. '
+				'close it and hit neter to cont')%outpath)
+			outfile = open(outpath, 'w')
+
+
+		self.write_header(outfile)
+		outwriter = utils.DictWriter(outfile, fieldnames = self.col_defs)	
 		outwriter.writeheader()
 		for rowid,row in enumerate(self.data):
 			for coldef, elem in row.items():
@@ -312,6 +326,12 @@ class sinkManager(ssManager):
 
 		return outpath
 
+	def write_header(self, outfile):
+		''' this is a hook for handler to write headers on the 
+			outfile
+		'''
+		pass
+
 	def add_row(self): self.data.append(utils.OrderedDict())    
 	def drop_row(self): self.data.pop()
 
@@ -323,7 +343,7 @@ class sinkManager(ssManager):
 
 			name the function {colname}_write_formatter.
 		'''
-		if isinstance(dateobj, self.NoDataError):
+		if isinstance(value, self.NoDataError):
 			return coldef.missing_vals
 		return str(value) 
 

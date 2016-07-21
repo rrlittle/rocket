@@ -7,16 +7,20 @@
 from Managers import ssManager
 
 
-def sum(*data, args = [0.8]):
+def sum(*data, args = [0.8,'int']):
     threshold = args[0]
-    
+    strtypearg = args[1]
+    strtypes = {'float':float,'int':int}
+    strtype = strtypes[strtypearg]
+
+    #import ipdb; ipdb.set_trace()
     numMiss = 0
     data_sum = 0
     for num in data:
         if isinstance(num, ssManager.NoDataError):
             numMiss +=1
         else:
-            data_sum += num
+            data_sum += strtype(num)
 
     if numMiss/len(data) >= threshold:
         return data_sum

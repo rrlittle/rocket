@@ -144,7 +144,7 @@ class MappingManager(Manager):
 						# zip the data with it's defining object
 						# needed for sinkcol.convert
 						src_datcol_zip = zip(srcdat, srccols)
-					
+						
 						# convert it to the sink value
 						sinkdat = sinkcoldef.convert(src_datcol_zip)
 
@@ -155,8 +155,8 @@ class MappingManager(Manager):
 					else:
 						self.sink[-1][sinkcoldef] = sinkcoldef.default
 
-				a# after the row is done use ensure row
-				self.ensure_row(self.sink.data[-1]) # raise drop row exception if row not right
+				# after the row is done use ensure row
+				self.sink.ensure_row(self.sink.data[-1]) # raise drop row exception if row not right
 
 			except sinkManager.DropRowException as e:
 				# drop the row if it should't be included in the dataset

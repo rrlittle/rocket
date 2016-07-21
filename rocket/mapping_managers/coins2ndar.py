@@ -2,6 +2,7 @@ from MappingManager import MappingManager
 from data_handlers import coins, ndar
 import Functions as func
 from Functions import ursi_functions
+from loggers import map_log
 
 class coins2ndar(MappingManager):
 	''' this manager is to define the mappping between coins and ndar type files.
@@ -21,7 +22,11 @@ class coins2ndar(MappingManager):
 		def findAge(ursi, ass_date, args=None):
 			''' finds the age from the ursi and the assment date
 				requires the ursi first and ass_date second'''
+			map_log.critical("Ursi: %s, ass_date: %s" %(ursi, ass_date))
+
 			bd = ursi_functions.findBirthdate(ursi)
+
+
 			return ursi_functions.findAge(olddate=bd, recentdate=ass_date)
 
 

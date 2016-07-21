@@ -79,6 +79,8 @@ def findAge(olddate = None, recentdate = None):
 
 	assert olddate != None and recentdate != None, "**** findAge goes wrong ***"
 
+	#import ipdb; ipdb.set_trace()
+
 	age = relativedelta.relativedelta(olddate,recentdate)
 	year = abs(age.years)
 	month = abs(age.months)

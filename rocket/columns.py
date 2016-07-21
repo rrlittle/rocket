@@ -112,7 +112,7 @@ class sinkCol(Col):
 
 		# set self.func to an actual function
 		# use self.handler.globalfuncs to get func refereances or throw err
-		if self.func is self.handler.NoDataError: self.func = ''
+		if isinstance(self.func, self.handler.NoDataError): self.func = ''
 		if self.func.strip() in self.handler.globalfuncs:
 			self.func = self.handler.globalfuncs[self.func.strip()]['ref']
 		elif self.func.strip() == '':
@@ -130,10 +130,11 @@ class sinkCol(Col):
 		mappers_result = []
 		if isinstance(self.mappers,str):
 			mappers_id = self.mappers.split(',')
-			for srccol in srcrow:
-				if srccol.id in mappers_id:
-					mappers_result.append(srccol)
-
+			for mid in mappers_id:
+				cols = [col for col in srcrow if col.id == mid]
+				assert len(cols) <= 1, 'non unique src ids (%s) in template'%mid
+				assert len(cols) == 1, 'id (%s) specified does not exist'%mid
+				mappers_result.append(cols[0])
 			self.mappers = mappers_result
 
 

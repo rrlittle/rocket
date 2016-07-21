@@ -1,5 +1,7 @@
 from Managers import sinkManager
 from loggers import man_log
+import utils
+
 class ndar_snk(sinkManager):
 	''' ndar sink manager
 	'''
@@ -22,8 +24,19 @@ class ndar_snk(sinkManager):
 		return dateobj.strftime('%m/%d/%Y')
 
 	def ensure_row(self, datarow):
+		man_log.debug("ENSURING DATA ROW %s" %datarow) 
 		for coldef, elem in datarow.items():
-			if coldef.required: 
+			if coldef.required:
+				man_log.info('row[%s](%s) is required'%(coldef, elem))
 				if isinstance(elem, self.NoDataError):
-					raise coldef.DropRowException('%s'%elem)
+					#import ipdb; ipdb.set_trace()
+					man_log.critical("\n\n\nRAISING DROPROW") 
+					raise self.DropRowException('%s'%elem)
 
+	def write_header(self, outfile):
+		insr = input('enter ndar instrument name')
+		vers = input('enter ndar instrument version')
+		outwriter = utils.writer(outfile)
+		outwriter.writerow([insr, vers])
+
+		pass;
