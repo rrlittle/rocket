@@ -16,13 +16,9 @@ class ndar_snk(sinkManager):
 	def parse_required(self, req, coldef):
 		return req.lower() in ('true', 't')
 
-<<<<<<< HEAD
 	def interview_date_write_formatter(self, dateobj, coldef):
 		if isinstance(dateobj, self.NoDataError):
 			return coldef.missing_vals
-		return dateobj.strftime('%m/%d/%Y')
-=======
-	def interview_date_write_formatter(self, dateobj):
 		return dateobj.strftime('%m/%d/%Y')
 
 	def ensure_row(self, datarow):
@@ -30,4 +26,3 @@ class ndar_snk(sinkManager):
 			if coldef.required: 
 				if isinstance(elem, self.NoDataError):
 					raise coldef.DropRowException('%s'%elem)
->>>>>>> added ensure row. currently not dropping rows we should be.... i.e. not all required rows are filled
