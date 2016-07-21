@@ -222,9 +222,9 @@ class sourceManager(ssManager):
 		man_log.debug('expected fieldnames: %s'%self.col_defs)
 		for col_name in self.col_defs: 
 			if col_name not in srcreader.fieldnames:
-				raise self.TemplateError('expected column %s not '
+				raise self.TemplateError(('expected column %s not '
 					'found in source datafile, with fields: %s')%(
-					col_name, list(srcreader.fieldnames))
+					col_name, list(srcreader.fieldnames)))
 
 		# load each row
 		for rowid, datarow in enumerate(srcreader):
