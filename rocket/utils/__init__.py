@@ -90,7 +90,7 @@ def make_args(description, args = {}):
     '''
     parser = argparse.ArgumentParser(description=description)
     for arg in args:
-        parser.add_argument(arg, **args[arg])
+        parser.add_argument(*arg, **args[arg])
     return parser
 
 def load_handlers():

@@ -14,19 +14,22 @@ import utils
 
 parser = utils.make_args('runs the rocket data mapping package',
 		args={
-			'--mm':{	'choices': list(mapping_managers.keys()),
+			('-mm','--mappingmanager'):{
+									'choices': list(mapping_managers.keys()),
 									'action':'store',
 									'required':True,
 									'dest':'mm',
 									'help': ('required: choose one mapping' 
 										'manager you would like to use?')
 							},
-			'--template':{  'dest':'template',
+			('-t','--template'):{  
+							'dest':'template',
 							'const':True,
 							'action':'store_const',
 							'help':'make the template from two schemes'
 						},
-			'--convert':{   'dest':'convert', 
+			('-c','--convert'):{   
+							'dest':'convert', 
 							'action':'store_const',
 							'const':True,
 							'help': (   'converts a source datafile to sink '

@@ -163,7 +163,6 @@ class MappingManager(Manager):
 				map_log.error(('not including source row %s in sink: err'
 									' at %s (%s)')%(rowid, sinkcoldef, e))
 				self.sink.drop_row()
-				break
 			except Exception as e:
 				map_log.error('not droprow exception: %s'%e)
 
