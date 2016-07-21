@@ -123,9 +123,9 @@ class MappingManager(Manager):
 		for rowid,srcrow in enumerate(self.source): 
 			self.sink.add_row() # we want to fill in a new row
 
-			# go through all the columns defined in the template
-			for sinkcoldef in self.sink.col_defs: 
-				try:
+			try:
+				# go through all the columns defined in the template
+				for sinkcoldef in self.sink.col_defs: 
 
 					# sinkcol maps from the id to sourceColMappers 
 					sinkcoldef.map_src(srcrow)
@@ -155,14 +155,17 @@ class MappingManager(Manager):
 					else:
 						self.sink[-1][sinkcoldef] = sinkcoldef.default
 
-				except sinkManager.DropRowException as e:
-					# drop the row if it should't be included in the dataset
-					map_log.error('Dropping source row %s:err at %s (%s)'%(rowid, 
-						sinkcoldef, e))
-					self.sink.drop_row()
-					break
-				except Exception as e:
-					map_log.error('not droprow exception: %s'%e)
+				# after the row is done use ensure row
+				self.ensure_row(self.sink.data[-1]) # raise drop row exception if row not right
+
+			except sinkManager.DropRowException as e:
+				# drop the row if it should't be included in the dataset
+				map_log.error(('not including source row %s in sink: err'
+									' at %s (%s)')%(rowid, sinkcoldef, e))
+				self.sink.drop_row()
+				break
+			except Exception as e:
+				map_log.error('not droprow exception: %s'%e)
 
 
 
@@ -190,6 +193,5 @@ class MappingManager(Manager):
 				return mapper_ids
 			except ValueError:
 				raise sinkManager.DropRowException
-
 
 

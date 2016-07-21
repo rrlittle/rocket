@@ -326,3 +326,13 @@ class sinkManager(ssManager):
 		if isinstance(dateobj, self.NoDataError):
 			return coldef.missing_vals
 		return str(value) 
+
+	def ensure_row(self, datarow):
+		''' default ensure row function always accepts rows. 
+			you should override this for your handlers. using whatever 
+			tepmlate fields you would like or do whatever you would like. 
+			
+			raise a coldef.DropRowException if you would like to 
+			drop the row. otherwise return None
+		'''
+		pass
