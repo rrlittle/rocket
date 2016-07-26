@@ -4,7 +4,7 @@ import utils
 # Yay abstraction!
 
 home_dir_str = None
-if utils.systemName == 'Linux':
+if utils.systemName in ('Linux','Darwin'):
 	home_dir_str = utils.environ['HOME']
 elif utils.systemName == 'Windows':
 	try:
