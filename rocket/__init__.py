@@ -4,7 +4,7 @@ import utils
 # Yay abstraction!
 
 home_dir_str = None
-if utils.systemName == 'Linux':
+if utils.systemName in ('Linux','Darwin'):
 	home_dir_str = utils.environ['HOME']
 elif utils.systemName == 'Windows':
 	try:
@@ -36,3 +36,6 @@ handlers = utils.load_handlers()
 # loads all the mapping managers we know about 
 # so you can pass one to the controller
 mapping_managers = utils.load_map_submanagers() 
+
+#  the delimiter for template files. it's here to make it global
+templ_delimiter = ',' 

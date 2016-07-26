@@ -1,6 +1,6 @@
 from Managers import sourceManager, sinkManager, Manager
 import utils
-from __init__ import templatedir,secretdir
+from __init__ import templatedir, templ_delimiter, secretdir
 from loggers import map_log
 import ipdb
 
@@ -11,8 +11,7 @@ class MappingManager(Manager):
 		it is also in charge of creation and parsing of 
 		the template file. 
 	'''
-	tmeplate_seperator = ','
-
+	delimiter = templ_delimiter
 	def __init__(self, source=sourceManager, sink = sinkManager):
 		''' it's imperative that this instance know about
 			a source and sink manager. they are the providers 
@@ -37,6 +36,8 @@ class MappingManager(Manager):
 		self.sink = sink()
 		
 		
+		self.check_valid_src_sink_combo()
+
 		# make the functions of each available via utils
 		# check for naming conflicts
 		self.globalfuncs = self.load_functions()
@@ -53,7 +54,7 @@ class MappingManager(Manager):
 		'''
 		return {}
 
-	def get_template(self, allownew=False):
+	def get_template(self, title='Template', allownew=False, save=False):
 		''' this gets the filepath to a file. which is assumed to be 
 			a template file. we will rely on source sink handlers for error
 			checking when they load it in
@@ -61,8 +62,9 @@ class MappingManager(Manager):
 			allownew should decide if it's okay to allow a new file or not
 		'''
 
-		tmppath = self.get_filepath(title='tenplate',
+		tmppath = self.get_filepath(title=title,
 			initialdir=templatedir,
+			save=save,
 			filetype='templates',
 			allownew = allownew)
 
@@ -74,7 +76,12 @@ class MappingManager(Manager):
 			to parse the template file. each managaer will 
 			take the columns they know about. 
 		'''
-		templ_path = self.get_template()
+		templ_path = None
+		if hasattr(self, 'templ_path'):
+			templ_path = self.templ_path
+		else:
+			templ_path = self.get_template()
+	
 		for handler in [self.source, self.sink]:
 			map_log.debug(('loading template into '
 				'handler %s')%type(handler).__name__)
@@ -98,7 +105,7 @@ class MappingManager(Manager):
 		# and raise error if there are any collisions
 		if len(collisions != 0): 
 			raise self.TemplateError(('collisions detected in src and'
-				' sink hndler template_fieldnames. pleae modify these fields '
+				' sink handler template_fieldnames. pleae modify these fields '
 				'to ensure unique headers: %s')%collisions) 
 
 	def convert(self, clear_sink=True):
@@ -199,5 +206,97 @@ class MappingManager(Manager):
 				return mapper_ids
 			except ValueError:
 				raise sinkManager.DropRowException
+
+	def make_template(self):
+		''' leverages the sink and source handlers to make the template
+			file. 
+			
+			writes handler documentation as top header using 
+			self.template_header
+			
+			then calls sink handler to write it's documentation as the second 
+			header
+
+			then calls source header to write it's documentation as the third 
+			header
+
+			then wtites global funcs with their documentation as the 4th header
+
+			finally uses sink.get_template_fields and source.get_template_fields
+			to populate the final template header.
+
+			then calls sink and source.populate_template to populate the 
+			template.
+
+			for a specific mapping manager include a list of strings to be
+			included as the header for that thing. 
+		'''
+			
+		templ_path = None
+		if hasattr(self, 'templ_path'):
+			templ_path = self.templ_path
+		else:
+			templ_path = self.get_template(title='Select a template file', 
+				save=True, allownew=True)
+		
+		def handle_tmeplate_err(errstr,err):
+			map_log.err(('%s... Template field getting deleted and '
+				'rocket quitting. Error: %s')%(errstr,err))
+			templfile.close()
+			utils.remove(templ_path)
+			utils.exit(1)
+
+		templfile = open(templ_path, 'w')
+		self.header_lines = 0
+		try:
+			self.header_lines += self.write_templ_header(templfile)
+			self.header_lines += self.sink.write_templ_header(templfile)
+			self.header_lines += self.source.write_templ_header(templfile)
+		except Exception as e:
+			handle_tmeplate_err('error while writing headers', e)
+
+		# the template fields for each handler are defined upon initialization 
+		# of the handlers. they are defined in the code and extended for each 
+		# custom handler if they so choose. 
+		# they will be in order of definition in the __init__
+		srctemplatefields = list(self.source.template_fields.values())
+		sinktemplatefields = list(self.sink.template_fields.values())
+		templatefields = srctemplateheaders + sinktemplateheaders
+		
+		wr = utils.writer(templfile, delimiter=self.delimiter)
+		wr.writerow(templatefields)
+		self.header_lines += 1
+
+		try:
+			# write the column defs for sink
+			self.sink.populate_template(templfile, templatefields) 
+			templfile.close()
+		except Exception as e:
+			handle_tmeplate_err('error while populating sink columns', e)
+		
+		try:
+			# allow rewrite of rows starting just below the headers
+			templfile = open(templ_path, 'w+')
+			# skip to below headers
+			for i in range(self.header_lines): 
+				templfile.readline() 
+			# write the column defs for source
+			self.source.populate_template(templfile, templatefields)
+			templfile.close() # done with template. wait for user input
+		except Exception as e:
+			handle_tmeplate_err('error while populating sink columns', e)
+
+		map_log.debug('Template created')
+		inp = input(('\n\nThe template file has been written. \n'
+			'Please hit enter when you are done with the file and you will'
+			' continue to the conversion if you have selected both options\n'
+			'enter "q" if you would like to quit now and fill the template at ' 
+			'another time\n>>'))
+
+		if inp == 'q': 
+			map_log.critical('User elected to quit after template was created')
+			utils.exit()
+
+		return templ_path
 
 

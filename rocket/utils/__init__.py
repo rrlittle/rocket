@@ -8,7 +8,7 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename
 from csv import DictReader, DictWriter , writer
 from os.path import join, abspath, isfile,split, dirname
 import platform
-from os import environ,getcwd
+from os import environ,getcwd, remove
 from collections import OrderedDict
 from importlib import import_module, __import__
 from sys import exit
