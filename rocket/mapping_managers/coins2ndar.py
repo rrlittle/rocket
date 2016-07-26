@@ -20,6 +20,7 @@ class coins2ndar(MappingManager):
 		functions = {}
 
 		def findAge(ursi, ass_date, args=None):
+
 			''' finds the age from the ursi and the assment date
 				requires the ursi first and ass_date second'''
 			map_log.critical("Ursi: %s, ass_date: %s" %(ursi, ass_date))

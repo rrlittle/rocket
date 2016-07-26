@@ -11,7 +11,6 @@ class ndar_snk(sinkManager):
 		self.template_fields['col_name'] = 'ndar name'
 		self.template_fields['col_range'] = 'ndar range'
 		self.template_fields['mappers'] = 'mapping'
-		self.template_fields['missing_vals'] = 'ndar missing value'
 		self.template_fields['default'] = 'default value'
 		self.template_fields['required'] = 'required'
 
@@ -27,15 +26,15 @@ class ndar_snk(sinkManager):
 		man_log.debug("ENSURING DATA ROW %s" %datarow) 
 		for coldef, elem in datarow.items():
 			if coldef.required:
-				man_log.info('row[%s](%s) is required'%(coldef, elem))
+				man_log.debug('row[%s](%s) is required'%(coldef, elem))
 				if isinstance(elem, self.NoDataError):
 					#import ipdb; ipdb.set_trace()
 					man_log.critical("\n\n\nRAISING DROPROW") 
 					raise self.DropRowException('%s'%elem)
 
 	def write_header(self, outfile):
-		insr = input('enter ndar instrument name')
-		vers = input('enter ndar instrument version')
+		insr = input('enter ndar instrument name: ')
+		vers = input('enter ndar instrument version: ')
 		outwriter = utils.writer(outfile)
 		outwriter.writerow([insr, vers])
 

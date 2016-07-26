@@ -126,34 +126,46 @@ class MappingManager(Manager):
 			try:
 				# go through all the columns defined in the template
 				for sinkcoldef in self.sink.col_defs: 
+					try:
+						# if rowid >= 25:
+						#	ipdb.set_trace()
+						# sinkcol maps from the id to sourceColMappers 
+						sinkcoldef.map_src(srcrow)
+						# get col objs from src
 
-					# sinkcol maps from the id to sourceColMappers 
-					sinkcoldef.map_src(srcrow)
-					# get col objs from src
-
-					mapperslist = sinkcoldef.mappers 
-						# src cols required to compute the sink value
-
-					if mapperslist != self.sink.NoDataError:
-						srccols = self.source.getcolumn_defs(*mapperslist) 
-						# list of columns in the source datafile we need to grab
-			
-						# get the data					
-						srcdat = [srcrow[col.col_name] for col in srccols]
-						# list of data values from src datafile
-						# zip the data with it's defining object
-						# needed for sinkcol.convert
-						src_datcol_zip = zip(srcdat, srccols)
+						mapperslist = sinkcoldef.mappers 
+							# src cols required to compute the sink value
 						
-						# convert it to the sink value
-						sinkdat = sinkcoldef.convert(src_datcol_zip)
 
-						#print('output:',sinkdat)
-						# save the sink value to the last row
-						self.sink[-1][sinkcoldef] = sinkdat
+						if not isinstance(mapperslist, self.sink.NoDataError):
+							srccols = self.source.getcolumn_defs(*mapperslist) 
+							# list of columns in the source datafile we need to grab
+				
+							# get the data					
+							srcdat = [srcrow[col.col_name] for col in srccols]
+							# list of data values from src datafile
+							# zip the data with it's defining object
+							# needed for sinkcol.convert
+							src_datcol_zip = zip(srcdat, srccols)
+							
+							# convert it to the sink value
+							sinkdat = sinkcoldef.convert(src_datcol_zip)
 
-					else:
+							#print('output:',sinkdat)
+							# save the sink value to the last row
+							self.sink[-1][sinkcoldef] = sinkdat
+
+						else:
+							self.sink[-1][sinkcoldef] = sinkcoldef.default
+							
+
+					except sinkManager.DropRowException as e:
+						raise e
+					except Exception as e:
+						map_log.error(('A not drop row exception happen when'
+										'processing data in a row: %s')%e)
 						self.sink[-1][sinkcoldef] = sinkcoldef.default
+						continue;
 
 				# after the row is done use ensure row
 				self.sink.ensure_row(self.sink.data[-1]) # raise drop row exception if row not right
@@ -165,15 +177,10 @@ class MappingManager(Manager):
 				self.sink.drop_row()
 			except Exception as e:
 				map_log.error('not droprow exception: %s'%e)
-
+				continue
 
 
 		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDONE CONVERSION')
-		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSOURCE')
-		map_log.critical('source data: %s'%self.source.data)
-		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDONE')
-		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\SINK')
-		map_log.critical('sink data: %s'%self.sink.data)
 		
 		return self.sink.data
 

@@ -28,9 +28,6 @@ class UnitTestGender():
 def findBirthdate(ursi,args = None):
 	"""
 		This function is called in the coins2ndar load_function().
-=======
->>>>>>> b2ed046c4b9fb68666e82d4b07148eb3e166051a
-		
 		It will return a datetime object.
 	"""
 	DOB_dateformat = "%m/%d/%Y"

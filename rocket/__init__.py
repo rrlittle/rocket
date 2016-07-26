@@ -17,7 +17,6 @@ elif utils.systemName == 'Windows':
 
 basedir,filename = utils.split(utils.abspath(__file__)) # within the package
 basedir = utils.split(basedir)[0] # move up one dir
-# print('basedir', basedir)
 
 templatedir = utils.join(basedir, 'mapping_files')
 srcdatdir = utils.join(basedir,'source_datafiles')

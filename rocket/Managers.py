@@ -63,7 +63,11 @@ class ssManager(Manager):
 	'''
 
 	# for use when there is no data
-	class NoDataError(Exception): pass
+	class NoDataError(Exception): 
+		'''Add things to support indexing and splat'''
+		def __iter__(self):return iter([])
+		def __getitem__(self, item): return self
+		
 
 	delimiter = ','
 	col_archetype = columns.Col # override this for different managers
@@ -130,13 +134,15 @@ class ssManager(Manager):
 		templ_csv_reader = utils.DictReader(templ_csv_file)
 
 		self.col_defs = []
-		for template_row in templ_csv_reader:
-
+		for rid, template_row in enumerate(templ_csv_reader):
 			# use the column to parse the row as we would like it to be 
 			try:
-				self.col_defs.append(self.col_archetype(self,template_row)) 
+				col = self.col_archetype(self,template_row)
+				self.col_defs.append(col) 
+				man_log.info(('Loading template for %s: row %s. '
+					'created column %s')%(self, rid, col))
 			except self.col_archetype.BadColErr as e:
-				man_log.debug(('%s column not created '
+				man_log.info(('%s column not created '
 					'beacause %s')%(self.col_archetype.__name__,e))
 
 	def initialize_data(self):
@@ -144,6 +150,15 @@ class ssManager(Manager):
 			create a new fresh self.data
 		'''
 		self.data = []
+
+
+	def default_template_parser(self, value, coldef):
+		''' unifies how we parse the template fields. 
+			empty fields are always filled with NoDataErrors
+			then will be a string. 
+		'''
+		if value == '': return self.NoDataError('template fld empty')
+		else: return str(value) 
 
 	def default_parser(self, value, coldef): 
 		''' just a simple parser if no other is defined
@@ -266,7 +281,6 @@ class sinkManager(ssManager):
 		self.template_fields['id'] = 'sink col id'
 		self.template_fields['col_name'] = 'sink col name'
 		self.template_fields['col_range'] = 'sink range'
-		self.template_fields['missing_vals'] = 'sink missing value'
 		self.template_fields['default'] = 'sink default value'
 		self.template_fields['mappers'] = 'sink mappers'
 		self.template_fields['func'] = 'function'
@@ -300,7 +314,7 @@ class sinkManager(ssManager):
 		except PermissionError as e:
 			input(('%s was not opened successfully. perhaps it is open. '
 				'close it and hit neter to cont')%outpath)
-			outfile = open(outpath, 'w')
+			outfile = open(outpath, 'w', newline = "")
 
 
 		self.write_header(outfile)
@@ -308,19 +322,16 @@ class sinkManager(ssManager):
 		outwriter.writeheader()
 		for rowid,row in enumerate(self.data):
 			for coldef, elem in row.items():
-				if elem is self.NoDataError:
-					man_log.error('out row[%s][%s] is %s. changing it to %s'%(
-						rowid, coldef, elem, coldef.missing_vals))
-					row[coldef] = coldef.missing_vals 
-				else: 
-					formatter = getattr(self, coldef+'_write_formatter', 
+				if isinstance(elem, self.NoDataError): # print the default value. 
+					elem = ''
+				formatter = getattr(self, coldef+'_write_formatter', 
 						self.default_write_formatter)
-					man_log.debug('trying formatter %s'%(
+				man_log.debug('trying formatter %s'%(
 							coldef+'_write_formatter'))
-					man_log.debug('formatting row[%s][%s](%s) with %s'%(rowid,
+				man_log.debug('formatting row[%s][%s](%s) with %s'%(rowid,
 						coldef,row[coldef], formatter.__name__))
-					row[coldef] = formatter(row[coldef], coldef)
-					man_log.debug('writing row[%s][%s] is %s'%(rowid, coldef, 
+				row[coldef] = formatter(row[coldef], coldef)
+				man_log.debug('writing row[%s][%s] is %s'%(rowid, coldef, 
 						row[coldef]))
 			outwriter.writerow(row) 
 
@@ -344,7 +355,7 @@ class sinkManager(ssManager):
 			name the function {colname}_write_formatter.
 		'''
 		if isinstance(value, self.NoDataError):
-			return coldef.missing_vals
+			return coldef.default
 		return str(value) 
 
 	def ensure_row(self, datarow):

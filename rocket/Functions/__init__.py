@@ -13,16 +13,16 @@ def sum(*data, args = [0.8,'int']):
     strtypes = {'float':float,'int':int}
     strtype = strtypes[strtypearg]
 
-    #import ipdb; ipdb.set_trace()
     numMiss = 0
     data_sum = 0
     for num in data:
         if isinstance(num, ssManager.NoDataError):
             numMiss +=1
         else:
+            #import ipdb; ipdb.set_trace()
             data_sum += strtype(num)
 
-    if numMiss/len(data) >= threshold:
+    if numMiss/len(data) < 1 -threshold:
         return data_sum
     else: 
         return ssManager.NoDataError;

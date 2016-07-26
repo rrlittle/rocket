@@ -30,7 +30,7 @@ class Col(object):
 
 		self.load_attributes()
 
-		if self.col_name == '':
+		if isinstance(self.col_name, self.handler.NoDataError):
 			raise self.BadColErr('Col_name must be defined to be a good Col')
 		else: col_log.debug('created column %s'%self)
 
@@ -66,7 +66,7 @@ class Col(object):
 			# function for that field called parse_'field'(fieldvalue)
 			parser_name = 'parse_' + fieldkeyword 
 			parser = getattr(self.handler, parser_name,  
-				self.handler.default_parser)
+				self.handler.default_template_parser)
 
 			val = self.template_row[thisheader] # get raw value
 
@@ -89,6 +89,7 @@ class Col(object):
 	def __eq__(self, other): return self.col_name == other
 	def __ne__(self,other): return not self.__eq__(other)
 	def __add__(self, other): return self.__str__() + str(other)
+
 class srcCol(Col):
 	''' this adds funcitonality to columns defining specifcally
 		to sink cols.
@@ -98,6 +99,9 @@ class srcCol(Col):
 		assert isinstance(sourcehandler, Managers.sourceManager), (
 			'sinkCols require a source handler')
 		Col.__init__(self, sourcehandler, template_row)
+
+		if isinstance(self.missing_vals, self.handler.NoDataError): 
+			self.missing_vals = ''
 
 class sinkCol(Col):
 	''' this adds funcitonality to columns defining specifcally
@@ -109,6 +113,10 @@ class sinkCol(Col):
 		assert isinstance(sinkhandler, Managers.sinkManager), (
 			'sinkCols require a sink handler')
 		Col.__init__(self, sinkhandler, template_row)
+
+
+		if isinstance(self.default, self.handler.NoDataError):
+			self.default == ''
 
 		# set self.func to an actual function
 		# use self.handler.globalfuncs to get func refereances or throw err
@@ -159,7 +167,9 @@ class sinkCol(Col):
 			col_log.debug('FROM dat (%s) using %s with args (%s)'%(
 				srcdat,self.func.__name__, self.args))
 
-			if hasattr(self.args,'__len__') and self.args.__len__() > 0:
+			if isinstance(srcdat, self.handler.NoDataError): 
+				self.dat = srcdat
+			elif hasattr(self.args,'__len__') and self.args.__len__() > 0:
 				col_log.debug('CALLING %s(%s, %s)'%(self.func.__name__, 
 					srcdat, [arg for arg in self.args])) 
 				self.dat = self.func(*srcdat, args=[arg for arg in self.args])
