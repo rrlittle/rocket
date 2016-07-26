@@ -23,7 +23,7 @@ srcdatdir = utils.join(basedir,'source_datafiles')
 srcschdir = utils.join(basedir,'source_schemes')
 sinkdatdir = utils.join(basedir,'sink_datafiles')
 sinkschdir = utils.join(basedir,'sink_schemes') 
-sectretdir = home_dir_str
+secretdir = home_dir_str
 
 # used throughout the package to decide 
 # to throw errors or just log them

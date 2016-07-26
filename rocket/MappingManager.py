@@ -1,6 +1,6 @@
 from Managers import sourceManager, sinkManager, Manager
 import utils
-from __init__ import templatedir
+from __init__ import templatedir,secretdir
 from loggers import map_log
 import ipdb
 

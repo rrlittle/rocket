@@ -4,10 +4,11 @@ from subprocess import (PIPE,Popen,call)
 from ast import literal_eval
 from dateutil import relativedelta
 from datetime import datetime
-from __init__ import sectretdir
+from __init__ import secretdir
 from Managers import sinkManager
+from threading  import Timer
 
-temp_data_path = 'ursi_data.tmp'
+temp_data_path = secretdir
 
 def findGender(ursi,args = None):
 
@@ -90,30 +91,41 @@ def findAge(olddate = None, recentdate = None):
 
 class UrsiDataManager(object):
 
-	def __init__(self,temp_file_path):
-		self.temp_file_path = temp_file_path
+	def __init__(self,secret_dir_path):
+		
+		filename = 'coinsPersonal.tmp'
+
+
+		self.temp_file_path = path.join(secret_dir_path,filename)
 		self.data_list = []
 		self.BAT_PATH = 'R:\scripts\list_gender_birth_guid.bat'
 		
 		# prepare the file. If it doesn't exist, prepare it. If it exists, no need for doing anything
 		# Also check the empty of the file		
-		if path.exists(self.temp_file_path):
-			if stat(self.temp_file_path).st_size == 0:
-				self.initialize_data_file()
-
-		else:
-			self.initialize_data_file()
-
+		self.ensure_data_file_exist()
 
 	# make the temp data file by using list_gender.bat
 	def initialize_data_file(self):
+
+		#log_time_interval = 5;
+		#seconds_process = 0;
+		
+		#def log_time():
+		#	global seconds_process
+		#	seconds_process += 5
+		#	print("It's still running, be patient, please. Running time: "
+		#		"%s"%(seconds_process))
+			
+		#t = Timer(log_time_interval,log_time)
+		#t.start()
+
 		if path.exists(self.BAT_PATH) == False:
 			raise Exception('Bat cannot be found')
 
 		print("Calling the bat")
 		process = Popen(self.BAT_PATH, stdout = PIPE)
 		output = list(process.communicate())
-	
+		#t.cancel()
 		# hard code the parse rule due to some bad thing
 		# the data looks like this
 		# (b"D, [2016-07-06T14:40:22.172340 #1676] DEBUG -- : Successfully logged into COINS.\r\n{{'M53799763':{'gender': 'F'}}\r\n{{'M53799718':{'gender': 'M'}}\r\n", None)
@@ -125,6 +137,7 @@ class UrsiDataManager(object):
 			for subject in data:
 				#tempfile.writelines()
 				tempfile.write(subject+'\n')
+
 
 
 	def get_ursi_data(self):
@@ -140,3 +153,10 @@ class UrsiDataManager(object):
 					pass
 		return data_dict
 
+	def ensure_data_file_exist(self):
+		if path.exists(self.temp_file_path):
+			if stat(self.temp_file_path).st_size == 0:
+				self.initialize_data_file()
+
+		else:
+			self.initialize_data_file()
