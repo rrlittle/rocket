@@ -15,7 +15,7 @@ elif utils.systemName == 'Windows':
 
 
 
-basedir,filename = utils.split(utils.abspath(__file__)) # within the package
+basedir,filename = utils.split(utils.abspath(__file__))  #  within the package
 basedir = utils.split(basedir)[0] # move up one dir
 
 templatedir = utils.join(basedir, 'mapping_files')
