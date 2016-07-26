@@ -1,5 +1,5 @@
 import utils
-from __init__ import basedir, srcdatdir,sinkdatdir
+from __init__ import basedir, srcdatdir,sinkdatdir, templ_delimiter
 import columns
 from loggers import man_log
 
@@ -8,6 +8,11 @@ class Manager(object):
 		functionality like getting files and stuff
 		we'll see what all we have later
 	'''
+	# all managers need datafiles of some type. these should be csv with some 
+	# kind of delimiter. put that here
+	delimiter = ','
+	# put the header you would like here it should be a list of lists of strings
+	template_header = [['example','template','header']] 	
 
 	# for use when the template doesn't look as expected
 	class TemplateError(Exception): pass
@@ -50,6 +55,16 @@ class Manager(object):
 		man_log.debug('selected %s to be %s.'%(filetype, fpath))
 		return fpath
 	
+	def write_templ_header(self, templfile):
+		''' writes self.template_header to the template file
+			along with the name of this class. so the user can tell what the 
+			handler is that's printing stuff.
+		'''
+		templwriter = utils.writer(templfile, delimiter=templ_delimiter)
+		templwriter.writerow([type(self).__name__])
+		for line in self.template_header:
+			templwriter.writerow(line)
+
 	def __repr__(self): return str(self)
 	def __str__(self): 
 		if hasattr(self, '__name__'):return self.__name__
@@ -68,11 +83,40 @@ class ssManager(Manager):
 		def __iter__(self):return iter([])
 		def __getitem__(self, item): return self
 		
-
 	delimiter = ','
 	col_archetype = columns.Col # override this for different managers
 	# srcCol and sinkCol behave slightly differently
 			
+	def load_schema(self):
+		''' fills self.template_rows with all the things this needs.
+			self.template_rows should be a list of dicts, with col_names as keys 
+			and things to be printed as values.
+			
+			this should probably be overridden by data handlers.
+		'''
+		self.template_rows = [] # do nothing for now
+
+
+	def populate_template(self, templfile, header_fields):
+		''' takes a file object pointing to the first line data after the header
+			i.e. the first line it should print to.
+
+		 	it then uses a dict writer to write the things it can to prompt the 
+			user how to fill in the template. 
+
+			header_fields if a list of the template headers that exist on the
+			template 
+			uses self.load_schema to fill self.template_rows, which get printed 
+			to the template.  
+		'''
+		if not hasattr(self, template_rows):
+			self.load_schema()
+		writer = utils.DictWriter(templfile, header_fields)
+		for row in self.template_rows:
+			writer.writerow(row)
+
+
+
 	def __init__(self, **kwargs):
 		''' calls the super Manager init. then adds specific ss Manager stuff'''
 		self.template_fields = utils.OrderedDict()
@@ -318,7 +362,9 @@ class sinkManager(ssManager):
 
 
 		self.write_header(outfile)
-		outwriter = utils.DictWriter(outfile, fieldnames = self.col_defs)	
+		outwriter = utils.DictWriter(outfile, 
+			fieldnames = self.col_defs, 
+			delimiter=self.delimiter)	
 		outwriter.writeheader()
 		for rowid,row in enumerate(self.data):
 			for coldef, elem in row.items():

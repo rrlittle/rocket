@@ -23,7 +23,8 @@ class controller(object):
 			as they will be used by the mapping manager to 
 			create the template
 		'''
-		pass
+		self.mapper.make_template()
+		
 	def do_convert(self, template_path= None):
 		''' this takes an existing template and asks the 
 			mapping manager to parse it using the source and sink

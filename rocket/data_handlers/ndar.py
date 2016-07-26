@@ -35,7 +35,7 @@ class ndar_snk(sinkManager):
 	def write_header(self, outfile):
 		insr = input('enter ndar instrument name: ')
 		vers = input('enter ndar instrument version: ')
-		outwriter = utils.writer(outfile)
+		outwriter = utils.writer(outfile, delimiter = self.delimiter)
 		outwriter.writerow([insr, vers])
 
 		pass;
