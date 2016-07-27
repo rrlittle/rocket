@@ -1,14 +1,30 @@
 from os import path
 from os import stat
-from subprocess import (PIPE,Popen,call)
+from subprocess import PIPE,Popen,call
 from ast import literal_eval
 from dateutil import relativedelta
 from datetime import datetime
-from __init__ import secretdir
+from __init__ import secretdir, waisman_user
 from Managers import sinkManager
 from threading  import Timer
-
+import utils
+from loggers import func_log
+# where to store secret files i.e. coins secret key and PPI file
 temp_data_path = secretdir
+
+# filename to store PPI file
+PPIfilename = 'coinsPersonal.tmp'
+
+get_ppi_script_path = None # location 
+if utils.systemName in ('Linux', 'Darwin'): # use the 
+	get_ppi_script_path
+elif utils.systemName in ('Windows') and waisman_user: # 
+elif utils.systemName in ('Windows'):
+else: 
+	func_log.critical('This platform is not supported!')
+	utils.exit()
+
+
 
 def findGender(ursi,args = None):
 
@@ -19,12 +35,6 @@ def findGender(ursi,args = None):
 	assert ursi !='', 'No ursi has been passed'
 	gender = data_dict[ursi]["gender"]
 	return gender
-
-class UnitTestGender():
-
-	def __init__(self):
-		genderFinder = GenderByUrsi(data_list=  ['M53799718'])
-		genderFinder.find_gender()
 
 def findBirthdate(ursi,args = None):
 	"""
@@ -41,7 +51,6 @@ def findBirthdate(ursi,args = None):
 
 
 	return DOB_date
-
 
 def findGuid(ursi,args = None):
 	data_dict =''
@@ -62,13 +71,6 @@ def findGuid(ursi,args = None):
 		raise sinkManager.DropRowException(e)
 
 	return GUID
-
-class UnitTestGuid():
-
-	def __init__(self):
-		guidFinder = GuidByUrsi(data_list=  ['M53799718'])
-		guidFinder.find()
-
 
 def findAge(olddate = None, recentdate = None):
 	""" both argument will be the datetime object. The ndar way to calculate the
@@ -93,7 +95,7 @@ class UrsiDataManager(object):
 
 	def __init__(self,secret_dir_path):
 		
-		filename = 'coinsPersonal.tmp'
+		filename = PPIfilename
 
 
 		self.temp_file_path = path.join(secret_dir_path,filename)
@@ -160,3 +162,17 @@ class UrsiDataManager(object):
 
 		else:
 			self.initialize_data_file()
+
+
+class Unittests():
+
+	def __init__(self):
+		self.findgender()
+		self.findguid()
+	def findgender(self):
+		genderFinder = GenderByUrsi(data_list=  ['M53799718'])
+		genderFinder.find_gender()
+	def findguid()
+		guidFinder = GuidByUrsi(data_list=  ['M53799718'])
+		guidFinder.find()
+

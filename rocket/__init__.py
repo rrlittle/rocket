@@ -1,8 +1,12 @@
 import utils
 
+
+# define soe global stuff
+
+
 # figure out a bunch of directories so we don't need to parse them every time
 # Yay abstraction!
-
+waisman_user = False
 home_dir_str = None
 if utils.systemName in ('Linux','Darwin'):
 	home_dir_str = utils.environ['HOME']
@@ -10,6 +14,7 @@ elif utils.systemName == 'Windows':
 	try:
 		# used by waisman users alone
 		home_dir_str = utils.environ['_USR'] + '/'
+		waisman_user = True
 	except (AttributeError,KeyError):
 		home_dir_str = utils.environ['USERPROFILE'] + '/'
 
@@ -29,6 +34,13 @@ secretdir = home_dir_str
 # to throw errors or just log them
 ignore_errors = False
 
+#  the delimiter for template files. it's here to make it global
+templ_delimiter = ',' 
+
+
+# actually do stuff....
+
+
 # loads all the handlers we know about 
 # so the mapping managers can select them
 handlers = utils.load_handlers()
@@ -37,5 +49,3 @@ handlers = utils.load_handlers()
 # so you can pass one to the controller
 mapping_managers = utils.load_map_submanagers() 
 
-#  the delimiter for template files. it's here to make it global
-templ_delimiter = ',' 

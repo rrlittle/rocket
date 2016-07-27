@@ -30,7 +30,6 @@ man_log = make_logger('managers',
     flvl = logging.DEBUG
     )
 
-
 map_log = make_logger('mapping manager',
     frmt=frmt,
     fpath=debuglog,
@@ -42,7 +41,6 @@ map_log = make_logger('mapping manager',
     # lvl=logging.CRITICAL,
     flvl = logging.DEBUG
     )
-
 
 col_log = make_logger('columns',
     frmt=frmt,
@@ -56,7 +54,17 @@ col_log = make_logger('columns',
     flvl = logging.DEBUG
     )
 
-
+func_log = make_logger('functions',
+    frmt=frmt,
+    fpath=debuglog,
+    stdout=True,
+    # lvl=logging.DEBUG, # use one of the following to easily set the stdout log level
+    lvl=logging.INFO,
+    # lvl=logging.WARNING,
+    # lvl=logging.ERROR,
+    # lvl=logging.CRITICAL,
+    flvl = logging.DEBUG
+    )
 
 
 

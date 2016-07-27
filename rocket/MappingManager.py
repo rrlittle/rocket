@@ -103,7 +103,7 @@ class MappingManager(Manager):
 			if header not in tmp: tmp.append(header)
 			else: collisions.append(header)
 		# and raise error if there are any collisions
-		if len(collisions != 0): 
+		if len(collisions) != 0: 
 			raise self.TemplateError(('collisions detected in src and'
 				' sink handler template_fieldnames. pleae modify these fields '
 				'to ensure unique headers: %s')%collisions) 
