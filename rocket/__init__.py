@@ -29,6 +29,7 @@ srcschdir = utils.join(basedir,'source_schemes')
 sinkdatdir = utils.join(basedir,'sink_datafiles')
 sinkschdir = utils.join(basedir,'sink_schemes') 
 secretdir = home_dir_str
+scriptdir = utils.join(basedir, 'rocket','lib','scripts')
 
 # used throughout the package to decide 
 # to throw errors or just log them

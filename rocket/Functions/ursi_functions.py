@@ -4,7 +4,7 @@ from subprocess import PIPE,Popen,call
 from ast import literal_eval
 from dateutil import relativedelta
 from datetime import datetime
-from __init__ import secretdir, waisman_user
+from __init__ import secretdir, waisman_user, scriptdir
 from Managers import sinkManager
 from threading  import Timer
 import utils
@@ -15,15 +15,17 @@ temp_data_path = secretdir
 # filename to store PPI file
 PPIfilename = 'coinsPersonal.tmp'
 
-get_ppi_script_path = None # location 
+get_ppi_script_ext = None
 if utils.systemName in ('Linux', 'Darwin'): # use the 
-	get_ppi_script_path
-elif utils.systemName in ('Windows') and waisman_user: # 
-elif utils.systemName in ('Windows'):
+	get_ppi_script_ext = '.sh'
+elif utils.systemName in ('Windows'): # 
+	get_ppi_script_ext = '.bat'
 else: 
 	func_log.critical('This platform is not supported!')
 	utils.exit()
 
+get_ppi_script_filename = 'list_gender_birth_guid' + get_ppi_script_ext
+get_ppi_script_path = utils.join(scriptdir, get_ppi_script_filename)
 
 
 def findGender(ursi,args = None):
@@ -95,12 +97,11 @@ class UrsiDataManager(object):
 
 	def __init__(self,secret_dir_path):
 		
-		filename = PPIfilename
+		
 
-
-		self.temp_file_path = path.join(secret_dir_path,filename)
+		self.temp_file_path = path.join(secret_dir_path,PPIfilename)
 		self.data_list = []
-		self.BAT_PATH = 'R:\scripts\list_gender_birth_guid.bat'
+		self.ppiscript = get_ppi_script_path
 		
 		# prepare the file. If it doesn't exist, prepare it. If it exists, no need for doing anything
 		# Also check the empty of the file		
@@ -121,11 +122,13 @@ class UrsiDataManager(object):
 		#t = Timer(log_time_interval,log_time)
 		#t.start()
 
-		if path.exists(self.BAT_PATH) == False:
-			raise Exception('Bat cannot be found')
+		if path.exists(self.ppiscript) == False:
+			func_log.critical(('get ppi script cannot be found. dir '
+				'contains %s')%utils.listdir(utils.dirname(self.ppiscript)))
+			raise EnvironmentError('get ppi script cannot be found')
 
-		print("Calling the bat")
-		process = Popen(self.BAT_PATH, stdout = PIPE)
+		print("Calling the get ppi script with ruby")
+		process = Popen(self.ppiscript, stdout = PIPE)
 		output = list(process.communicate())
 		#t.cancel()
 		# hard code the parse rule due to some bad thing
@@ -151,7 +154,8 @@ class UrsiDataManager(object):
 					subjectDict = literal_eval(row)
 					for ursi in subjectDict:
 						data_dict[ursi] = subjectDict[ursi]
-				except SyntaxError:
+				except SyntaxError as e:
+					func_log.debug('syntaxError in get_ursi_data: %s'%e)
 					pass
 		return data_dict
 

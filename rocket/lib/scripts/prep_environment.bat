@@ -8,9 +8,10 @@ cd .. :: go up one. to lib
 SET OLDPATH=%PATH% 
 
 :: add paths of depencencies in front of OLDPATH
-PATH RailsInstaller\Git\cmd;^ 
-RailsInstaller\Ruby2.1.0\bin;^
-RailsInstaller\Ruby2.1.0\lib\ruby\gems\1.9.1\bin;^
-RailsInstaller\DevKit\bin;^
-scripts;
+PATH ruby_ship\bin;^
+scripts;^
 %OLDPATH%
+
+
+
+cd %~dp0 :: go to script location for relative movement

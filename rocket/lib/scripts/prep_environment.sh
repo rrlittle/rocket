@@ -1,10 +1,10 @@
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
+cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. # move to lib
 # echo $DIR
 
 OLDPATH=$PATH
-PATH=bin;\
-lib/ruby/gems/2.1.0/bin;\
-lib/ruby/2.1.0;\
+PATH=ruby_ship/bin;\
 scripts;\
 $OLDPATH
+
+cd "$( dirname "${BASH_SOURCE[0]}" )"  # move to script location
  
