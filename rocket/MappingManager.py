@@ -207,6 +207,33 @@ class MappingManager(Manager):
 			except ValueError:
 				raise sinkManager.DropRowException
 
+	def write_func_header(templfile):
+		def _add_all_func_name():
+			all_func_name = [x for x in self.globalfuncs];
+			return all_func_name
+
+		func_header = ["Possible functions you can use are: "] + _add_all_func_name()
+		templ_writer = utils.writer(templfile, delimiter=templ_delimiter)
+		templ_writer.writerow(func_header)
+		headerline_num = 1
+		return headerline_num
+
+	def _write_instr_name_and_version(self, templfile):
+		templ_writer = utils.writer(templfile, delimiter = templ_delimiter)
+		instr_header = ["Enter the instrument name:","","version:",""]
+		templ_writer = templ_writer.writerow(instr_header)
+		headerline_num = 1
+		return headerline_num
+
+
+	def _write_known_template_fields(self, templfile):
+		def _prepare_known_template():
+			
+
+
+
+
+
 	def make_template(self):
 		''' leverages the sink and source handlers to make the template
 			file. 
@@ -231,41 +258,52 @@ class MappingManager(Manager):
 			for a specific mapping manager include a list of strings to be
 			included as the header for that thing. 
 		'''
-			
-		templ_path = None
-		if hasattr(self, 'templ_path'):
-			templ_path = self.templ_path
-		else:
-			templ_path = self.get_template(title='Select a template file', 
-				save=True, allownew=True)
+		
+		def _get_template_path():
+			if hasattr(self, 'templ_path'):
+				return self.templ_path
+			else:
+				return self.get_template(title='Select a template file', 
+					save=True, allownew=True)
 		
 		def handle_tmeplate_err(errstr,err):
-			map_log.err(('%s... Template field getting deleted and '
+			map_log.error(('%s... Template field getting deleted and '
 				'rocket quitting. Error: %s')%(errstr,err))
 			templfile.close()
 			utils.remove(templ_path)
 			utils.exit(1)
 
+		def  _write_headers_above_fields(templfile):
+			self.header_lines = 0
+			try:
+				self.header_lines += self.write_templ_header(templfile)
+				self.header_lines += self.sink.write_templ_header(templfile)
+				self.header_lines += self.source.write_templ_header(templfile)
+				self.header_lines += self.write_func_header(templfile)
+				self.header_lines += self._write_instr_name_and_version(templfile)
+			except Exception as e:
+				handle_tmeplate_err('error while writing headers', e)
+
+		def _add_template_headers_from_src_sink():
+			srctemplatefields = list(self.source.template_fields.values())
+			sinktemplatefields = list(self.sink.template_fields.values())
+		 	return srctemplatefields + sinktemplatefields
+
+		def _write_templatefields(templfile):
+			templatefields =_add_template_headers_from_src_sink()
+			wr = utils.writer(templfile, delimiter=self.delimiter)
+			wr.writerow(templatefields)
+			return 1
+
+		templ_path = _get_template_path()
 		templfile = open(templ_path, 'w')
-		self.header_lines = 0
-		try:
-			self.header_lines += self.write_templ_header(templfile)
-			self.header_lines += self.sink.write_templ_header(templfile)
-			self.header_lines += self.source.write_templ_header(templfile)
-		except Exception as e:
-			handle_tmeplate_err('error while writing headers', e)
+		_write_headers_above_fields(templfile)
 
 		# the template fields for each handler are defined upon initialization 
 		# of the handlers. they are defined in the code and extended for each 
 		# custom handler if they so choose. 
 		# they will be in order of definition in the __init__
-		srctemplatefields = list(self.source.template_fields.values())
-		sinktemplatefields = list(self.sink.template_fields.values())
-		templatefields = srctemplateheaders + sinktemplateheaders
-		
-		wr = utils.writer(templfile, delimiter=self.delimiter)
-		wr.writerow(templatefields)
-		self.header_lines += 1
+		self.header_lines += _write_templatefields()
 
 		try:
 			# write the column defs for sink

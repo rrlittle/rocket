@@ -60,10 +60,15 @@ class Manager(object):
 			along with the name of this class. so the user can tell what the 
 			handler is that's printing stuff.
 		'''
+		headerline_num = 0
 		templwriter = utils.writer(templfile, delimiter=templ_delimiter)
 		templwriter.writerow([type(self).__name__])
+		headerline_num += 1
 		for line in self.template_header:
 			templwriter.writerow(line)
+			headerline_num +=1
+
+		return headerline_num
 
 	def __repr__(self): return str(self)
 	def __str__(self): 

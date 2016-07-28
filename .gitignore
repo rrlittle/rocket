@@ -1,3 +1,9 @@
 *.pyc
 *.~lock.*
 debug.log
+rocket/MappingManager.py
+rocket/lib/ruby_ship/bin/shipyard/linux_ruby/share/ri/2.1.0/system/MiniTest/Unit/TestCase/cdesc-TestCase.ri
+rocket/lib/ruby_ship/bin/shipyard/linux_ruby/share/ri/2.1.0/system/MiniTest/Unit/cdesc-Unit.ri
+rocket/lib/ruby_ship/bin/shipyard/linux_ruby/share/ri/2.1.0/system/MiniTest/cdesc-MiniTest.ri
+rocket/lib/ruby_ship/bin/shipyard/linux_ruby/share/ri/2.1.0/system/REXML/Parsers/XPathParser/Predicate-i.ri
+rocket/lib/ruby_ship/bin/shipyard/linux_ruby/share/ri/2.1.0/system/RSS/DublinCoreModel/cdesc-DublinCoreModel.ri
