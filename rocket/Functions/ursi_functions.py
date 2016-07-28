@@ -26,7 +26,7 @@ else:
 
 get_ppi_script_filename = 'list_gender_birth_guid' + get_ppi_script_ext
 get_ppi_script_path = utils.join(scriptdir, get_ppi_script_filename)
-
+func_log.info('ppi script is %s'%get_ppi_script_path)
 
 def findGender(ursi,args = None):
 
@@ -176,7 +176,7 @@ class Unittests():
 	def findgender(self):
 		genderFinder = GenderByUrsi(data_list=  ['M53799718'])
 		genderFinder.find_gender()
-	def findguid()
+	def findguid(self):
 		guidFinder = GuidByUrsi(data_list=  ['M53799718'])
 		guidFinder.find()
 
