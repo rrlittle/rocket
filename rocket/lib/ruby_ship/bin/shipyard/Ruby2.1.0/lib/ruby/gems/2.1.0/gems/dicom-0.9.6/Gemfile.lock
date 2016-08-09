@@ -1,0 +1,47 @@
+PATH
+  remote: .
+  specs:
+    dicom (0.9.6)
+
+GEM
+  remote: http://www.rubygems.org/
+  specs:
+    diff-lcs (1.2.5)
+    metaclass (0.0.4)
+    mini_magick (3.7.0)
+      subexec (~> 0.2.1)
+    mocha (1.1.0)
+      metaclass (~> 0.0.1)
+    narray (0.6.0.8)
+    rake (10.3.2)
+    redcarpet (3.1.2)
+    rmagick (2.13.2)
+    rspec (3.0.0)
+      rspec-core (~> 3.0.0)
+      rspec-expectations (~> 3.0.0)
+      rspec-mocks (~> 3.0.0)
+    rspec-core (3.0.1)
+      rspec-support (~> 3.0.0)
+    rspec-expectations (3.0.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.0.0)
+    rspec-mocks (3.0.1)
+      rspec-support (~> 3.0.0)
+    rspec-support (3.0.0)
+    subexec (0.2.3)
+    yard (0.8.7.3)
+
+PLATFORMS
+  x86-mingw32
+
+DEPENDENCIES
+  bundler (~> 1.6)
+  dicom!
+  mini_magick (~> 3.7)
+  mocha (~> 1.1)
+  narray (~> 0.6.0.8)
+  rake (~> 10.3)
+  redcarpet (~> 3.1)
+  rmagick (~> 2.13.2)
+  rspec (~> 3.0)
+  yard (~> 0.8.7)

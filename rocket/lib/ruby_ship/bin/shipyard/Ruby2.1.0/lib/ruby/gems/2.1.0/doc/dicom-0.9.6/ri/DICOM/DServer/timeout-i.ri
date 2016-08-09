@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"timeout:ETI"DICOM::DServer#timeout;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"jThe maximum period the server will wait on an answer from a client before aborting the communication.;T:
+@fileI"lib/dicom/d_server.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DICOM::DServer;FcRDoc::NormalClass0

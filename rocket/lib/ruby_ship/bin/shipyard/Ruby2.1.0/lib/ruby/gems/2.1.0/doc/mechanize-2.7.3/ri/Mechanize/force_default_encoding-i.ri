@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"force_default_encoding:ETI"%Mechanize#force_default_encoding;TI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"MOverrides the encodings given by the HTTP server and the HTML page with ;TI"+the default_encoding when set to true.;T:
+@fileI"lib/mechanize.rb;T:0@omit_headings_from_table_of_contents_below0F@I"Mechanize;TcRDoc::NormalClassI"Settings;T

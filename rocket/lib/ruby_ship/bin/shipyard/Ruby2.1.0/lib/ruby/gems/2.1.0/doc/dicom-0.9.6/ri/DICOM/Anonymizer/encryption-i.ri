@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"encryption:ETI"!DICOM::Anonymizer#encryption;FI"R;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"lThe cryptographic hash function to be used for encrypting DICOM values recorded in an audit trail file.;T:
+@fileI"lib/dicom/anonymizer.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DICOM::Anonymizer;FcRDoc::NormalClass0

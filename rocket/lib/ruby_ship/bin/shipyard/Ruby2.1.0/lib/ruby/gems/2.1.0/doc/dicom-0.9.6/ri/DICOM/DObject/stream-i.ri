@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"stream:ETI"DICOM::DObject#stream;FI"R;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"jThe Stream instance associated with this DObject instance (this attribute is mostly used internally).;T:
+@fileI"lib/dicom/d_object.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DICOM::DObject;FcRDoc::NormalClass0

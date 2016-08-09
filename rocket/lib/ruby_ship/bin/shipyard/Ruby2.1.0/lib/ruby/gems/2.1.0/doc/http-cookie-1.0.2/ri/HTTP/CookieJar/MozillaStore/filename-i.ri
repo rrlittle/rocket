@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"filename:ETI"+HTTP::CookieJar::MozillaStore#filename;FI"R;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"CThe file name of the SQLite3 database given in initialization.;T:
+@fileI")lib/http/cookie_jar/mozilla_store.rb;T:0@omit_headings_from_table_of_contents_below0F@I""HTTP::CookieJar::MozillaStore;FcRDoc::NormalClass0

@@ -1,0 +1,12 @@
+<Header,,,,,
+,Instrument Name:,rpq,,Version:,1
+Header>,,,,,
+,,,,,
+<InstruInfo,,,,,
+,Instrument Name:,rpq,,Version:,1
+InstruInfo>,,,,,
+,,,,,
+<Mapping Template,,,,,
+name,gender,character,,,
+luke,m,Hanzo,,,
+carol,f,Maomei,,,

@@ -55,20 +55,18 @@ class Manager(object):
 		man_log.debug('selected %s to be %s.'%(filetype, fpath))
 		return fpath
 	
-	def write_templ_header(self, templfile):
+	def add_templ_header(self, header = []):
 		''' writes self.template_header to the template file
 			along with the name of this class. so the user can tell what the 
 			handler is that's printing stuff.
 		'''
-		headerline_num = 0
-		templwriter = utils.writer(templfile, delimiter=templ_delimiter)
-		templwriter.writerow([type(self).__name__])
-		headerline_num += 1
-		for line in self.template_header:
-			templwriter.writerow(line)
-			headerline_num +=1
 
-		return headerline_num
+		header.append([type(self).__name__])
+		
+		for line in self.template_header:
+			header.append(line)
+
+		return header
 
 	def __repr__(self): return str(self)
 	def __str__(self): 
@@ -150,8 +148,6 @@ class ssManager(Manager):
 		if self.row_pointer_for_iter == len(self.data): raise StopIteration()
 		tmp = self.data[self.row_pointer_for_iter]
 		self.row_pointer_for_iter += 1
-
-
 		return tmp
 
 	def getcolumn_defs(self, *collist):
@@ -357,14 +353,12 @@ class sinkManager(ssManager):
 		outfile = None
 		outpath = self.get_file_outpath()
 
-		
 		try:
 			outfile = open(outpath, 'w', newline = "")
 		except PermissionError as e:
 			input(('%s was not opened successfully. perhaps it is open. '
 				'close it and hit neter to cont')%outpath)
 			outfile = open(outpath, 'w', newline = "")
-
 
 		self.write_header(outfile)
 		outwriter = utils.DictWriter(outfile, 

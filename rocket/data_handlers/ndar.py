@@ -32,9 +32,14 @@ class ndar_snk(sinkManager):
 					man_log.critical("\n\n\nRAISING DROPROW") 
 					raise self.DropRowException('%s'%elem)
 
+	def set_instru_info(self, instru_name = "", version = ""):
+		self.instrument_name = instru_name
+		self.version = version
+
 	def write_header(self, outfile):
-		insr = input('enter ndar instrument name: ')
-		vers = input('enter ndar instrument version: ')
+		
+		insr = self.instrument_name
+		vers = self.version
 		outwriter = utils.writer(outfile, delimiter = self.delimiter)
 		outwriter.writerow([insr, vers])
 

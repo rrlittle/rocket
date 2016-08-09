@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"random_file_name:ETI"'DICOM::Anonymizer#random_file_name;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"†A boolean that if set as true will cause all anonymized files to be written with random file names (if write_path has been specified).;T:
+@fileI"lib/dicom/anonymizer.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DICOM::Anonymizer;FcRDoc::NormalClass0

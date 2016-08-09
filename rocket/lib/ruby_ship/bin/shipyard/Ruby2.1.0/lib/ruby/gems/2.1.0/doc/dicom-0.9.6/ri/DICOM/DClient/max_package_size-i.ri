@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"max_package_size:ETI"$DICOM::DClient#max_package_size;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"=The maximum allowed size of network packages (in bytes).;T:
+@fileI"lib/dicom/d_client.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DICOM::DClient;FcRDoc::NormalClass0

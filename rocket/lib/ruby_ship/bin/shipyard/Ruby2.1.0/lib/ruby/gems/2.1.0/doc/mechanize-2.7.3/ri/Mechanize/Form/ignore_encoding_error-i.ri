@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"ignore_encoding_error:ETI"*Mechanize::Form#ignore_encoding_error;TI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"MWhen true, character encoding errors will never be never raised on form ;TI""submission.  Default is false;T:
+@fileI"lib/mechanize/form.rb;T:0@omit_headings_from_table_of_contents_below0F@I"Mechanize::Form;TcRDoc::NormalClass0

@@ -100,6 +100,7 @@ class UrsiDataManager(object):
 		
 
 		self.temp_file_path = path.join(secret_dir_path,PPIfilename)
+
 		self.data_list = []
 		self.ppiscript = get_ppi_script_path
 		

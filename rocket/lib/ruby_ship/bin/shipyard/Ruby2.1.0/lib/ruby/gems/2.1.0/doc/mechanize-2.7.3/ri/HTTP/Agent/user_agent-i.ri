@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"user_agent:ETI"HTTP::Agent#user_agent;FI"R;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I""The User-Agent header to send;T:
+@fileI" lib/mechanize/http/agent.rb;T:0@omit_headings_from_table_of_contents_below0F@I"HTTP::Agent;FcRDoc::NormalClassI"Headers;T

@@ -2,7 +2,9 @@ from Managers import sourceManager, sinkManager, Manager
 import utils
 from __init__ import templatedir, templ_delimiter, secretdir
 from loggers import map_log
-import ipdb
+from  template_writer import TemplateWriter
+from TemplateParser import TemplateParser, TemplateParseError
+from TemplateComponents import InstruInfo
 
 class MappingManager(Manager):
 	''' this class is responsible for implementing the 
@@ -20,7 +22,7 @@ class MappingManager(Manager):
 		'''
 
 		# deal with source
-		errstr = (	'if source must be a '
+		errstr = (  'if source must be a '
 					'class referance class refd '
 					'must be subclass of sourceManager. '
 					'not %s')%source
@@ -28,7 +30,7 @@ class MappingManager(Manager):
 		self.source = source()
 		
 		# deal with sink
-		errstr = (	'if source must be a '
+		errstr = (  'if source must be a '
 					'class referance class refd '
 					'must be subclass of sinkManager. '
 					'not %s')%sink
@@ -61,32 +63,52 @@ class MappingManager(Manager):
 
 			allownew should decide if it's okay to allow a new file or not
 		'''
-
-		tmppath = self.get_filepath(title=title,
+		templ_path = None
+		if hasattr(self, 'templ_path'):
+			return self.templ_path
+		else:
+			templ_path = tmppath = self.get_filepath(title=title,
 			initialdir=templatedir,
 			save=save,
 			filetype='templates',
 			allownew = allownew)
-
-		self.templ_path = tmppath
-		return self.templ_path
+			self.templ_path = templ_path
+			return self.templ_path
 
 	def parse_template(self):
 		''' this function utilises self.sink and self.source
-			to parse the template file. each managaer will 
+			to parse the template file. each manager will 
 			take the columns they know about. 
 		'''
-		templ_path = None
-		if hasattr(self, 'templ_path'):
-			templ_path = self.templ_path
-		else:
+
+		'''This is a hard code template parser. Later it shall be refactored to accept customized template'''
+		def set_instru_info_to_sink(instru_info):
+			self.sink.set_instru_info(instru_name = instru_info.get_instru_name(), version = instru_info.get_version())
+
+
+		mapping_part = ""
+		parser =""
+		try:
 			templ_path = self.get_template()
-	
+			parser= TemplateParser(templ_path)
+			parser.parse_template()
+
+			# get the instrument name and its version
+			instru_info = parser.get_instrument_info()
+			mapping_part = parser.get_mapping()
+			set_instru_info_to_sink(instru_info)
+
+		except TemplateParseError as e:
+			print (e)
+			return
+
 		for handler in [self.source, self.sink]:
 			map_log.debug(('loading template into '
 				'handler %s')%type(handler).__name__)
-			with open(templ_path, errors='replace') as templfile:
-				handler.load_template(templfile)
+			mapping_part.seek(0)
+			handler.load_template(mapping_part)
+
+		#parser.close_file()
 
 	def check_valid_src_sink_combo(self):
 		''' ensures that src and sink do not have colliding fieldnames
@@ -119,26 +141,28 @@ class MappingManager(Manager):
 		'''
 		# import ipdb; ipdb.set_trace()
 		
-		if clear_sink: # if sink is not already initialized		
+		if clear_sink: # if sink is not already initialized     
 			self.sink.initialize_data() # clear any data in sink
 
 		map_log.critical('loading data')
 		# ipdb.set_trace()
 		self.source.load_data() # ensure src has data
 
-
 		for rowid,srcrow in enumerate(self.source): 
 			self.sink.add_row() # we want to fill in a new row
 
 			try:
+				import ipdb; ipdb.set_trace()
 				# go through all the columns defined in the template
 				for sinkcoldef in self.sink.col_defs: 
 					try:
 						# if rowid >= 25:
-						#	ipdb.set_trace()
+						#   ipdb.set_trace()
 						# sinkcol maps from the id to sourceColMappers 
 						sinkcoldef.map_src(srcrow)
 						# get col objs from src
+
+						
 
 						mapperslist = sinkcoldef.mappers 
 							# src cols required to compute the sink value
@@ -148,7 +172,7 @@ class MappingManager(Manager):
 							srccols = self.source.getcolumn_defs(*mapperslist) 
 							# list of columns in the source datafile we need to grab
 				
-							# get the data					
+							# get the data                  
 							srcdat = [srcrow[col.col_name] for col in srccols]
 							# list of data values from src datafile
 							# zip the data with it's defining object
@@ -207,16 +231,15 @@ class MappingManager(Manager):
 			except ValueError:
 				raise sinkManager.DropRowException
 
-	def write_func_header(templfile):
+	def get_func_names(self,header_content = []):
 		def _add_all_func_name():
 			all_func_name = [x for x in self.globalfuncs];
 			return all_func_name
 
 		func_header = ["Possible functions you can use are: "] + _add_all_func_name()
-		templ_writer = utils.writer(templfile, delimiter=templ_delimiter)
-		templ_writer.writerow(func_header)
-		headerline_num = 1
-		return headerline_num
+		header_content.append(func_header)
+
+		return header_content
 
 	def _write_instr_name_and_version(self, templfile):
 		templ_writer = utils.writer(templfile, delimiter = templ_delimiter)
@@ -225,15 +248,9 @@ class MappingManager(Manager):
 		headerline_num = 1
 		return headerline_num
 
-
-	def _write_known_template_fields(self, templfile):
-		def _prepare_known_template():
+#   def _write_known_template_fields(self, templfile):
+#       def _prepare_known_template():
 			
-
-
-
-
-
 	def make_template(self):
 		''' leverages the sink and source handlers to make the template
 			file. 
@@ -258,53 +275,64 @@ class MappingManager(Manager):
 			for a specific mapping manager include a list of strings to be
 			included as the header for that thing. 
 		'''
-		
-		def _get_template_path():
+		def _get_template_path_():
 			if hasattr(self, 'templ_path'):
 				return self.templ_path
 			else:
 				return self.get_template(title='Select a template file', 
 					save=True, allownew=True)
+
+		def  _get_headers_content_():
+
+			header = []
+			header = self.add_templ_header(header)
+			header = self.sink.add_templ_header(header)
+			header = self.source.add_templ_header(header)
+			header = self.get_func_names(header)
+			return header
+
+		def _add_mapping_headers_from_src_sink():
+			srctemplatefields = list(self.source.template_fields.values())
+			sinktemplatefields = list(self.sink.template_fields.values())
+			return  sinktemplatefields  + srctemplatefields
 		
 		def handle_tmeplate_err(errstr,err):
 			map_log.error(('%s... Template field getting deleted and '
 				'rocket quitting. Error: %s')%(errstr,err))
-			templfile.close()
-			utils.remove(templ_path)
 			utils.exit(1)
+		
+		tw = None
 
-		def  _write_headers_above_fields(templfile):
-			self.header_lines = 0
-			try:
-				self.header_lines += self.write_templ_header(templfile)
-				self.header_lines += self.sink.write_templ_header(templfile)
-				self.header_lines += self.source.write_templ_header(templfile)
-				self.header_lines += self.write_func_header(templfile)
-				self.header_lines += self._write_instr_name_and_version(templfile)
-			except Exception as e:
-				handle_tmeplate_err('error while writing headers', e)
+		try:
+			tw = TemplateWriter(_get_template_path_(), delimiter = templ_delimiter)
+			
+			# Write header
+			header_content = _get_headers_content_()
+			tw.write_header(header_content)
 
-		def _add_template_headers_from_src_sink():
-			srctemplatefields = list(self.source.template_fields.values())
-			sinktemplatefields = list(self.sink.template_fields.values())
-		 	return srctemplatefields + sinktemplatefields
+			# Write template
+			tw.write_instru_info()
 
-		def _write_templatefields(templfile):
-			templatefields =_add_template_headers_from_src_sink()
-			wr = utils.writer(templfile, delimiter=self.delimiter)
-			wr.writerow(templatefields)
-			return 1
+			# write the final mapping
+			mapping_header = _add_mapping_headers_from_src_sink()
+			tw.write_mapping_info(mapping_info = {} , mapping_header = mapping_header)
 
-		templ_path = _get_template_path()
-		templfile = open(templ_path, 'w')
-		_write_headers_above_fields(templfile)
+			tw.close_and_save_file()
+
+		#except Exception as e:
+		#	if (tw != None):
+		#		tw.close_delete_file()
+		#	handle_tmeplate_err("Template error", e)
+			
 
 		# the template fields for each handler are defined upon initialization 
 		# of the handlers. they are defined in the code and extended for each 
 		# custom handler if they so choose. 
 		# they will be in order of definition in the __init__
-		self.header_lines += _write_templatefields()
 
+		finally:
+			pass
+		'''
 		try:
 			# write the column defs for sink
 			self.sink.populate_template(templfile, templatefields) 
@@ -323,6 +351,7 @@ class MappingManager(Manager):
 			templfile.close() # done with template. wait for user input
 		except Exception as e:
 			handle_tmeplate_err('error while populating sink columns', e)
+			'''
 
 		map_log.debug('Template created')
 		inp = input(('\n\nThe template file has been written. \n'

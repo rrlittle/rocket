@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"host_ip:ETI"DICOM::DClient#host_ip;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"!The IP adress of the server.;T:
+@fileI"lib/dicom/d_client.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DICOM::DClient;FcRDoc::NormalClass0

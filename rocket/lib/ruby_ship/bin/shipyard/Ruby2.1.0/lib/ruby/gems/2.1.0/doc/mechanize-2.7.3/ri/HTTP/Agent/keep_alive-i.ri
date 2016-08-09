@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"keep_alive:ETI"HTTP::Agent#keep_alive;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"9Set to false to disable HTTP/1.1 keep-alive requests;T:
+@fileI" lib/mechanize/http/agent.rb;T:0@omit_headings_from_table_of_contents_below0F@I"HTTP::Agent;FcRDoc::NormalClassI"Timeouts;T

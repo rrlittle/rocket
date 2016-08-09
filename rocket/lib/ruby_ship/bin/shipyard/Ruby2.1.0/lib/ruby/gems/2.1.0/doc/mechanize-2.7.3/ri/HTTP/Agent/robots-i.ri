@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"robots:ETI"HTTP::Agent#robots;FI"R;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"NWhen true, this agent will consult the site's robots.txt for each access.;T:
+@fileI" lib/mechanize/http/agent.rb;T:0@omit_headings_from_table_of_contents_below0F@I"HTTP::Agent;FcRDoc::NormalClassI"Robots;T

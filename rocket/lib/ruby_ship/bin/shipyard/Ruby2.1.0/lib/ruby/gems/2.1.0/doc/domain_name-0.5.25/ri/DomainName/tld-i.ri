@@ -1,0 +1,3 @@
+U:RDoc::Attr[iI"tld:ETI"DomainName#tld;TI"R;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[
+I"HThe TLD part of this domain name.  For example, if the hostname is ;TI"F"www.sub.example.co.uk", the TLD part is "uk".  This property is ;TI"Enil only if +ipaddr?+ is true.  This may be nil if the hostname ;TI">does not have one, like when it is an IP address or of a ;TI"non-canonical domain.;T:
+@fileI"lib/domain_name.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DomainName;TcRDoc::NormalClass0

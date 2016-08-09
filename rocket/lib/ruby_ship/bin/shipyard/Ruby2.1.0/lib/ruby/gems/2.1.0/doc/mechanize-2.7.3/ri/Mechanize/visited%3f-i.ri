@@ -1,0 +1,4 @@
+U:RDoc::AnyMethod[iI"visited?:EFI"Mechanize#visited?;TF:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"BReturns a visited page for the +url+ passed in, otherwise nil;T:
+@fileI"lib/mechanize.rb;T:0@omit_headings_from_table_of_contents_below000[[I"visited_page;Fo;;	[o;
+;	[I"2Returns whether or not a url has been visited;T;@;0I"
+(url);T@FI"Mechanize;TcRDoc::NormalClassI"History;T0

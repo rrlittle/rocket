@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"read_success:ETI" DICOM::DObject#read_success;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"wA boolean which is set as true if a DICOM file has been successfully read & parsed from a file (or binary string).;T:
+@fileI"lib/dicom/d_object.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DICOM::DObject;FcRDoc::NormalClass0

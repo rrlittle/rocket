@@ -1,4 +1,5 @@
 $LOAD_PATH.unshift(__dir__)
+
 require 'rdoc_utils'
 
 uRSIForTest = 'M53779169'
@@ -6,6 +7,8 @@ initLogger(true)
 initPiggybank
 
 if ARGV[0] != nil
+	puts "I'm in the first branch"
+
 	ARGV.each do |argv|
 		ursi = argv
 		individual = $piggybank.get_demographics_by_ursi(ursi)
@@ -24,6 +27,8 @@ if ARGV[0] != nil
 	end
 
 else
+	puts "I'm in the second branch"
+	
 	subjects = $piggybank.list_subjects 8200
 	subjects.each do  |subject|
 		ursi = subject.ursi 

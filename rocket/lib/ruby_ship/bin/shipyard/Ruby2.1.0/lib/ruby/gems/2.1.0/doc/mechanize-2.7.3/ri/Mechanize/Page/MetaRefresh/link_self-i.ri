@@ -1,0 +1,2 @@
+U:RDoc::Attr[iI"link_self:ETI"+Mechanize::Page::MetaRefresh#link_self;TI"R;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"PThis MetaRefresh links did not contain a url= in the content attribute and ;TI"links to itself.;T:
+@fileI"'lib/mechanize/page/meta_refresh.rb;T:0@omit_headings_from_table_of_contents_below0F@I"!Mechanize::Page::MetaRefresh;TcRDoc::NormalClass0

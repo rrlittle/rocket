@@ -1,0 +1,11 @@
+U:RDoc::Attr[iI"
+value:ETI"HTTP::Cookie#value;FI"RW;T:publico:RDoc::Markup::Document:@parts[	o:RDoc::Markup::Paragraph;	[I"The cookie value.;To;
+;	[I"|Assign a string containing a control character (<code>\x00-\x1F</code> and
+<code>\x7F</code>) will raise ArgumentError.;To;
+;	[I"èAssigning nil sets the value to an empty string and the expiration
+date to the Unix epoch. This is a handy way to make a cookie for
+expiration.;To;
+;	[I"≠Note that RFC 6265 4.1.1 lists more characters disallowed for use
+in a cookie value, which are these: <code>",;\</code>. Using these
+characters will reduce interoperability.;T:
+@fileI"lib/http/cookie.rb;T:0@omit_headings_from_table_of_contents_below0F@I"HTTP::Cookie;FcRDoc::NormalClass0
