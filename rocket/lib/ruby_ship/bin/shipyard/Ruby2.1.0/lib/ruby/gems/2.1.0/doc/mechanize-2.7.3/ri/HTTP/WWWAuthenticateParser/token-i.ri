@@ -1,6 +1,0 @@
-U:RDoc::AnyMethod[iI"
-token:EFI"&HTTP::WWWAuthenticateParser#token;FF:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Verbatim;	[I"4token = 1*<any CHAR except CTLs or separators>
-;T:@format0o:RDoc::Markup::Paragraph;	[I"Parses a token;T:
-@fileI"2lib/mechanize/http/www_authenticate_parser.rb;T:0@omit_headings_from_table_of_contents_below000[[I"auth_scheme;Fo;;	[o;
-;	[I"auth-scheme = token
-;T;0o;;	[I"$Parses an auth scheme (a token);T;@;0I"();T@FI"WWWAuthenticateParser;TcRDoc::NormalClass00

@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"presentation_contexts:ETI"&DICOM::Link#presentation_contexts;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"`A hash which keeps track of the relationship between context ID and chosen transfer syntax.;T:
-@fileI"lib/dicom/link.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DICOM::Link;FcRDoc::NormalClass0

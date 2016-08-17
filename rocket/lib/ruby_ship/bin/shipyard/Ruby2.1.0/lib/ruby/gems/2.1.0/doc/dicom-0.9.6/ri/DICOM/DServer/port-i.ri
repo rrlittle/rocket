@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"	port:ETI"DICOM::DServer#port;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"!The network port to be used.;T:
-@fileI"lib/dicom/d_server.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DICOM::DServer;FcRDoc::NormalClass0

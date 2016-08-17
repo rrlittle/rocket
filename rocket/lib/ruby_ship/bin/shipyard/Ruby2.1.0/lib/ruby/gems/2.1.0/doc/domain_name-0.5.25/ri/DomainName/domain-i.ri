@@ -1,3 +1,0 @@
-U:RDoc::Attr[iI"domain:ETI"DomainName#domain;TI"R;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[
-I"GThe least "universally original" domain part of this domain name. ;TI"EFor example, "example.co.uk" for "www.sub.example.co.uk".  This ;TI"Fmay be nil if the hostname does not have one, like when it is an ;TI"<IP address, an effective TLD or higher itself, or of a ;TI"non-canonical domain.;T:
-@fileI"lib/domain_name.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DomainName;TcRDoc::NormalClass0

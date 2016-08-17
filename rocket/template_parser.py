@@ -1,6 +1,7 @@
 #from Managers import Manager
 from __init__ import templatedir
 from TemplateComponents import Header, InstruInfoComponent, MappingInfo, InstruInfo, NoticeComponent
+from components_response_protocal import ComponentResponseProtocal
 
 import csv
 
@@ -9,28 +10,28 @@ class TemplateParser(object):
     """docstring for TemplateParser
         the template structure now is Header, InstruInfo, MappingInfo
     """
-    def __init__(self, path):
+    def __init__(self, components, delegate=ComponentResponseProtocal()):
         super(TemplateParser, self).__init__()
-        self.path = path
-        self.header = Header()
-        self.instru_info = InstruInfoComponent()
-        self.mapping_info = MappingInfo()
-        self.user_notice_comp = NoticeComponent()
+        self.components = components
         self.mapping = None
         self.user_notice = None
+        self.delegate = delegate
 
-    def _open_file_(self):
-        self.templ_file = open(self.path, "r", errors = "ignore")
+    def _open_file_(self, path):
+        self.templ_file = open(path, "r", errors = "ignore")
         return self.templ_file
 
-    def parse_template(self):
+    def parse_template(self, file_path):
 
         try:
-            file = self._open_file_()
-            self.header.read_in_line(file)
-            self.instru_info.read_in_line(file)
-            self.user_notice = self.user_notice_comp.read_in_line(file)
-            self.mapping = self.mapping_info.read_in_line(file)
+            file = self._open_file_(file_path)
+            for c in self.components:
+                # read in content
+                c.read_in_line(file)
+
+                # the component will send message to the delegate
+                c.send_message_to_delegate(self.delegate)
+
         except Exception as e:
             raise TemplateParseError("%s"%e)
         pass
@@ -62,9 +63,11 @@ class TemplateParseError(Exception):
 
 
 def test():
+    ts = TemplateStructure()
+    ts.set_to_default_structure()
+    tp = ts.get_template_parser()
     file_path = "templateComponentTest.csv"
-    tp = TemplateParser(file_path)
-    tp.parse_template()
+    tp.parse_template(file_path)
 
     # get the instrument name and its version
     instru_info = tp.get_instrument_info()

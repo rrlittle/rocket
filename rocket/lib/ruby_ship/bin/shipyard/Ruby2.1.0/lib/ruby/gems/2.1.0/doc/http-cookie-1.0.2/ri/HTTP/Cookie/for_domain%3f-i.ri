@@ -1,5 +1,0 @@
-U:RDoc::Attr[iI"for_domain?:EFI"HTTP::Cookie#for_domain?;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"6The domain flag. (the opposite of host-only-flag);To;
-;	[I"ÀIf this flag is true, this cookie will be sent to any host in the
-#domain, including the host domain itself. If it is false, this
-cookie will be sent only to the host indicated by the #domain.;T:
-@fileI"lib/http/cookie.rb;T:0@omit_headings_from_table_of_contents_below0F@I"HTTP::Cookie;FcRDoc::NormalClass0

@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"context:ETI"HTTP::Agent#context;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I",The context parses responses into pages;T:
-@fileI" lib/mechanize/http/agent.rb;T:0@omit_headings_from_table_of_contents_below0F@I"HTTP::Agent;FcRDoc::NormalClassI"Utility;T

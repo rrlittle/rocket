@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"hostname:ETI"DomainName#hostname;TI"R;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[	I"GThe full host name normalized, ASCII-ized and downcased using the ;TI"HUnicode NFC rules and the Punycode algorithm.  If initialized with ;TI"@an IP address, the string representation of the IP address ;TI"*suitable for opening a connection to.;T:
-@fileI"lib/domain_name.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DomainName;TcRDoc::NormalClass0

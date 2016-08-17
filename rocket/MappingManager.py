@@ -6,364 +6,378 @@ from  template_writer import TemplateWriter
 from TemplateParser import TemplateParser, TemplateParseError
 from TemplateComponents import InstruInfo
 
+
 class MappingManager(Manager):
-	''' this class is responsible for implementing the 
-		core algorithms governing the operation of
-		the conversion routine. 
-		it is also in charge of creation and parsing of 
-		the template file. 
-	'''
-	delimiter = templ_delimiter
-	def __init__(self, source=sourceManager, sink = sinkManager):
-		''' it's imperative that this instance know about
-			a source and sink manager. they are the providers 
-			for all the information in the raw files. 
-			this should never be using raw info
-		'''
+    ''' this class is responsible for implementing the
+        core algorithms governing the operation of
+        the conversion routine.
+        it is also in charge of creation and parsing of
+        the template file.
+    '''
+    delimiter = templ_delimiter
 
-		# deal with source
-		errstr = (  'if source must be a '
-					'class referance class refd '
-					'must be subclass of sourceManager. '
-					'not %s')%source
-		assert issubclass(source, sourceManager), errstr 
-		self.source = source()
-		
-		# deal with sink
-		errstr = (  'if source must be a '
-					'class referance class refd '
-					'must be subclass of sinkManager. '
-					'not %s')%sink
-		assert issubclass(sink, sinkManager), errstr 
-		self.sink = sink()
-		
-		
-		self.check_valid_src_sink_combo()
+    def __init__(self, source=sourceManager, sink=sinkManager):
+        ''' it's imperative that this instance know about
+            a source and sink manager. they are the providers
+            for all the information in the raw files.
+            this should never be using raw info
+        '''
 
-		# make the functions of each available via utils
-		# check for naming conflicts
-		self.globalfuncs = self.load_functions()
+        # deal with source
+        errstr = ('if source must be a '
+                  'class referance class refd '
+                  'must be subclass of sourceManager. '
+                  'not %s') % source
+        assert issubclass(source, sourceManager), errstr
+        self.source = source()
 
-		# pass functions down to sink maanager for the sinkcolumns to use
-		setattr(self.sink, 'globalfuncs', self.globalfuncs)
+        # deal with sink
+        errstr = ('if source must be a '
+                  'class referance class refd '
+                  'must be subclass of sinkManager. '
+                  'not %s') % sink
+        assert issubclass(sink, sinkManager), errstr
+        self.sink = sink()
 
-	def load_functions(self):
-		''' must be overwritten by Mapping manager subclasses. 
-			in order to include functions that are aware of both 
-			source and sink schemes.
-			It should be a dictionary looks like {"mean":{"ref": mean }  }, mean
-			is the reference of the mean function
-		'''
-		return {}
+        self.check_valid_src_sink_combo()
 
-	def get_template(self, title='Template', allownew=False, save=False):
-		''' this gets the filepath to a file. which is assumed to be 
-			a template file. we will rely on source sink handlers for error
-			checking when they load it in
+        # make the functions of each available via utils
+        # check for naming conflicts
+        self.globalfuncs = self.load_functions()
 
-			allownew should decide if it's okay to allow a new file or not
-		'''
-		templ_path = None
-		if hasattr(self, 'templ_path'):
-			return self.templ_path
-		else:
-			templ_path = tmppath = self.get_filepath(title=title,
-			initialdir=templatedir,
-			save=save,
-			filetype='templates',
-			allownew = allownew)
-			self.templ_path = templ_path
-			return self.templ_path
+        # pass functions down to sink maanager for the sinkcolumns to use
+        setattr(self.sink, 'globalfuncs', self.globalfuncs)
 
-	def parse_template(self):
-		''' this function utilises self.sink and self.source
-			to parse the template file. each manager will 
-			take the columns they know about. 
-		'''
+    def load_functions(self):
+        """ must be overwritten by Mapping manager subclasses.in order to include functions
+        that are aware of both source and sink schemes.It should be a dictionary looks like
+        {"mean":{"ref": mean }  },
+        mean is the reference of the mean function
+        """
+        return {}
 
-		'''This is a hard code template parser. Later it shall be refactored to accept customized template'''
-		def set_instru_info_to_sink(instru_info):
-			self.sink.set_instru_info(instru_name = instru_info.get_instru_name(), version = instru_info.get_version())
+    def get_template(self, title='Template', allownew=False, save=False):
+        ''' this gets the filepath to a file. which is assumed to be
+            a template file. we will rely on source sink handlers for error
+            checking when they load it in
 
+            allownew should decide if it's okay to allow a new file or not
+        '''
+        templ_path = None
+        if hasattr(self, 'templ_path'):
+            return self.templ_path
+        else:
+            templ_path = tmppath = self.get_filepath(title=title,
+                                                     initialdir=templatedir,
+                                                     save=save,
+                                                     filetype='templates',
+                                                     allownew=allownew)
+            self.templ_path = templ_path
+            return self.templ_path
 
-		mapping_part = ""
-		parser =""
-		try:
-			templ_path = self.get_template()
-			parser= TemplateParser(templ_path)
-			parser.parse_template()
+    def parse_template(self):
+        ''' this function utilises self.sink and self.source
+            to parse the template file. each manager will
+            take the columns they know about.
+        '''
 
-			# get the instrument name and its version
-			instru_info = parser.get_instrument_info()
-			mapping_part = parser.get_mapping()
-			set_instru_info_to_sink(instru_info)
+        '''This is a hard code template parser. Later it shall be refactored to accept customized template'''
 
-		except TemplateParseError as e:
-			print (e)
-			return
+        def set_instru_info_to_sink(instru_info):
+            self.sink.set_instru_info(instru_name=instru_info.get_instru_name(), version=instru_info.get_version())
 
-		for handler in [self.source, self.sink]:
-			map_log.debug(('loading template into '
-				'handler %s')%type(handler).__name__)
-			mapping_part.seek(0)
-			handler.load_template(mapping_part)
+        mapping_part = ""
+        parser = ""
+        try:
+            templ_path = self.get_template()
+            parser = TemplateParser(templ_path)
+            parser.parse_template()
 
-		#parser.close_file()
+            # get the instrument name and its version
+            instru_info = parser.get_instrument_info()
+            mapping_part = parser.get_mapping()
+            self.user_notice = parser.get_user_notice()
+            set_instru_info_to_sink(instru_info)
 
-	def check_valid_src_sink_combo(self):
-		''' ensures that src and sink do not have colliding fieldnames
-			if they do there will be an issue with parsing and creating the 
-			template all the headers must template headers must be unique'''
-		# generate list of all the headers
-		srctemplateheaders = list(self.source.template_fields.values())
-		sinktemplateheaders = list(self.sink.template_fields.values())
-		templateheaders = srctemplateheaders + sinktemplateheaders
-		# find collisions
-		collisions = []
-		tmp = []
-		for header in templateheaders:
-			if header not in tmp: tmp.append(header)
-			else: collisions.append(header)
-		# and raise error if there are any collisions
-		if len(collisions) != 0: 
-			raise self.TemplateError(('collisions detected in src and'
-				' sink handler template_fieldnames. pleae modify these fields '
-				'to ensure unique headers: %s')%collisions) 
+        except TemplateParseError as e:
+            print(e)
+            return
 
-	def convert(self, clear_sink=True):
-		''' this function implements the core algorithm of rocket.
-			this sets up the core behaviour of the template files. 
-			basically it applies the function specified with the 
-			arguments provided to the columns in the source
-			and save the returning value in sink. 
+        for handler in [self.source, self.sink]:
+            map_log.debug(('loading template into '
+                           'handler %s') % type(handler).__name__)
+            mapping_part.seek(0)
+            handler.load_template(mapping_part)
 
-			the goal here is to fill up sink.data in prep for sink.write
-		'''
-		# import ipdb; ipdb.set_trace()
-		
-		if clear_sink: # if sink is not already initialized     
-			self.sink.initialize_data() # clear any data in sink
+        # parser.close_file()
 
-		map_log.critical('loading data')
-		# ipdb.set_trace()
-		self.source.load_data() # ensure src has data
+    def check_valid_src_sink_combo(self):
+        ''' ensures that src and sink do not have colliding fieldnames
+            if they do there will be an issue with parsing and creating the
+            template all the headers must template headers must be unique'''
+        # generate list of all the headers
+        srctemplateheaders = list(self.source.template_fields.values())
+        sinktemplateheaders = list(self.sink.template_fields.values())
+        templateheaders = srctemplateheaders + sinktemplateheaders
+        # find collisions
+        collisions = []
+        tmp = []
+        for header in templateheaders:
+            if header not in tmp:
+                tmp.append(header)
+            else:
+                collisions.append(header)
+        # and raise error if there are any collisions
+        if len(collisions) != 0:
+            raise self.TemplateError(('collisions detected in src and'
+                                      ' sink handler template_fieldnames. pleae modify these fields '
+                                      'to ensure unique headers: %s') % collisions)
 
-		for rowid,srcrow in enumerate(self.source): 
-			self.sink.add_row() # we want to fill in a new row
+    def _remind_user_notice_(self):
+        if self.user_notice != "":
+            prompt = "\n The template has this important instruction on how to use the template.\n" \
+                     " Please read it and press ANY key to continue the whole process \n"
+            prompt += "User Notification: \n"
+            prompt += "%s" % self.user_notice
+            input(prompt)
 
-			try:
-				import ipdb; ipdb.set_trace()
-				# go through all the columns defined in the template
-				for sinkcoldef in self.sink.col_defs: 
-					try:
-						# if rowid >= 25:
-						#   ipdb.set_trace()
-						# sinkcol maps from the id to sourceColMappers 
-						sinkcoldef.map_src(srcrow)
-						# get col objs from src
+    def convert(self, clear_sink=True):
+        ''' this function implements the core algorithm of rocket.
+            this sets up the core behaviour of the template files.
+            basically it applies the function specified with the
+            arguments provided to the columns in the source
+            and save the returning value in sink.
 
-						
+            the goal here is to fill up sink.data in prep for sink.write
+        '''
+        # import ipdb; ipdb.set_trace()
 
-						mapperslist = sinkcoldef.mappers 
-							# src cols required to compute the sink value
-						
+        if clear_sink:  # if sink is not already initialized
+            self.sink.initialize_data()  # clear any data in sink
 
-						if not isinstance(mapperslist, self.sink.NoDataError):
-							srccols = self.source.getcolumn_defs(*mapperslist) 
-							# list of columns in the source datafile we need to grab
-				
-							# get the data                  
-							srcdat = [srcrow[col.col_name] for col in srccols]
-							# list of data values from src datafile
-							# zip the data with it's defining object
-							# needed for sinkcol.convert
-							src_datcol_zip = zip(srcdat, srccols)
-							
-							# convert it to the sink value
-							sinkdat = sinkcoldef.convert(src_datcol_zip)
+        map_log.critical('loading data')
+        # ipdb.set_trace()
 
-							#print('output:',sinkdat)
-							# save the sink value to the last row
-							self.sink[-1][sinkcoldef] = sinkdat
+        self._remind_user_notice_()
+        self.source.load_data()  # ensure src has data
 
-						else:
-							self.sink[-1][sinkcoldef] = sinkcoldef.default
-							
+        for rowid, srcrow in enumerate(self.source):
+            self.sink.add_row()  # we want to fill in a new row
 
-					except sinkManager.DropRowException as e:
-						raise e
-					except Exception as e:
-						map_log.error(('A not drop row exception happen when'
-										'processing data in a row: %s')%e)
-						self.sink[-1][sinkcoldef] = sinkcoldef.default
-						continue;
-
-				# after the row is done use ensure row
-				self.sink.ensure_row(self.sink.data[-1]) # raise drop row exception if row not right
-
-			except sinkManager.DropRowException as e:
-				# drop the row if it should't be included in the dataset
-				map_log.error(('not including source row %s in sink: err'
-									' at %s (%s)')%(rowid, sinkcoldef, e))
-				self.sink.drop_row()
-			except Exception as e:
-				map_log.error('not droprow exception: %s'%e)
-				continue
+            try:
+                # go through all the columns defined in the template
+                for sinkcoldef in self.sink.col_defs:
+                    try:
+                        # if rowid >= 25:
+                        #   ipdb.set_trace()
+                        # sinkcol maps from the id to sourceColMappers
+                        sinkcoldef.map_src(srcrow)
+                        # get col objs from src
 
 
-		map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDONE CONVERSION')
-		
-		return self.sink.data
 
-	def get_mapperids(self,mapper_string):
-		#print('################### %s'%mapper_string)
-		mapper_ids = []
-		if '::' not in mapper_string:
-			return mapper_string.split(',')
-
-		if '::' in mapper_string:
-			mapper_temp = mapper_string.split('::')
-			try:
-				start = int(min(mapper_temp))
-				end = int(max(mapper_temp))
-				mapper_ids = [str(x) for x in range(start, end+1)]
-				return mapper_ids
-			except ValueError:
-				raise sinkManager.DropRowException
-
-	def get_func_names(self,header_content = []):
-		def _add_all_func_name():
-			all_func_name = [x for x in self.globalfuncs];
-			return all_func_name
-
-		func_header = ["Possible functions you can use are: "] + _add_all_func_name()
-		header_content.append(func_header)
-
-		return header_content
-
-	def _write_instr_name_and_version(self, templfile):
-		templ_writer = utils.writer(templfile, delimiter = templ_delimiter)
-		instr_header = ["Enter the instrument name:","","version:",""]
-		templ_writer = templ_writer.writerow(instr_header)
-		headerline_num = 1
-		return headerline_num
-
-#   def _write_known_template_fields(self, templfile):
-#       def _prepare_known_template():
-			
-	def make_template(self):
-		''' leverages the sink and source handlers to make the template
-			file. 
-			
-			writes handler documentation as top header using 
-			self.template_header
-			
-			then calls sink handler to write it's documentation as the second 
-			header
-
-			then calls source header to write it's documentation as the third 
-			header
-
-			then wtites global funcs with their documentation as the 4th header
-
-			finally uses sink.get_template_fields and source.get_template_fields
-			to populate the final template header.
-
-			then calls sink and source.populate_template to populate the 
-			template.
-
-			for a specific mapping manager include a list of strings to be
-			included as the header for that thing. 
-		'''
-		def _get_template_path_():
-			if hasattr(self, 'templ_path'):
-				return self.templ_path
-			else:
-				return self.get_template(title='Select a template file', 
-					save=True, allownew=True)
-
-		def  _get_headers_content_():
-
-			header = []
-			header = self.add_templ_header(header)
-			header = self.sink.add_templ_header(header)
-			header = self.source.add_templ_header(header)
-			header = self.get_func_names(header)
-			return header
-
-		def _add_mapping_headers_from_src_sink():
-			srctemplatefields = list(self.source.template_fields.values())
-			sinktemplatefields = list(self.sink.template_fields.values())
-			return  sinktemplatefields  + srctemplatefields
-		
-		def handle_tmeplate_err(errstr,err):
-			map_log.error(('%s... Template field getting deleted and '
-				'rocket quitting. Error: %s')%(errstr,err))
-			utils.exit(1)
-		
-		tw = None
-
-		try:
-			tw = TemplateWriter(_get_template_path_(), delimiter = templ_delimiter)
-			
-			# Write header
-			header_content = _get_headers_content_()
-			tw.write_header(header_content)
-
-			# Write template
-			tw.write_instru_info()
-
-			# write the final mapping
-			mapping_header = _add_mapping_headers_from_src_sink()
-			tw.write_mapping_info(mapping_info = {} , mapping_header = mapping_header)
-
-			tw.close_and_save_file()
-
-		#except Exception as e:
-		#	if (tw != None):
-		#		tw.close_delete_file()
-		#	handle_tmeplate_err("Template error", e)
-			
-
-		# the template fields for each handler are defined upon initialization 
-		# of the handlers. they are defined in the code and extended for each 
-		# custom handler if they so choose. 
-		# they will be in order of definition in the __init__
-
-		finally:
-			pass
-		'''
-		try:
-			# write the column defs for sink
-			self.sink.populate_template(templfile, templatefields) 
-			templfile.close()
-		except Exception as e:
-			handle_tmeplate_err('error while populating sink columns', e)
-		
-		try:
-			# allow rewrite of rows starting just below the headers
-			templfile = open(templ_path, 'w+')
-			# skip to below headers
-			for i in range(self.header_lines): 
-				templfile.readline() 
-			# write the column defs for source
-			self.source.populate_template(templfile, templatefields)
-			templfile.close() # done with template. wait for user input
-		except Exception as e:
-			handle_tmeplate_err('error while populating sink columns', e)
-			'''
-
-		map_log.debug('Template created')
-		inp = input(('\n\nThe template file has been written. \n'
-			'Please hit enter when you are done with the file and you will'
-			' continue to the conversion if you have selected both options\n'
-			'enter "q" if you would like to quit now and fill the template at ' 
-			'another time\n>>'))
-
-		if inp == 'q': 
-			map_log.critical('User elected to quit after template was created')
-			utils.exit()
-
-		return templ_path
+                        mapperslist = sinkcoldef.mappers
+                        # src cols required to compute the sink value
 
 
+                        if not isinstance(mapperslist, self.sink.NoDataError):
+                            srccols = self.source.getcolumn_defs(*mapperslist)
+                            # list of columns in the source datafile we need to grab
+
+                            # get the data
+                            srcdat = [srcrow[col.col_name] for col in srccols]
+                            # list of data values from src datafile
+                            # zip the data with it's defining object
+                            # needed for sinkcol.convert
+                            src_datcol_zip = zip(srcdat, srccols)
+
+                            # convert it to the sink value
+                            sinkdat = sinkcoldef.convert(src_datcol_zip)
+
+                            # print('output:',sinkdat)
+                            # save the sink value to the last row
+                            self.sink[-1][sinkcoldef] = sinkdat
+
+                        else:
+                            self.sink[-1][sinkcoldef] = sinkcoldef.default
+
+
+                    except sinkManager.DropRowException as e:
+                        raise e
+                    except Exception as e:
+                        map_log.error(('A not drop row exception happen when'
+                                       'processing data in a row: %s') % e)
+                        self.sink[-1][sinkcoldef] = sinkcoldef.default
+                        continue;
+
+                # after the row is done use ensure row
+                self.sink.ensure_row(self.sink.data[-1])  # raise drop row exception if row not right
+
+            except sinkManager.DropRowException as e:
+                # drop the row if it should't be included in the dataset
+                map_log.error(('not including source row %s in sink: err'
+                               ' at %s (%s)') % (rowid, sinkcoldef, e))
+                self.sink.drop_row()
+            except Exception as e:
+                map_log.error('not droprow exception: %s' % e)
+                continue
+
+        map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDONE CONVERSION')
+
+        return self.sink.data
+
+    def get_mapperids(self, mapper_string):
+        # print('################### %s'%mapper_string)
+        mapper_ids = []
+        if '::' not in mapper_string:
+            return mapper_string.split(',')
+
+        if '::' in mapper_string:
+            mapper_temp = mapper_string.split('::')
+            try:
+                start = int(min(mapper_temp))
+                end = int(max(mapper_temp))
+                mapper_ids = [str(x) for x in range(start, end + 1)]
+                return mapper_ids
+            except ValueError:
+                raise sinkManager.DropRowException
+
+    def get_func_names(self, header_content=[]):
+        def _add_all_func_name():
+            all_func_name = [x for x in self.globalfuncs];
+            return all_func_name
+
+        func_header = ["Possible functions you can use are: "] + _add_all_func_name()
+        header_content.append(func_header)
+
+        return header_content
+
+    def _write_instr_name_and_version(self, templfile):
+        templ_writer = utils.writer(templfile, delimiter=templ_delimiter)
+        instr_header = ["Enter the instrument name:", "", "version:", ""]
+        templ_writer = templ_writer.writerow(instr_header)
+        headerline_num = 1
+        return headerline_num
+
+    #   def _write_known_template_fields(self, templfile):
+    #       def _prepare_known_template():
+
+    def make_template(self):
+        ''' leverages the sink and source handlers to make the template
+            file.
+
+            writes handler documentation as top header using
+            self.template_header
+
+            then calls sink handler to write it's documentation as the second
+            header
+
+            then calls source header to write it's documentation as the third
+            header
+
+            then wtites global funcs with their documentation as the 4th header
+
+            finally uses sink.get_template_fields and source.get_template_fields
+            to populate the final template header.
+
+            then calls sink and source.populate_template to populate the
+            template.
+
+            for a specific mapping manager include a list of strings to be
+            included as the header for that thing.
+        '''
+
+        def _get_template_path_():
+            if hasattr(self, 'templ_path'):
+                return self.templ_path
+            else:
+                return self.get_template(title='Select a template file',
+                                         save=True, allownew=True)
+
+        def _get_headers_content_():
+
+            header = []
+            header = self.add_templ_header(header)
+            header = self.sink.add_templ_header(header)
+            header = self.source.add_templ_header(header)
+            header = self.get_func_names(header)
+            return header
+
+        def _add_mapping_headers_from_src_sink():
+            srctemplatefields = list(self.source.template_fields.values())
+            sinktemplatefields = list(self.sink.template_fields.values())
+            return sinktemplatefields + srctemplatefields
+
+        def handle_tmeplate_err(errstr, err):
+            map_log.error(('%s... Template field getting deleted and '
+                           'rocket quitting. Error: %s') % (errstr, err))
+            utils.exit(1)
+
+        tw = None
+
+        try:
+            tw = TemplateWriter(_get_template_path_(), delimiter=templ_delimiter)
+
+            # Write header
+            header_content = _get_headers_content_()
+            tw.write_header(header_content)
+
+            # Write template
+            tw.write_instru_info()
+
+            # Write the user notice which show up when the user
+            # try to get the data file
+            tw.write_user_notice()
+
+            # write the final mapping
+            mapping_header = _add_mapping_headers_from_src_sink()
+            tw.write_mapping_info(mapping_info={}, mapping_header=mapping_header)
+
+            tw.close_and_save_file()
+
+        # except Exception as e:
+        #	if (tw != None):
+        #		tw.close_delete_file()
+        #	handle_tmeplate_err("Template error", e)
+
+
+        # the template fields for each handler are defined upon initialization
+        # of the handlers. they are defined in the code and extended for each
+        # custom handler if they so choose.
+        # they will be in order of definition in the __init__
+
+        finally:
+            pass
+        '''
+        try:
+            # write the column defs for sink
+            self.sink.populate_template(templfile, templatefields)
+            templfile.close()
+        except Exception as e:
+            handle_tmeplate_err('error while populating sink columns', e)
+
+        try:
+            # allow rewrite of rows starting just below the headers
+            templfile = open(templ_path, 'w+')
+            # skip to below headers
+            for i in range(self.header_lines):
+                templfile.readline()
+            # write the column defs for source
+            self.source.populate_template(templfile, templatefields)
+            templfile.close() # done with template. wait for user input
+        except Exception as e:
+            handle_tmeplate_err('error while populating sink columns', e)
+            '''
+
+        map_log.debug('Template created')
+        inp = input(('\n\nThe template file has been written. \n'
+                     'Please hit enter when you are done with the file and you will'
+                     ' continue to the conversion if you have selected both options\n'
+                     'enter "q" if you would like to quit now and fill the template at '
+                     'another time\n>>'))
+
+        if inp == 'q':
+            map_log.critical('User elected to quit after template was created')
+            utils.exit()
+
+        return templ_path

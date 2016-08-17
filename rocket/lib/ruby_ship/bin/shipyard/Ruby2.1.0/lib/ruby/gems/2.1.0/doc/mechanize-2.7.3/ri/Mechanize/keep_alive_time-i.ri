@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"keep_alive_time:ETI"Mechanize#keep_alive_time;TI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"OHTTP/1.0 keep-alive time.  This is no longer supported by mechanize as it ;TI"Jnow uses net-http-persistent which only supports HTTP/1.1 persistent ;TI"connections;T:
-@fileI"lib/mechanize.rb;T:0@omit_headings_from_table_of_contents_below0F@I"Mechanize;TcRDoc::NormalClassI"Settings;T

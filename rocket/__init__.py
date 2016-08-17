@@ -1,8 +1,6 @@
 import utils
 
-
 # define soe global stuff
-
 
 # figure out a bunch of directories so we don't need to parse them every time
 # Yay abstraction!

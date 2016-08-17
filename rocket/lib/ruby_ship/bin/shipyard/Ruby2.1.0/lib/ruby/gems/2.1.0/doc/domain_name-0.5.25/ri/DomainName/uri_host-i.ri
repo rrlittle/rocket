@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"uri_host:ETI"DomainName#uri_host;TI"R;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"EReturns a host name representation suitable for use in the host ;TI"Bname part of a URI.  A host name, an IPv4 address, or a IPv6 ;TI")address enclosed in square brackets.;T:
-@fileI"lib/domain_name.rb;T:0@omit_headings_from_table_of_contents_below0F@I"DomainName;TcRDoc::NormalClass0
