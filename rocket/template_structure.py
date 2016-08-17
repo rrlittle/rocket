@@ -1,5 +1,6 @@
 from TemplateComponents import TemplateComponenet, Header, InstruInfoComponent, NoticeComponent,MappingInfo
 from template_parser import TemplateParser
+from template_writer import TemplateWriter
 
 class TemplateStructure:
 
@@ -23,7 +24,8 @@ class TemplateStructure:
         self.components = [Header(),InstruInfoComponent(), NoticeComponent(), MappingInfo()]
         return self.components
 
-    def get_template_writer(self):
+    def get_template_writer(self, delegate, delimiter):
+        return TemplateWriter(self.components, delegate=delegate, delimiter=delimiter)
         pass
 
     def get_template_parser(self, delegate):

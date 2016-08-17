@@ -39,6 +39,22 @@ class TemplateComponenet(object):
          after this component get parsed"""
         pass
 
+    def _extra_write_requirement_(self, file, delegate, delimiter):
+        """This method is used to configure what happened after the
+        start token is written. A protocal will also be provided
+        for this method to help auto generate the template based on the
+        information from Mapping Manager or other delegate
+        """
+
+        pass
+
+    def written_to_file(self, file, delegate= None, delimiter= ","):
+        file.write(self.start_token + "\n")
+
+        self._extra_write_requirement_(file, delegate, delimiter)
+
+        file.write("\n" + self.end_token + "\n")
+
 class Header(TemplateComponenet):
     def __init__(self):
         super(Header, self).__init__()
@@ -49,7 +65,12 @@ class Header(TemplateComponenet):
         return self.content
 
     def send_message_to_delegate(self, delegate):
+        #print("Header sending message")
         delegate.respond_to_header(self.get_headers())
+
+    def _extra_write_requirement_(self, file, delegate, delimiter):
+        delegate.write_init_header(file, delimiter)
+
 
 class InstruInfoComponent(TemplateComponenet):
     def __init__(self):
@@ -94,7 +115,16 @@ class InstruInfoComponent(TemplateComponenet):
         return self.instru_info
 
     def send_message_to_delegate(self, delegate):
+        #print("Instru Info sending message")
         delegate.respond_to_instru_info(self.get_instru_info())
+
+    def _extra_write_requirement_(self, file, delegate, delimiter):
+        instru_key = self.INSTRU_NAME_KEY
+        version_key = self.VERSION_KEY
+        instru_info_line = ["", instru_key, "", version_key, ""]
+        csv_writer = csv.writer(file, delimiter=delimiter)
+        csv_writer.writerow(instru_info_line)
+
 
 class InstruInfo(object):
     '''This package serves a place to store the instrument name and version. It will be used by others to get those information'''
@@ -108,6 +138,7 @@ class InstruInfo(object):
 
     def get_version(self):
         return self.version
+
 
 class MappingInfo(TemplateComponenet):
     def __init__(self):
@@ -139,7 +170,12 @@ class MappingInfo(TemplateComponenet):
         return self.mapping_info
 
     def send_message_to_delegate(self, delegate):
+        #print("mapping info sending message")
         delegate.respond_to_mapping_info( self.get_mapping_info())
+
+    def _extra_write_requirement_(self, file, delegate, delimiter):
+        delegate.write_init_mapping_info(file, delimiter)
+
 
 class NoticeComponent(TemplateComponenet):
     def __init__(self):
@@ -163,7 +199,9 @@ class NoticeComponent(TemplateComponenet):
         return self.notice
 
     def send_message_to_delegate(self, delegate):
+        #print("notice sending message")
         delegate.respond_to_user_notice(self.get_user_notice())
+
 
 def open_test_file():
     file = open("templateComponentTest.csv", "r")

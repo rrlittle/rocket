@@ -12,7 +12,6 @@ class coins_src(sourceManager):
         self.template_fields['col_name'] = 'coins name'
         self.template_fields['col_range'] = 'coins range'
         self.template_fields['missing_vals'] = 'coins missing value'
-        print(self.template_fields)
 
     def parse_assessment_date(self, assessment_date, coldef):
 

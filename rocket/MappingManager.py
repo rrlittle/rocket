@@ -3,11 +3,12 @@ import utils
 from __init__ import templatedir, templ_delimiter, secretdir
 from loggers import map_log
 from  template_writer import TemplateWriter
-from TemplateParser import TemplateParser, TemplateParseError
-from TemplateComponents import InstruInfo
+from template_parser import TemplateParser, TemplateParseError
+from components_behavior_protocols import ComponentResponseProtocol, ComponentWriteProtocol
+from template_structure import TemplateStructure
+import csv
 
-
-class MappingManager(Manager):
+class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol):
     ''' this class is responsible for implementing the
         core algorithms governing the operation of
         the conversion routine.
@@ -22,6 +23,7 @@ class MappingManager(Manager):
             for all the information in the raw files.
             this should never be using raw info
         '''
+        super(MappingManager, self).__init__()
 
         # deal with source
         errstr = ('if source must be a '
@@ -44,6 +46,11 @@ class MappingManager(Manager):
         # make the functions of each available via utils
         # check for naming conflicts
         self.globalfuncs = self.load_functions()
+
+        # set the structure
+        self.template_structure = TemplateStructure()
+        self.template_structure.set_to_default_structure()
+        self.user_notice = ""
 
         # pass functions down to sink maanager for the sinkcolumns to use
         setattr(self.sink, 'globalfuncs', self.globalfuncs)
@@ -79,37 +86,28 @@ class MappingManager(Manager):
         ''' this function utilises self.sink and self.source
             to parse the template file. each manager will
             take the columns they know about.
+
+            After the parser parses the template, it will send those data through
+            the protocal method implemented below, started with "respond_to_...".
+
+            For "mapping info", after the mapping manager receives the mapping info, it will ask the
+            sink and source manager to parse it
+
+            For "User notice",
+
         '''
 
         '''This is a hard code template parser. Later it shall be refactored to accept customized template'''
-
-        def set_instru_info_to_sink(instru_info):
-            self.sink.set_instru_info(instru_name=instru_info.get_instru_name(), version=instru_info.get_version())
-
         mapping_part = ""
-        parser = ""
+
         try:
             templ_path = self.get_template()
-            parser = TemplateParser(templ_path)
-            parser.parse_template()
-
-            # get the instrument name and its version
-            instru_info = parser.get_instrument_info()
-            mapping_part = parser.get_mapping()
-            self.user_notice = parser.get_user_notice()
-            set_instru_info_to_sink(instru_info)
+            parser = self.template_structure.get_template_parser(self)
+            parser.parse_template(templ_path)
 
         except TemplateParseError as e:
             print(e)
             return
-
-        for handler in [self.source, self.sink]:
-            map_log.debug(('loading template into '
-                           'handler %s') % type(handler).__name__)
-            mapping_part.seek(0)
-            handler.load_template(mapping_part)
-
-        # parser.close_file()
 
     def check_valid_src_sink_combo(self):
         ''' ensures that src and sink do not have colliding fieldnames
@@ -134,12 +132,17 @@ class MappingManager(Manager):
                                       'to ensure unique headers: %s') % collisions)
 
     def _remind_user_notice_(self):
+        '''This will be called before user tries to load the data
+        This should be overrided by respond_to_user_notice
+        '''
         if self.user_notice != "":
             prompt = "\n The template has this important instruction on how to use the template.\n" \
-                     " Please read it and press ANY key to continue the whole process \n"
+                     " Please read it and press ENTER to continue the whole process \n"
             prompt += "User Notification: \n"
             prompt += "%s" % self.user_notice
             input(prompt)
+
+        pass
 
     def convert(self, clear_sink=True):
         ''' this function implements the core algorithm of rocket.
@@ -242,26 +245,6 @@ class MappingManager(Manager):
             except ValueError:
                 raise sinkManager.DropRowException
 
-    def get_func_names(self, header_content=[]):
-        def _add_all_func_name():
-            all_func_name = [x for x in self.globalfuncs];
-            return all_func_name
-
-        func_header = ["Possible functions you can use are: "] + _add_all_func_name()
-        header_content.append(func_header)
-
-        return header_content
-
-    def _write_instr_name_and_version(self, templfile):
-        templ_writer = utils.writer(templfile, delimiter=templ_delimiter)
-        instr_header = ["Enter the instrument name:", "", "version:", ""]
-        templ_writer = templ_writer.writerow(instr_header)
-        headerline_num = 1
-        return headerline_num
-
-    #   def _write_known_template_fields(self, templfile):
-    #       def _prepare_known_template():
-
     def make_template(self):
         ''' leverages the sink and source handlers to make the template
             file.
@@ -294,53 +277,19 @@ class MappingManager(Manager):
                 return self.get_template(title='Select a template file',
                                          save=True, allownew=True)
 
-        def _get_headers_content_():
-
-            header = []
-            header = self.add_templ_header(header)
-            header = self.sink.add_templ_header(header)
-            header = self.source.add_templ_header(header)
-            header = self.get_func_names(header)
-            return header
-
-        def _add_mapping_headers_from_src_sink():
-            srctemplatefields = list(self.source.template_fields.values())
-            sinktemplatefields = list(self.sink.template_fields.values())
-            return sinktemplatefields + srctemplatefields
-
         def handle_tmeplate_err(errstr, err):
             map_log.error(('%s... Template field getting deleted and '
                            'rocket quitting. Error: %s') % (errstr, err))
             utils.exit(1)
 
-        tw = None
-
         try:
-            tw = TemplateWriter(_get_template_path_(), delimiter=templ_delimiter)
-
-            # Write header
-            header_content = _get_headers_content_()
-            tw.write_header(header_content)
-
-            # Write template
-            tw.write_instru_info()
-
-            # Write the user notice which show up when the user
-            # try to get the data file
-            tw.write_user_notice()
-
-            # write the final mapping
-            mapping_header = _add_mapping_headers_from_src_sink()
-            tw.write_mapping_info(mapping_info={}, mapping_header=mapping_header)
-
+            templ_path = _get_template_path_()
+            tw = self.template_structure.get_template_writer(delegate=self, delimiter=self.delimiter)
+            tw.write_template(templ_path)
             tw.close_and_save_file()
 
-        # except Exception as e:
-        #	if (tw != None):
-        #		tw.close_delete_file()
-        #	handle_tmeplate_err("Template error", e)
-
-
+   #     except Exception as e:
+   #         handle_tmeplate_err("Template Error", e)
         # the template fields for each handler are defined upon initialization
         # of the handlers. they are defined in the code and extended for each
         # custom handler if they so choose.
@@ -381,3 +330,54 @@ class MappingManager(Manager):
             utils.exit()
 
         return templ_path
+
+    # method for receving the parser data
+    def respond_to_instru_info(self, instru_info):
+        self.sink.set_instru_info(instru_name=instru_info.get_instru_name(), version=instru_info.get_version())
+
+    def respond_to_header(self, header):
+        self.header = header
+
+    def respond_to_mapping_info(self, mapping_info):
+        for handler in [self.source, self.sink]:
+            map_log.debug(('loading template into '
+                           'handler %s') % type(handler).__name__)
+            mapping_info.seek(0)
+            handler.load_template(mapping_info)
+
+    def respond_to_user_notice(self, user_notice):
+        self.user_notice = user_notice
+
+    def write_init_header(self, file, delimiter):
+        csv_writer = csv.writer(file, delimiter=delimiter)
+        header_list = self._get_headers_content_()
+        for header in header_list:
+            csv_writer.writerow([""] + header)
+
+    def _get_headers_content_(self):
+
+        header = []
+        header = self.add_templ_header(header)
+        header = self.sink.add_templ_header(header)
+        header = self.source.add_templ_header(header)
+        header = self._get_func_names_(header)
+        return header
+
+    def _get_func_names_(self, header_content=[]):
+        def _add_all_func_name():
+            all_func_name = [x for x in self.globalfuncs]
+            return all_func_name
+
+        func_header = ["Possible functions you can use are: "] + _add_all_func_name()
+        header_content.append(func_header)
+
+        return header_content
+
+    def write_init_mapping_info(self, file, delimiter):
+        csv_writer = csv.writer(file, delimiter=delimiter)
+        csv_writer.writerow(self._add_mapping_headers_from_src_sink())
+
+    def _add_mapping_headers_from_src_sink(self):
+        srctemplatefields = list(self.source.template_fields.values())
+        sinktemplatefields = list(self.sink.template_fields.values())
+        return sinktemplatefields + srctemplatefields

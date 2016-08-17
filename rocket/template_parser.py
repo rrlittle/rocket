@@ -1,16 +1,17 @@
 #from Managers import Manager
 from __init__ import templatedir
 from TemplateComponents import Header, InstruInfoComponent, MappingInfo, InstruInfo, NoticeComponent
-from components_response_protocal import ComponentResponseProtocal
+from components_behavior_protocols import ComponentResponseProtocol
 
 import csv
 
 
 class TemplateParser(object):
-    """docstring for TemplateParser
+    """ docstring for TemplateParser
         the template structure now is Header, InstruInfo, MappingInfo
     """
-    def __init__(self, components, delegate=ComponentResponseProtocal()):
+    # TODO: add comment
+    def __init__(self, components, delegate=ComponentResponseProtocol()):
         super(TemplateParser, self).__init__()
         self.components = components
         self.mapping = None
@@ -22,7 +23,7 @@ class TemplateParser(object):
         return self.templ_file
 
     def parse_template(self, file_path):
-
+        # TODO: Add Comment
         try:
             file = self._open_file_(file_path)
             for c in self.components:
@@ -35,17 +36,6 @@ class TemplateParser(object):
         except Exception as e:
             raise TemplateParseError("%s"%e)
         pass
-
-    def get_instrument_info(self):
-        return self.instru_info.get_instru_info()
-
-    def get_mapping(self):
-        if self.mapping == None:
-            raise ValueError("Please parse the template first")
-        return self.mapping
-
-    def get_user_notice(self):
-        return self.user_notice
 
     def close_file(self):
         '''This should be called at the end of the parse template, because if you close, you cant use the
