@@ -195,6 +195,7 @@ class ssManager(Manager):
         for rid, template_row in enumerate(templ_csv_reader):
             # use the column to parse the row as we would like it to be
             try:
+                # create the column for the corresponding handler
                 col = self.col_archetype(self, template_row)
                 self.col_defs.append(col)
                 man_log.info(('Loading template for %s: row %s. '

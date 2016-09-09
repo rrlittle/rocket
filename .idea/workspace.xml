@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5d6854b5-0f6a-418a-bf7b-ce3fda07777b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rocket_test/pythonTest.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rocket/.idea/workspace.xml" afterPath="$PROJECT_DIR$/rocket/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rocket/NewTemplateParserTest.py" afterPath="$PROJECT_DIR$/rocket/NewTemplateParserTest.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rocket/Managers.py" afterPath="$PROJECT_DIR$/rocket/Managers.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rocket/MappingManager.py" afterPath="$PROJECT_DIR$/rocket/MappingManager.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rocket/columns.py" afterPath="$PROJECT_DIR$/rocket/columns.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rocket/data_handlers/ndar.py" afterPath="$PROJECT_DIR$/rocket/data_handlers/ndar.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sink_datafiles/jjTestResult.csv" afterPath="$PROJECT_DIR$/sink_datafiles/jjTestResult.csv" />
     </list>
     <ignored path="rocket.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -23,12 +27,12 @@
     <favorites_list name="rocket" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="pythonTest.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/rocket_test/pythonTest.py">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="NewTemplateParserTest.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rocket/NewTemplateParserTest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
+            <state relative-caret-position="154">
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -36,14 +40,173 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NewTemplateParserTest.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/rocket/NewTemplateParserTest.py">
+      <file leaf-file-name="MappingManager.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/rocket/MappingManager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+            <state relative-caret-position="484">
+              <caret line="330" column="25" selection-start-line="330" selection-start-column="25" selection-end-line="330" selection-end-column="25" />
+              <folding>
+                <element signature="e#505#729#1" expanded="false" />
+                <element signature="e#835#2183#0" expanded="false" />
+                <element signature="e#835#1060#1" expanded="false" />
+                <element signature="e#1154#1307#0" expanded="false" />
+                <element signature="e#1450#1601#0" expanded="false" />
+                <element signature="e#1742#1790#0" expanded="false" />
+                <element signature="e#2223#2514#0" expanded="false" />
+                <element signature="e#2223#2496#1" expanded="false" />
+                <element signature="e#2598#3409#0" expanded="false" />
+                <element signature="e#2598#2864#1" expanded="false" />
+                <element signature="e#2992#3409#0" expanded="false" />
+                <element signature="e#3449#4358#0" expanded="false" />
+                <element signature="e#3449#3965#1" expanded="false" />
+                <element signature="e#4331#4358#0" expanded="false" />
+                <element signature="e#4410#5457#0" expanded="false" />
+                <element signature="e#4410#4625#1" expanded="false" />
+                <element signature="e#4997#5122#0" expanded="false" />
+                <element signature="e#5213#5457#0" expanded="false" />
+                <element signature="e#5239#5442#0" expanded="false" />
+                <element signature="e#5503#5988#0" expanded="false" />
+                <element signature="e#5503#5631#1" expanded="false" />
+                <element signature="e#5679#5974#0" expanded="false" />
+                <element signature="e#5688#5856#0" expanded="false" />
+                <element signature="e#6038#9573#0" expanded="false" />
+                <element signature="e#6038#6424#1" expanded="false" />
+                <element signature="e#6820#9467#0" expanded="false" />
+                <element signature="e#6906#9033#0" expanded="false" />
+                <element signature="e#7033#8893#0" expanded="false" />
+                <element signature="e#7062#8477#0" expanded="false" />
+                <element signature="e#7062#7079#0" expanded="false" />
+                <element signature="e#7534#8371#0" expanded="false" />
+                <element signature="e#7613#7669#0" expanded="false" />
+                <element signature="e#7821#7860#0" expanded="false" />
+                <element signature="e#8215#8241#0" expanded="false" />
+                <element signature="e#8641#8875#0" expanded="false" />
+                <element signature="e#8656#8764#0" expanded="false" />
+                <element signature="e#9105#9344#0" expanded="false" />
+                <element signature="e#9193#9280#0" expanded="false" />
+                <element signature="e#9396#9467#0" expanded="false" />
+                <element signature="e#9627#10159#0" expanded="false" />
+                <element signature="e#9828#10159#0" expanded="false" />
+                <element signature="e#9901#10077#0" expanded="false" />
+                <element signature="e#10198#13539#0" expanded="false" />
+                <element signature="e#10198#11019#1" expanded="false" />
+                <element signature="e#11068#11296#0" expanded="false" />
+                <element signature="e#11173#11296#0" expanded="false" />
+                <element signature="e#11356#11514#0" expanded="false" />
+                <element signature="e#11371#11470#0" expanded="false" />
+                <element signature="e#11761#11789#0" expanded="false" />
+                <element signature="e#12150#12971#1" expanded="false" />
+                <element signature="e#13036#13381#0" expanded="false" />
+                <element signature="e#13420#13512#0" expanded="false" />
+                <element signature="e#13642#13745#0" expanded="false" />
+                <element signature="e#13796#13816#0" expanded="false" />
+                <element signature="e#13879#14119#0" expanded="false" />
+                <element signature="e#13947#14011#0" expanded="false" />
+                <element signature="e#14180#14210#0" expanded="false" />
+                <element signature="e#14270#14453#0" expanded="false" />
+                <element signature="e#14501#14734#0" expanded="false" />
+                <element signature="e#14795#15072#0" expanded="false" />
+                <element signature="e#14833#14911#0" expanded="false" />
+                <element signature="e#15138#15259#0" expanded="false" />
+                <element signature="e#15319#15505#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="columns.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rocket/columns.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3388">
+              <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#1389#1447#0" expanded="false" />
+                <element signature="e#3691#3795#0" expanded="false" />
+                <element signature="e#3897#4057#0" expanded="false" />
+                <element signature="e#4717#5201#0" expanded="false" />
+                <element signature="e#4879#5201#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="template_writer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rocket/template_writer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#88#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="template_writer_old.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rocket/template_writer_old.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="660">
+              <caret line="32" column="10" selection-start-line="32" selection-start-column="10" selection-end-line="32" selection-end-column="10" />
+              <folding>
+                <element signature="e#0#88#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Managers.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rocket/Managers.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4092">
+              <caret line="189" column="15" selection-start-line="189" selection-start-column="15" selection-end-line="189" selection-end-column="15" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="coins.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rocket/data_handlers/coins.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="462">
+              <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
+              <folding>
+                <element signature="e#0#34#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ndar.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rocket/data_handlers/ndar.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="418">
+              <caret line="21" column="24" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TemplateParser.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rocket/TemplateParser.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="484">
+              <caret line="25" column="8" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="template_parser.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rocket/template_parser.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -66,6 +229,10 @@
       <list>
         <option value="$PROJECT_DIR$/rocket_test/rocketTest.py" />
         <option value="$PROJECT_DIR$/rocket_test/pythonTest.py" />
+        <option value="$PROJECT_DIR$/rocket/MappingManager.py" />
+        <option value="$PROJECT_DIR$/rocket/data_handlers/ndar.py" />
+        <option value="$PROJECT_DIR$/rocket/Managers.py" />
+        <option value="$PROJECT_DIR$/rocket/columns.py" />
       </list>
     </option>
   </component>
@@ -100,6 +267,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -146,14 +314,31 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rocket" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rocket" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rocket" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data_handlers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/rocket" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/Master Gene Script" />
   </component>
   <component name="RunManager" selected="Python tests.Nosetests in MyTestCase">
     <configuration default="false" name="Nosetests in MyTestCase" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
@@ -323,6 +508,9 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="5d6854b5-0f6a-418a-bf7b-ce3fda07777b" name="Default" comment="" />
@@ -347,21 +535,21 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293348" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293348" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15376227" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -376,11 +564,168 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="6" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/rocket_test/rocketTest.py">
+    <entry file="file://$PROJECT_DIR$/rocket/NewTemplateParserTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/MappingManager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#505#729#1" expanded="false" />
+            <element signature="e#835#2183#0" expanded="false" />
+            <element signature="e#835#1060#1" expanded="false" />
+            <element signature="e#1154#1307#0" expanded="false" />
+            <element signature="e#1450#1601#0" expanded="false" />
+            <element signature="e#1742#1790#0" expanded="false" />
+            <element signature="e#2223#2514#0" expanded="false" />
+            <element signature="e#2223#2496#1" expanded="false" />
+            <element signature="e#2598#3409#0" expanded="false" />
+            <element signature="e#2598#2864#1" expanded="false" />
+            <element signature="e#2992#3409#0" expanded="false" />
+            <element signature="e#3449#4358#0" expanded="false" />
+            <element signature="e#3449#3965#1" expanded="false" />
+            <element signature="e#4331#4358#0" expanded="false" />
+            <element signature="e#4410#5457#0" expanded="false" />
+            <element signature="e#4410#4625#1" expanded="false" />
+            <element signature="e#4997#5122#0" expanded="false" />
+            <element signature="e#5213#5457#0" expanded="false" />
+            <element signature="e#5239#5442#0" expanded="false" />
+            <element signature="e#5503#5988#0" expanded="false" />
+            <element signature="e#5503#5631#1" expanded="false" />
+            <element signature="e#5679#5974#0" expanded="false" />
+            <element signature="e#5688#5856#0" expanded="false" />
+            <element signature="e#6038#9573#0" expanded="false" />
+            <element signature="e#6038#6424#1" expanded="false" />
+            <element signature="e#6820#9467#0" expanded="false" />
+            <element signature="e#6906#9033#0" expanded="false" />
+            <element signature="e#7033#8893#0" expanded="false" />
+            <element signature="e#7062#8477#0" expanded="false" />
+            <element signature="e#7062#7079#0" expanded="false" />
+            <element signature="e#7534#8371#0" expanded="false" />
+            <element signature="e#7613#7669#0" expanded="false" />
+            <element signature="e#7821#7860#0" expanded="false" />
+            <element signature="e#8215#8241#0" expanded="false" />
+            <element signature="e#8641#8875#0" expanded="false" />
+            <element signature="e#8656#8764#0" expanded="false" />
+            <element signature="e#9105#9344#0" expanded="false" />
+            <element signature="e#9193#9280#0" expanded="false" />
+            <element signature="e#9396#9467#0" expanded="false" />
+            <element signature="e#9627#10159#0" expanded="false" />
+            <element signature="e#9828#10159#0" expanded="false" />
+            <element signature="e#9901#10077#0" expanded="false" />
+            <element signature="e#10198#13539#0" expanded="false" />
+            <element signature="e#10198#11019#1" expanded="false" />
+            <element signature="e#11068#11296#0" expanded="false" />
+            <element signature="e#11173#11296#0" expanded="false" />
+            <element signature="e#11356#11514#0" expanded="false" />
+            <element signature="e#11371#11470#0" expanded="false" />
+            <element signature="e#11761#11789#0" expanded="false" />
+            <element signature="e#12150#12971#1" expanded="false" />
+            <element signature="e#13036#13381#0" expanded="false" />
+            <element signature="e#13420#13512#0" expanded="false" />
+            <element signature="e#13642#13745#0" expanded="false" />
+            <element signature="e#13796#13816#0" expanded="false" />
+            <element signature="e#13879#14119#0" expanded="false" />
+            <element signature="e#13947#14011#0" expanded="false" />
+            <element signature="e#14180#14210#0" expanded="false" />
+            <element signature="e#14270#14453#0" expanded="false" />
+            <element signature="e#14501#14734#0" expanded="false" />
+            <element signature="e#14795#15072#0" expanded="false" />
+            <element signature="e#14833#14911#0" expanded="false" />
+            <element signature="e#15138#15259#0" expanded="false" />
+            <element signature="e#15319#15505#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/columns.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3388">
+          <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#1389#1447#0" expanded="false" />
+            <element signature="e#3691#3795#0" expanded="false" />
+            <element signature="e#3897#4057#0" expanded="false" />
+            <element signature="e#4717#5201#0" expanded="false" />
+            <element signature="e#4879#5201#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/template_writer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#88#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/template_writer_old.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="32" column="10" selection-start-line="32" selection-start-column="10" selection-end-line="32" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#88#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/Managers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4092">
+          <caret line="189" column="15" selection-start-line="189" selection-start-column="15" selection-end-line="189" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/data_handlers/coins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/data_handlers/ndar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="21" column="24" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/TemplateParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="25" column="8" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/template_parser.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -392,9 +737,24 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
           <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/NewTemplateParserTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket_test/rocketTest.py" />
+    <entry file="file://$PROJECT_DIR$/rocket_test/pythonTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -402,18 +762,168 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="506">
           <caret line="23" column="44" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/NewTemplateParserTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/TemplateParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="25" column="8" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/template_parser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/template_writer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#88#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/template_writer_old.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="32" column="10" selection-start-line="32" selection-start-column="10" selection-end-line="32" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#88#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/data_handlers/ndar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="21" column="24" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/data_handlers/coins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/columns.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3388">
+          <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#1389#1447#0" expanded="false" />
+            <element signature="e#3691#3795#0" expanded="false" />
+            <element signature="e#3897#4057#0" expanded="false" />
+            <element signature="e#4717#5201#0" expanded="false" />
+            <element signature="e#4879#5201#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rocket/Managers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4092">
+          <caret line="189" column="15" selection-start-line="189" selection-start-column="15" selection-end-line="189" selection-end-column="15" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rocket/NewTemplateParserTest.py">
+    <entry file="file://$PROJECT_DIR$/rocket/MappingManager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        <state relative-caret-position="484">
+          <caret line="330" column="25" selection-start-line="330" selection-start-column="25" selection-end-line="330" selection-end-column="25" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#505#729#1" expanded="false" />
+            <element signature="e#835#2183#0" expanded="false" />
+            <element signature="e#835#1060#1" expanded="false" />
+            <element signature="e#1154#1307#0" expanded="false" />
+            <element signature="e#1450#1601#0" expanded="false" />
+            <element signature="e#1742#1790#0" expanded="false" />
+            <element signature="e#2223#2514#0" expanded="false" />
+            <element signature="e#2223#2496#1" expanded="false" />
+            <element signature="e#2598#3409#0" expanded="false" />
+            <element signature="e#2598#2864#1" expanded="false" />
+            <element signature="e#2992#3409#0" expanded="false" />
+            <element signature="e#3449#4358#0" expanded="false" />
+            <element signature="e#3449#3965#1" expanded="false" />
+            <element signature="e#4331#4358#0" expanded="false" />
+            <element signature="e#4410#5457#0" expanded="false" />
+            <element signature="e#4410#4625#1" expanded="false" />
+            <element signature="e#4997#5122#0" expanded="false" />
+            <element signature="e#5213#5457#0" expanded="false" />
+            <element signature="e#5239#5442#0" expanded="false" />
+            <element signature="e#5503#5988#0" expanded="false" />
+            <element signature="e#5503#5631#1" expanded="false" />
+            <element signature="e#5679#5974#0" expanded="false" />
+            <element signature="e#5688#5856#0" expanded="false" />
+            <element signature="e#6038#9573#0" expanded="false" />
+            <element signature="e#6038#6424#1" expanded="false" />
+            <element signature="e#6820#9467#0" expanded="false" />
+            <element signature="e#6906#9033#0" expanded="false" />
+            <element signature="e#7033#8893#0" expanded="false" />
+            <element signature="e#7062#8477#0" expanded="false" />
+            <element signature="e#7062#7079#0" expanded="false" />
+            <element signature="e#7534#8371#0" expanded="false" />
+            <element signature="e#7613#7669#0" expanded="false" />
+            <element signature="e#7821#7860#0" expanded="false" />
+            <element signature="e#8215#8241#0" expanded="false" />
+            <element signature="e#8641#8875#0" expanded="false" />
+            <element signature="e#8656#8764#0" expanded="false" />
+            <element signature="e#9105#9344#0" expanded="false" />
+            <element signature="e#9193#9280#0" expanded="false" />
+            <element signature="e#9396#9467#0" expanded="false" />
+            <element signature="e#9627#10159#0" expanded="false" />
+            <element signature="e#9828#10159#0" expanded="false" />
+            <element signature="e#9901#10077#0" expanded="false" />
+            <element signature="e#10198#13539#0" expanded="false" />
+            <element signature="e#10198#11019#1" expanded="false" />
+            <element signature="e#11068#11296#0" expanded="false" />
+            <element signature="e#11173#11296#0" expanded="false" />
+            <element signature="e#11356#11514#0" expanded="false" />
+            <element signature="e#11371#11470#0" expanded="false" />
+            <element signature="e#11761#11789#0" expanded="false" />
+            <element signature="e#12150#12971#1" expanded="false" />
+            <element signature="e#13036#13381#0" expanded="false" />
+            <element signature="e#13420#13512#0" expanded="false" />
+            <element signature="e#13642#13745#0" expanded="false" />
+            <element signature="e#13796#13816#0" expanded="false" />
+            <element signature="e#13879#14119#0" expanded="false" />
+            <element signature="e#13947#14011#0" expanded="false" />
+            <element signature="e#14180#14210#0" expanded="false" />
+            <element signature="e#14270#14453#0" expanded="false" />
+            <element signature="e#14501#14734#0" expanded="false" />
+            <element signature="e#14795#15072#0" expanded="false" />
+            <element signature="e#14833#14911#0" expanded="false" />
+            <element signature="e#15138#15259#0" expanded="false" />
+            <element signature="e#15319#15505#0" expanded="false" />
           </folding>
         </state>
       </provider>

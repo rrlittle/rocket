@@ -31,10 +31,22 @@ class Col(object):
 
         self.load_attributes()
 
-        if isinstance(self.col_name, self.handler.NoDataError):
+
+        if self.no_name() or self._other_condition_for_drop_col_() :
             raise self.BadColErr('Col_name must be defined to be a good Col')
         else:
             col_log.debug('created column %s' % self)
+
+    def no_name(self):
+        return isinstance(self.col_name, self.handler.NoDataError)
+
+    def _other_condition_for_drop_col_(self):
+        """
+        # Should be overrided by the subclass to costumzing the condition for
+        # not creating the column.
+        :return: true if you want to stop making the column
+        """
+        return False
 
     def load_attributes(self):
         ''' loads all the attributes the handler knows about and
@@ -57,28 +69,35 @@ class Col(object):
             this throws a templateError if it can't find either the keyword in
             this manager or the indicated column in the template
         '''
-        # import ipdb; ipdb.set_trace()
+
         try:
-            header = fieldkeyword + '_header'
-            setattr(self, header, self.handler.template_fields[fieldkeyword])
-            # make the value available right now
-            thisheader = getattr(self, header)
+            self._set_fieldkeyword_header_(fieldkeyword, post_fix='_header')
 
             # for every important field in a given hadler it should have a parse
             # function for that field called parse_'field'(fieldvalue)
-            parser_name = 'parse_' + fieldkeyword
-            parser = getattr(self.handler, parser_name,
-                             self.handler.default_template_parser)
+            parser = self._get_parse_function_for_field_(fieldkeyword, parser_func_pre_fix="parse_")
 
-            val = self.template_row[thisheader]  # get raw value
+            # make the value available right now
+            thisheader = self.handler.template_fields[fieldkeyword];
+            attribute_val = self.template_row[thisheader]  # get raw value
+
+            setattr(self, fieldkeyword, parser(attribute_val, self))  # save parsed value
 
             col_log.debug('parsing %s from %s using %s' % (fieldkeyword,
-                                                           val, parser.__name__))
-            setattr(self, fieldkeyword, parser(val, self))  # save parsed value
+                                                           attribute_val, parser.__name__))
 
         except Exception as e:
             raise self.handler.TemplateError(('Template not set up as expected.'
                                               ' could not parse it. error occured: %s') % e)
+
+    def _set_fieldkeyword_header_(self, fieldkeyword, post_fix='_header'):
+        header = fieldkeyword+post_fix
+        setattr(self, header, self.handler.template_fields[fieldkeyword])
+
+    def _get_parse_function_for_field_(self, fieldkeyword, parser_func_pre_fix = "parse_"):
+        parser_func_name = 'parse_' + fieldkeyword
+        return getattr(self.handler, parser_func_name,
+                         self.handler.default_template_parser)
 
     # the following are required to use this obj as keys for a dict
     # you can also access them by their column name
@@ -144,6 +163,13 @@ class sinkCol(Col):
             raise self.handler.TemplateError(('function %s for column '
                                               '%s is not valid. please change the template'
                                               ' to a valid function or blank') % (self.func, self.col_name))
+
+    def _other_condition_for_drop_col_(self):
+        # The NI in the default stands for Not Include, which will make this
+        # column not show up in the final output
+        if not isinstance(self.default, self.handler.NoDataError):
+            if self.default == "NI":
+                return True
 
     def map_src(self, srcrow):
         '''This method turn the attribute mappers into a list

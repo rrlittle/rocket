@@ -99,7 +99,6 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
         '''This is a hard code template parser. Later it shall be refactored to accept customized template'''
         mapping_part = ""
-
         try:
             templ_path = self.get_template()
             parser = self.template_structure.get_template_parser(self)
