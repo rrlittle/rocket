@@ -58,8 +58,13 @@ ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins 
 8,tiret_2,1::5,9999,17,,,,8,segment_instance,,"~<userSkipped>~,~<condSkipped>~,"
 9,tiret_3,1::5,9999,19,,,,9,entry_code,,"~<userSkipped>~,~<condSkipped>~,"
 10,tiret_4,1::5,9999,21,,,,10,site_id,,"~<userSkipped>~,~<condSkipped>~,"
+<<<<<<< 0f9ce082539fa78e36ffdb874d2720edd667f916
 11,tiret_5,1::5,9999,1,findGuidS1,filename,,11,source_type,,"~<userSkipped>~,~<condSkipped>~,"
 12,tiret_6,1::5,9999,25, ,,,12,rater1,,"~<userSkipped>~,~<condSkipped>~,"
+=======
+11,tiret_5,1::5,9999,23,,,,11,source_type,,"~<userSkipped>~,~<condSkipped>~,"
+12,tiret_6,1::5,9999,25,,,,12,rater1,,"~<userSkipped>~,~<condSkipped>~,"
+>>>>>>> trivial test cases
 13,tiret_7,1::6,9999,27,,,,13,successfully_completed,,"~<userSkipped>~,~<condSkipped>~,"
 14,tiret_8,1::6,9999,29,,,,14,notes,,"~<userSkipped>~,~<condSkipped>~,"
 15,tiret_9,1::6,9999,31,,,,15,twinv-tifs_001t-1,,"~<userSkipped>~,~<condSkipped>~,"
