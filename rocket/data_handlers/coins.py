@@ -1,10 +1,10 @@
 from Managers import sourceManager
 import utils
+
 dateformat_candidates =[
     "%m/%d/%Y %H:%M",
     "%m-%d-%Y %I:%M:%S %p"
-    ];
-
+    ]
 
 class coins_src(sourceManager):
     ''' coins source

@@ -1,0 +1,30 @@
+<Header
+,coins2ndar
+,example,template,header
+,ndar_snk
+,example,template,header
+,coins_src
+,example,template,header
+,Possible functions you can use are: 
+,,findAge,"find the participants's Age based on the given ursi, and assessment date. Put two coins id into the mapping id.Like 1,4"
+,,sum,calculate the mean. Put the coins ids for all the columns into the mapping id
+,,findCommentsS1,"Subjective01 Extension: Given one child's ursi,it will return the comment about her in Subjective 01 PLEASE put subject01 file name into the args!"
+,,findGuid,find the participants's GUID based on the given ursi
+,,findCommentMotherS1,"Subjective01 Extension: Given mother's ursi, it will return comment containing her twins GUID information. PLEASE put subject01 file name into the args!"
+,,findCotwinGuidS1,"Subjective01 Extension: Given one child's ursi, it will return his or her cotwin's GUID. PLEASE put subject01 file name into the args!"
+,,findGender,find the participant's gender based on ursi
+,,mean,calculate the mean. Put the coins ids for all the columns into the mapping id
+,,findMotherGuidS1,calculate the mean. Put the coins ids for all the columns into the mapping id
+
+Header>
+<InstruInfo
+,Instrument Name:,,Version:,
+
+InstruInfo>
+<User Notice
+
+User Notice>
+<Mapping Template
+ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins id,coins name,coins range,coins missing value
+
+Mapping Template>

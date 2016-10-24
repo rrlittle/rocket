@@ -33,20 +33,28 @@ class coins2ndar(MappingManager):
 
             return ursi_functions.findAge(olddate=bd, recentdate=ass_date)
 
-        functions['mean'] = {'ref': func.mean, 'doc':"calculate the mean. Put the coins ids "
+        functions['mean'] = {'ref': func.mean, 'doc':"Calculate the mean. Put the coins ids "
                                                      "for all the columns into the mapping id"}
-        functions['sum'] = {'ref': func.sum, 'doc':"calculate the mean. Put the coins ids for all"
+        functions['sum'] = {'ref': func.sum, 'doc':"Calculate the sum. Put the coins ids for all"
                                                    " the columns into the mapping id"}
-        functions['findGender'] = {'ref': ursi_functions.findGender, 'doc': "find the participant's gender based "
+        functions['findGender'] = {'ref': ursi_functions.findGender, 'doc': "Find the participant's gender based "
                                                                             "on ursi"}
-        functions['findGuid'] = {'ref': ursi_functions.findGuid, 'doc':"find the participants's GUID based "
+        functions['findGuid'] = {'ref': ursi_functions.findGuid, 'doc': "Find the participants's GUID based "
                                                                        "on the given ursi"}
-        functions['findAge'] = {'ref': findAge, 'doc':""}
-        functions['findGuidS1'] = {'ref': s1.get_guid, 'doc':""}
         functions['findMotherGuidS1'] = {'ref': s1.get_mother_guid}
-        functions['findCotwinGuidS1'] = {'ref': s1.get_cotwin_guid}
-        functions['findCommentsS1'] = {'ref': s1.get_comment_misc}
-        functions['findCommentMotherS1'] = {'ref': s1.get_cotwoin_comment_based_on_mother_ursi}
+        functions['findAge'] = {'ref': findAge, 'doc': "Find the participants's Age based "
+                                            "on the given ursi, and assessment date. Put two coins id into the mapping id."
+                                                      "Like 1,4"}
+        functions['findCotwinGuidS1'] = {'ref': s1.get_cotwin_guid, 'doc': "Subjective01 Extension: Given one child's ursi, "
+                                                                           "it will return his or her cotwin's GUID. "
+                                                                           "PLEASE put subject01 file name into the args!"}
+        functions['findCommentsS1'] = {'ref': s1.get_comment_misc, 'doc':"Subjective01 Extension: Given one child's ursi,"
+                                                                           "it will return the comment about her in Subjective 01 "
+                                                                         "PLEASE put subject01 file name into the args!"}
+        functions['findCommentMotherS1'] = {'ref': s1.get_cotwoin_comment_based_on_mother_ursi,
+                                            'doc': "Subjective01 Extension: Given mother's ursi, it will return "
+                                                   "comment containing her twins GUID information. "
+                                                   "PLEASE put subject01 file name into the args!"}
 
         return functions
 

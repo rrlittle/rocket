@@ -137,7 +137,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         '''
         if self.user_notice != "":
             prompt = "\n The template has this important instruction on how to use the template.\n" \
-                     " Please read it and press ENTER to continue the whole process \n"
+                     " Please read it and press ENTER to continue the whole process \n\n"
             prompt += "User Notification: \n"
             prompt += "%s" % self.user_notice
             input(prompt)
@@ -383,7 +383,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                 try:
                     func_explanation = self.globalfuncs[x]['doc']
                 except KeyError:
-                    pass
+                    func_explanation = "NO EXPLANATION right now"
                 func = ["", func_name, func_explanation]
                 all_funcs.append(func)
             return all_funcs

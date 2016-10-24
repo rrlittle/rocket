@@ -71,5 +71,8 @@ if __name__ == '__main__':
     if args.convert:
         outfile_path = c.do_convert(template_path=template_path)
         print('created outfile at %s' % outfile_path)
+
     else:
         print('--convert not provided skipping that')
+
+    input('\nConverting ends. Please press ENTER to leave or just close the window to leave')
