@@ -31,7 +31,6 @@ class Col(object):
 
         self.load_attributes()
 
-
         if self.no_name() or self._other_condition_for_drop_col_() :
             raise self.BadColErr('Col_name must be defined to be a good Col')
         else:
@@ -150,7 +149,7 @@ class sinkCol(Col):
         Col.__init__(self, sinkhandler, template_row)
 
         if isinstance(self.default, self.handler.NoDataError):
-            self.default == ''
+            self.default = ''
 
         # set self.func to an actual function
         # use self.handler.globalfuncs to get func refereances or throw err
@@ -158,18 +157,18 @@ class sinkCol(Col):
         if self.func.strip() in self.handler.globalfuncs:
             self.func = self.handler.globalfuncs[self.func.strip()]['ref']
         elif self.func.strip() == '':
-            self.func = lambda *x: x[0]
+            self.func = lambda *x, args: x[0]
         else:
             raise self.handler.TemplateError(('function %s for column '
                                               '%s is not valid. please change the template'
                                               ' to a valid function or blank') % (self.func, self.col_name))
 
-    def _other_condition_for_drop_col_(self):
+   # def _other_condition_for_drop_col_(self):
         # The NI in the default stands for Not Include, which will make this
         # column not show up in the final output
-        if not isinstance(self.default, self.handler.NoDataError):
-            if self.default == "NI":
-                return True
+    #    if not isinstance(self.default, self.handler.NoDataError):
+     #       if self.default == "NI":
+      #          return True
 
     def map_src(self, srcrow):
         '''This method turn the attribute mappers into a list
@@ -223,10 +222,9 @@ class sinkCol(Col):
         except Exception as e:
             col_log.error('err while converting %s with %s: %s' % (self,
                                                                    src_datacol_zip, e))
-            return self.handler.NoDataError
-
-        #	raise Exception(('Error raised while '
-        #	'running %s(%s). Error: %s')%(self.func, srcdat, e))
+            #return self.handler.NoDataError
+            raise Exception(('Error raised while '
+            'running %s(%s). Error: %s')%(self.func, srcdat, e))
 
         col_log.debug('CONVERTED TO (%s)' % self.dat)
         return self.dat

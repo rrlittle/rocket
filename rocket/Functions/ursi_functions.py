@@ -28,7 +28,7 @@ else:
 get_ppi_script_filename = 'list_gender_birth_guid' + get_ppi_script_ext
 get_ppi_script_path = utils.join(scriptdir, get_ppi_script_filename)
 func_log.info('ppi script is %s' % get_ppi_script_path)
-
+first_time_enter = True
 
 def findGender(ursi, args=None):
     print('finding the gender')
@@ -162,6 +162,22 @@ class UrsiDataManager(object):
         if path.exists(self.temp_file_path):
             if stat(self.temp_file_path).st_size == 0:
                 self.initialize_data_file()
+            else:
+                # this will ask the user whether they want to update the personal information
+                global first_time_enter
+                if (first_time_enter):
+                    while True:
+                        answer = input("We detect there is personal information file, do you want to update it? (yes/no)")
+                        if answer == "yes":
+                            print("Information updating")
+                            self.initialize_data_file()
+                            break
+                        elif answer == "no":
+                            print("Information will not update")
+                            break
+                        else:
+                            print("Please enter yes or no")
+                    first_time_enter = False
 
         else:
             self.initialize_data_file()

@@ -14,27 +14,34 @@ import utils
 
 parser = utils.make_args('runs the rocket data mapping package',
                          args={
-                             ('-mm', '--mappingmanager'): {
-                                 'choices': list(mapping_managers.keys()),
-                                 'action': 'store',
-                                 'required': True,
-                                 'dest': 'mm',
-                                 'help': ('required: choose one mapping'
-                                          'manager you would like to use?')
-                             },
-                             ('-t', '--template'): {
-                                 'dest': 'template',
-                                 'const': True,
-                                 'action': 'store_const',
-                                 'help': 'make the template from two schemes'
-                             },
-                             ('-c', '--convert'): {
-                                 'dest': 'convert',
-                                 'action': 'store_const',
-                                 'const': True,
-                                 'help': ('converts a source datafile to sink '
+                                ('-mm', '--mappingmanager'): {
+                                     'choices': list(mapping_managers.keys()),
+                                     'action': 'store',
+                                     'required': True,
+                                     'dest': 'mm',
+                                     'help': ('required: choose one mapping'
+                                              'manager you would like to use?')
+                                 },
+                                 ('-t', '--template'): {
+                                     'dest': 'template',
+                                     'const': True,
+                                     'action': 'store_const',
+                                     'help': 'make the template from two schemes'
+                                 },
+                                 ('-c', '--convert'): {
+                                     'dest': 'convert',
+                                     'action': 'store_const',
+                                     'const': True,
+
+                                     'help': ('converts a source datafile to sink '
                                           'datafile using template')
-                             }
+                                },
+                                ('-u', '--update'):{
+                                    'dest':'update',
+                                    'const': True,
+                                    'action':'store_const',
+                                    'help':'update the coins personal information to home drive'
+                                }
                          }
                          )
 

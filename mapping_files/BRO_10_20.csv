@@ -1,0 +1,54 @@
+<Header,,,,,,,,,,,
+,coins2ndar,,,,,,,,,,
+,example,template,header,,,,,,,,
+,ndar_snk,,,,,,,,,,
+,example,template,header,,,,,,,,
+,coins_src,,,,,,,,,,
+,example,template,header,,,,,,,,
+,Possible functions you can use are: ,,,,,,,,,,
+,,findGender:,find the participant's gender based on ursi,,,,,,,,
+,,mean:,calculate the mean. Put the coins ids for all the columns into the mapping id,,,,,,,,
+,,findCommentMotherS1:,calculate the mean. Put the coins ids for all the columns into the mapping id,,,,,,,,
+,,findAge:,,,,,,,,,
+,,findCommentsS1:,,,,,,,,,
+,,findCotwinGuidS1:,,,,,,,,,
+,,findGuid:,find the participants's GUID based on the given ursi,,,,,,,,
+,,findGuidS1:,,,,,,,,,
+,,findMotherGuidS1:,,,,,,,,,
+,,sum:,calculate the mean. Put the coins ids for all the columns into the mapping id,,,,,,,,
+,,,,,,,,,,,
+Header>,,,,,,,,,,,
+<InstruInfo,,,,,,,,,,,
+,Instrument Name:,BRO,Version:,1,,,,,,,
+,,,,,,,,,,,
+InstruInfo>,,,,,,,,,,,
+<User Notice,,,,,,,,,,,
+,typical query builder,,,,,,,,,,
+User Notice>,,,,,,,,,,,
+<Mapping Template,,,,,,,,,,,
+ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins id,coins name,coins range,coins missing value
+1,subjectkey,,,1,findGuid,,t,1,queried_ursi,,"~<userSkipped>~,~<condSkipped>~,"
+2,src_subject_id,,,1,,,t,2,oldest_ursi,,"~<userSkipped>~,~<condSkipped>~,"
+3,interview_date,,,4,,,t,3,asmt_ursi,,"~<userSkipped>~,~<condSkipped>~,"
+4,interview_age,,,"1,4",findAge,,t,4,assessment_date,,"~<userSkipped>~,~<condSkipped>~,"
+5,gender,,,1,findGender,,t,5,assessment_id,,"~<userSkipped>~,~<condSkipped>~,"
+6,bro1,,9999,15,,,,6,instrument,,"~<userSkipped>~,~<condSkipped>~,"
+7,bro2,,9999,16,,,,7,segment_interval,,"~<userSkipped>~,~<condSkipped>~,"
+8,bro3,,9999,17,,,,8,segment_instance,,"~<userSkipped>~,~<condSkipped>~,"
+9,bro4,,9999,18,,,,9,entry_code,,"~<userSkipped>~,~<condSkipped>~,"
+10,bro5,,9999,19,,,,10,site_id,,"~<userSkipped>~,~<condSkipped>~,"
+11,comments_misc,,,1,findCommentMotherS1,rdoc_subject01_data_20160304.csv,,11,source_type,,"~<userSkipped>~,~<condSkipped>~,"
+,,,,,,,,12,rater1,,"~<userSkipped>~,~<condSkipped>~,"
+,,,,,,,,13,successfully_completed,,"~<userSkipped>~,~<condSkipped>~,"
+,,,,,,,,14,notes,,"~<userSkipped>~,~<condSkipped>~,"
+,,,,,,,,15,parv-ro_001m-1,,"~<userSkipped>~,~<condSkipped>~,"
+,,,,,,,,16,parv-ro_002m-1,,"~<userSkipped>~,~<condSkipped>~,"
+,,,,,,,,17,parv-ro_003m-1,,"~<userSkipped>~,~<condSkipped>~,"
+,,,,,,,,18,parv-ro_004m-1,,"~<userSkipped>~,~<condSkipped>~,"
+,,,,,,,,19,parv-ro_005m-1,,"~<userSkipped>~,~<condSkipped>~,"
+,,,,,,,,20,parv-ros_006m-1,,"~<userSkipped>~,~<condSkipped>~,"
+,,,,,,,,21,parv-rom_007m-1,,"~<userSkipped>~,~<condSkipped>~,"
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+Mapping Template>,,,,,,,,,,,

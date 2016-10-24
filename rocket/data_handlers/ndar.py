@@ -8,7 +8,7 @@ class ndar_snk(sinkManager):
     '''
 
     def __init__(self):
-        sinkManager.__init__(self)
+        super(ndar_snk, self).__init__()
         self.template_fields['id'] = 'ndar id'
         self.template_fields['col_name'] = 'ndar name'
         self.template_fields['col_range'] = 'ndar range'
@@ -18,6 +18,9 @@ class ndar_snk(sinkManager):
 
     def parse_required(self, req, coldef):
         return req.lower() in ('true', 't')
+
+    def parse_args(self, args, coldef):
+        return args.split(',')
 
     def interview_date_write_formatter(self, dateobj, coldef):
         if isinstance(dateobj, self.NoDataError):

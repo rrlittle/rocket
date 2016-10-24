@@ -18,6 +18,9 @@ mainlog = make_logger('main_log',
     flvl = logging.DEBUG
     )
 
+man_log = logging.getLogger("main_log.managers")
+
+'''
 man_log = make_logger('managers',
     frmt=frmt,
     fpath=debuglog,
@@ -29,8 +32,12 @@ man_log = make_logger('managers',
     # lvl=logging.CRITICAL,
     flvl = logging.DEBUG
     )
+'''
 
-map_log = make_logger('mapping manager',
+map_log = logging.getLogger("main_log.mappings")
+
+'''
+map_log= make_logger('mapping manager',
     frmt=frmt,
     fpath=debuglog,
     stdout=True,
@@ -41,7 +48,11 @@ map_log = make_logger('mapping manager',
     # lvl=logging.CRITICAL,
     flvl = logging.DEBUG
     )
+    '''
 
+col_log = logging.getLogger("main_log.columns")
+
+'''
 col_log = make_logger('columns',
     frmt=frmt,
     fpath=debuglog,
@@ -53,7 +64,10 @@ col_log = make_logger('columns',
     # lvl=logging.CRITICAL,
     flvl = logging.DEBUG
     )
+    '''
 
+func_log = logging.getLogger('main_log.functions')
+'''
 func_log = make_logger('functions',
     frmt=frmt,
     fpath=debuglog,
@@ -65,7 +79,7 @@ func_log = make_logger('functions',
     # lvl=logging.CRITICAL,
     flvl = logging.DEBUG
     )
-
+'''
 
 
  

@@ -1,4 +1,7 @@
 import utils
+import sys
+# add self path to system path
+
 
 # define soe global stuff
 
@@ -6,36 +9,34 @@ import utils
 # Yay abstraction!
 waisman_user = False
 home_dir_str = None
-if utils.systemName in ('Linux','Darwin'):
-	home_dir_str = utils.environ['HOME']
+if utils.systemName in ('Linux', 'Darwin'):
+    home_dir_str = utils.environ['HOME']
 elif utils.systemName == 'Windows':
-	try:
-		# used by waisman users alone
-		home_dir_str = utils.environ['_USR'] + '/'
-		waisman_user = True
-	except (AttributeError,KeyError):
-		home_dir_str = utils.environ['USERPROFILE'] + '/'
+    try:
+        # used by waisman users alone
+        home_dir_str = utils.environ['_USR'] + '/'
+        waisman_user = True
+    except (AttributeError, KeyError):
+        home_dir_str = utils.environ['USERPROFILE'] + '/'
 
+basedir, filename = utils.split(utils.abspath(__file__))  # within the package
 
-
-basedir,filename = utils.split(utils.abspath(__file__))  #  within the package
-basedir = utils.split(basedir)[0] # move up one dir
+basedir = utils.split(basedir)[0]  # move up one dir
 
 templatedir = utils.join(basedir, 'mapping_files')
-srcdatdir = utils.join(basedir,'source_datafiles')
-srcschdir = utils.join(basedir,'source_schemes')
-sinkdatdir = utils.join(basedir,'sink_datafiles')
-sinkschdir = utils.join(basedir,'sink_schemes') 
+srcdatdir = utils.join(basedir, 'source_datafiles')
+srcschdir = utils.join(basedir, 'source_schemes')
+sinkdatdir = utils.join(basedir, 'sink_datafiles')
+sinkschdir = utils.join(basedir, 'sink_schemes')
 secretdir = home_dir_str
-scriptdir = utils.join(basedir, 'rocket','lib','scripts')
+scriptdir = utils.join(basedir, 'rocket', 'lib', 'scripts')
 
 # used throughout the package to decide 
 # to throw errors or just log them
 ignore_errors = False
 
 #  the delimiter for template files. it's here to make it global
-templ_delimiter = ',' 
-
+templ_delimiter = ','
 
 # actually do stuff....
 
@@ -46,5 +47,4 @@ handlers = utils.load_handlers()
 
 # loads all the mapping managers we know about 
 # so you can pass one to the controller
-mapping_managers = utils.load_map_submanagers() 
-
+mapping_managers = utils.load_map_submanagers()

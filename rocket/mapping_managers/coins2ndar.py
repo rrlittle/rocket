@@ -4,7 +4,7 @@ import Functions as func
 from Functions import ursi_functions
 from loggers import map_log
 from __init__ import templatedir, secretdir
-
+import subject_01_extension as s1
 
 class coins2ndar(MappingManager):
     ''' this manager is to define the mappping between coins and ndar type files.
@@ -33,11 +33,21 @@ class coins2ndar(MappingManager):
 
             return ursi_functions.findAge(olddate=bd, recentdate=ass_date)
 
-        functions['mean'] = {'ref': func.mean}
-        functions['sum'] = {'ref': func.sum}
-        functions['findGender'] = {'ref': ursi_functions.findGender}
-        functions['findGuid'] = {'ref': ursi_functions.findGuid}
-        functions['findAge'] = {'ref': findAge}
+        functions['mean'] = {'ref': func.mean, 'doc':"calculate the mean. Put the coins ids "
+                                                     "for all the columns into the mapping id"}
+        functions['sum'] = {'ref': func.sum, 'doc':"calculate the mean. Put the coins ids for all"
+                                                   " the columns into the mapping id"}
+        functions['findGender'] = {'ref': ursi_functions.findGender, 'doc': "find the participant's gender based "
+                                                                            "on ursi"}
+        functions['findGuid'] = {'ref': ursi_functions.findGuid, 'doc':"find the participants's GUID based "
+                                                                       "on the given ursi"}
+        functions['findAge'] = {'ref': findAge, 'doc':""}
+        functions['findGuidS1'] = {'ref': s1.get_guid, 'doc':""}
+        functions['findMotherGuidS1'] = {'ref': s1.get_mother_guid}
+        functions['findCotwinGuidS1'] = {'ref': s1.get_cotwin_guid}
+        functions['findCommentsS1'] = {'ref': s1.get_comment_misc}
+        functions['findCommentMotherS1'] = {'ref': s1.get_cotwoin_comment_based_on_mother_ursi}
+
         return functions
 
     def want_update_ursi_data(self):

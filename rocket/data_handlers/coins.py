@@ -1,5 +1,10 @@
 from Managers import sourceManager
 import utils
+dateformat_candidates =[
+    "%m/%d/%Y %H:%M",
+    "%m-%d-%Y %I:%M:%S %p"
+    ];
+
 
 class coins_src(sourceManager):
     ''' coins source
@@ -14,10 +19,15 @@ class coins_src(sourceManager):
         self.template_fields['missing_vals'] = 'coins missing value'
 
     def parse_assessment_date(self, assessment_date, coldef):
+        for dateformat in dateformat_candidates:
+            try:
+                assessment_date = utils.datetime.strptime(assessment_date,
+                    dateformat)
+                return assessment_date
+            except Exception as e:
+                pass
 
-        assessment_dateformat = "%m/%d/%Y %H:%M"
-        assessment_date = utils.datetime.strptime(assessment_date,
-            assessment_dateformat)
-        return assessment_date
+        raise ValueError("The assessment_date in data file is not matched in any acceptable date format in rocket")
+
 
     

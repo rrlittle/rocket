@@ -132,7 +132,8 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
     def _remind_user_notice_(self):
         '''This will be called before user tries to load the data
-        This should be overrided by respond_to_user_notice
+        This should be overrided by respond_to_user_notice. Soon this should
+        give the user an option about whether they want read it. Default is show
         '''
         if self.user_notice != "":
             prompt = "\n The template has this important instruction on how to use the template.\n" \
@@ -330,7 +331,8 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
         return templ_path
 
-    # method for receving the parser data
+    # These are the delegates method that is used to determine what to
+    # with different components
     def respond_to_instru_info(self, instru_info):
         self.sink.set_instru_info(instru_name=instru_info.get_instru_name(), version=instru_info.get_version())
 
@@ -347,6 +349,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
     def respond_to_user_notice(self, user_notice):
         self.user_notice = user_notice
 
+    # delegate method for writing the tempalte
     def write_init_header(self, file, delimiter):
         csv_writer = csv.writer(file, delimiter=delimiter)
         header_list = self._get_headers_content_()
@@ -362,14 +365,34 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         header = self._get_func_names_(header)
         return header
 
+    # I want to add the explanation to function name
+    # One line a funtion explanation
     def _get_func_names_(self, header_content=[]):
         def _add_all_func_name():
             all_func_name = [x for x in self.globalfuncs]
             return all_func_name
 
-        func_header = ["Possible functions you can use are: "] + _add_all_func_name()
-        header_content.append(func_header)
+        def _add_functions_with_explanation_():
+            '''
+            This function will be used to add the explanation for the function
+            :return:
+            '''
+            all_funcs = []
+            for x in self.globalfuncs:
+                func_name = x
+                try:
+                    func_explanation = self.globalfuncs[x]['doc']
+                except KeyError:
+                    pass
+                func = ["", func_name, func_explanation]
+                all_funcs.append(func)
+            return all_funcs
 
+        func_header_prompt = ["Possible functions you can use are: "]
+        func_header = _add_functions_with_explanation_()
+
+        header_content.append(func_header_prompt)
+        header_content += func_header
         return header_content
 
     def write_init_mapping_info(self, file, delimiter):

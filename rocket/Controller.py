@@ -8,6 +8,10 @@ class controller(object):
         source sink and mapping.
         this takes the responsibility of orchestrating the whole
         mapping from sinkt to source.
+
+        I'm thinking about add a task manager to help user schedule a convert plan, so that
+        many tasks can run automatically without people monitoring it
+        Also I need to implement more functions for the program
     '''
 
     def __init__(self, mappingmanager):

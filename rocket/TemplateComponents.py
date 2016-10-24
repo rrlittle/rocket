@@ -3,6 +3,20 @@ import io
 
 
 class TemplateComponenet(object):
+    '''
+    This component represents the section in the template file.
+    Each template component has its name, has its content. The start tag is <"name" and the end
+    tag is "name">
+    Each subclass of the template will come with a function that reads the line between these tags.
+    It has two methods that require delegates to make decision about what to do. You can add delegates
+    method to the components_behavior_protocals.py
+
+    @property:
+        start_token: the tag that shows the start of the component (Override it)
+        end_token: the tag that shows the end of the component (Override it)
+        content: the lines between start tag and end tag (Override it)
+        line_num: the line number between start tag and end tag (Override it)
+    '''
     def __init__(self):
         self.start_token = "<"
         self.end_token = ">"
@@ -27,7 +41,7 @@ class TemplateComponenet(object):
         for row in reader:
             if self.start_token in row:
                 self.content, self.line_num = start_read_until_end_token(reader)
-                break;
+                break
 
         return self._process_after_reading_(self.content)
 
@@ -73,12 +87,23 @@ class Header(TemplateComponenet):
 
 
 class InstruInfoComponent(TemplateComponenet):
+    '''
+        The instru info componenet is responsible for writing the version format line to the template
+        and parse the version format line to get the information
+
+        @Overrided:
+            start_token, end_token, line_num,
+        @New property:
+            INSTRU_NAME_KEY
+            VERSION_KEY
+            instru_info
+    '''
     def __init__(self):
         super(InstruInfoComponent, self).__init__()
         self.start_token = "<InstruInfo"
         self.end_token = "InstruInfo>"
 
-        self.line_num = 0;
+        self.line_num = 0
         self.INSTRU_NAME_KEY = "Instrument Name:"
         self.VERSION_KEY = "Version:"
 
@@ -127,7 +152,8 @@ class InstruInfoComponent(TemplateComponenet):
 
 
 class InstruInfo(object):
-    '''This package serves a place to store the instrument name and version. It will be used by others to get those information'''
+    '''This package serves a place to store the instrument name and version. It will be used by
+    others to get those information'''
 
     def __init__(self):
         self.instru_name = ""
