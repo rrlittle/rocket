@@ -1,6 +1,6 @@
-from TemplateComponents import TemplateComponenet, Header, InstruInfoComponent, NoticeComponent,MappingInfo
-from template_parser import TemplateParser
-from template_writer import TemplateWriter
+from template_kit.TemplateComponents import TemplateComponenet, Header, InstruInfoComponent, NoticeComponent,MappingInfo
+from template_kit.template_parser import TemplateParser
+from template_kit.template_writer import TemplateWriter
 
 class TemplateStructure:
 

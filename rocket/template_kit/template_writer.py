@@ -1,6 +1,6 @@
-from TemplateComponents import Header, InstruInfoComponent, MappingInfo, NoticeComponent
+from template_kit.TemplateComponents import Header, InstruInfoComponent, MappingInfo, NoticeComponent
 import csv
-from components_behavior_protocols import ComponentWriteProtocol
+from template_kit.components_behavior_protocols import ComponentWriteProtocol
 import os
 
 

@@ -1,7 +1,7 @@
 #from Managers import Manager
 from __init__ import templatedir
-from TemplateComponents import Header, InstruInfoComponent, MappingInfo, InstruInfo, NoticeComponent
-from components_behavior_protocols import ComponentResponseProtocol
+from template_kit.TemplateComponents import Header, InstruInfoComponent, MappingInfo, InstruInfo, NoticeComponent
+from template_kit.components_behavior_protocols import ComponentResponseProtocol
 
 import csv
 

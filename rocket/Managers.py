@@ -231,6 +231,7 @@ class ssManager(Manager):
                                                                   coldef.missing_vals))
             missing = coldef.missing_vals.split(",")
 
+        # If the data is in missing vals, then a no data error will be return as the placeholder
         if hasattr(coldef, 'missing_vals') and value in missing:
             man_log.debug('replacing row[%s](%s) with NoData' % (coldef, value))
             return self.NoDataError(('value %s identified as a missing '
@@ -386,14 +387,16 @@ class sinkManager(ssManager):
         outwriter.writeheader()
         for rowid, row in enumerate(self.data):
             for coldef, elem in row.items():
-                if isinstance(elem, self.NoDataError):  # print the default value.
+                if isinstance(elem, ssManager.NoDataError):  # print the default value.
                     elem = ''
                 formatter = getattr(self, coldef + '_write_formatter',
                                     self.default_write_formatter)
+               
                 man_log.debug('trying formatter %s' % (
                     coldef + '_write_formatter'))
                 man_log.debug('formatting row[%s][%s](%s) with %s' % (rowid,
                                                                       coldef, row[coldef], formatter.__name__))
+               
                 row[coldef] = formatter(row[coldef], coldef)
                 man_log.debug('writing row[%s][%s] is %s' % (rowid, coldef,
                                                              row[coldef]))

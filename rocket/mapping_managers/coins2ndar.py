@@ -1,10 +1,10 @@
 from MappingManager import MappingManager
 from data_handlers import coins, ndar
-import Functions as func
+from Functions import calc_functions as func
 from Functions import ursi_functions
 from loggers import map_log
 from __init__ import templatedir, secretdir
-import subject_01_extension as s1
+from Functions import subject_01_extension as s1
 
 class coins2ndar(MappingManager):
     ''' this manager is to define the mappping between coins and ndar type files.

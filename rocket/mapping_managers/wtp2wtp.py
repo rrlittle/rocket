@@ -1,4 +1,4 @@
-from Functions import data_sum, mean
+from Functions.calc_functions import data_sum, mean
 from MappingManager import MappingManager
 from data_handlers.wtp import wtp_source, wtp_sink
 

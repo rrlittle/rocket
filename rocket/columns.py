@@ -1,7 +1,6 @@
 import Managers
 from loggers import col_log
 
-
 class Col(object):
     ''' this represents one row from the template file.
         it defines the parameters for a column from either the source or
@@ -206,12 +205,14 @@ class sinkCol(Col):
             col_log.debug('FROM dat (%s) using %s with args (%s)' % (
                 srcdat, self.func.__name__, self.args))
 
+
             if isinstance(srcdat, self.handler.NoDataError):
                 self.dat = srcdat
             elif hasattr(self.args, '__len__') and self.args.__len__() > 0:
                 col_log.debug('CALLING %s(%s, %s)' % (self.func.__name__,
                                                       srcdat, [arg for arg in self.args]))
-                self.dat = self.func(*srcdat, args=[arg for arg in self.args])
+                arg  = [i for i in self.args]
+                self.dat = self.func(*srcdat, args=arg)
             else:
                 col_log.debug('CALLING %s(%s)' % (self.func.__name__, srcdat))
                 self.dat = self.func(*srcdat)

@@ -1,7 +1,10 @@
 import utils
+import os
 import sys
-# add self path to system path
 
+# add self path to system path
+dirname = os.path.dirname(__file__)
+sys.path.insert(0, dirname)
 
 # define soe global stuff
 
@@ -39,7 +42,6 @@ ignore_errors = False
 templ_delimiter = ','
 
 # actually do stuff....
-
 
 # loads all the handlers we know about 
 # so the mapping managers can select them

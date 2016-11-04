@@ -32,7 +32,7 @@ first_time_enter = True
 
 def findGender(ursi, args=None):
     print('finding the gender')
-    ursi_data_manager = UrsiDataManager(temp_data_path)
+    ursi_data_manager = UrsiDataManager(temp_data_path,first_time_enter)
     data_dict = ursi_data_manager.get_ursi_data()
 
     assert ursi != '', 'No ursi has been passed'
@@ -46,12 +46,12 @@ def findBirthdate(ursi, args=None):
         It will return a datetime object.
     """
     DOB_dateformat = "%m/%d/%Y"
-    ursi_data_manager = UrsiDataManager(temp_data_path)
+    ursi_data_manager = UrsiDataManager(temp_data_path,first_time_enter)
     data_dict = ursi_data_manager.get_ursi_data()
     assert ursi != '', 'No ursi has been passed'
 
     birth_date = data_dict[ursi]['birth_date']
-    DOB_date = datetime.strptime(birth_date, DOB_dateformat);
+    DOB_date = datetime.strptime(birth_date, DOB_dateformat)
 
     return DOB_date
 
@@ -59,7 +59,7 @@ def findBirthdate(ursi, args=None):
 def findGuid(ursi, args=None):
     data_dict = ''
     GUID = ''
-    ursi_data_manager = UrsiDataManager(temp_data_path)
+    ursi_data_manager = UrsiDataManager(temp_data_path,first_time_enter)
     data_dict = ursi_data_manager.get_ursi_data()
 
     try:
@@ -95,9 +95,27 @@ def findAge(olddate=None, recentdate=None):
     total_months = year * 12 + month
     return total_months
 
+def findGuidByWBIC(wbic, args = None):
+
+        if wbic == "":
+            raise sinkManager.DropRowException("The wbic passed in has nothing ")
+
+        ursi_data_manager = UrsiDataManager(temp_data_path,first_time_enter)
+        data_dict = ursi_data_manager.get_ursi_data()
+        for ursi, ursi_dict in data_dict.items():
+            try:
+                if ursi_dict["WBIC"] == wbic:
+                    return ursi_dict["GUID"]
+            except KeyError as e:
+                raise sinkManager.DropRowException("WBIC or GUID key is not in the information file")
+
+        raise sinkManager.DropRowException("The WBIC provided can't be found")
+        
+
 
 class UrsiDataManager(object):
-    def __init__(self, secret_dir_path):
+    def __init__(self, secret_dir_path, first_time_enter):
+        self.first_time_enter = first_time_enter
 
         self.temp_file_path = path.join(secret_dir_path, PPIfilename)
 
@@ -160,12 +178,13 @@ class UrsiDataManager(object):
 
     def ensure_data_file_exist(self):
         if path.exists(self.temp_file_path):
+            # If the file is just an empty file, caused by a program crash last
+            # I will still initialize it.
             if stat(self.temp_file_path).st_size == 0:
                 self.initialize_data_file()
             else:
                 # this will ask the user whether they want to update the personal information
-                global first_time_enter
-                if (first_time_enter):
+                if (self.first_time_enter):
                     while True:
                         answer = input("We detect there is personal information file, do you want to update it? (yes/no)")
                         if answer == "yes":
@@ -177,21 +196,8 @@ class UrsiDataManager(object):
                             break
                         else:
                             print("Please enter yes or no")
+                    global first_time_enter
                     first_time_enter = False
 
         else:
             self.initialize_data_file()
-
-
-class Unittests():
-    def __init__(self):
-        self.findgender()
-        self.findguid()
-
-    def findgender(self):
-        genderFinder = GenderByUrsi(data_list=['M53799718'])
-        genderFinder.find_gender()
-
-    def findguid(self):
-        guidFinder = GuidByUrsi(data_list=['M53799718'])
-        guidFinder.find()

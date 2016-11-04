@@ -2,10 +2,10 @@ from Managers import sourceManager, sinkManager, Manager
 import utils
 from __init__ import templatedir, templ_delimiter, secretdir
 from loggers import map_log
-from  template_writer import TemplateWriter
-from template_parser import TemplateParser, TemplateParseError
-from components_behavior_protocols import ComponentResponseProtocol, ComponentWriteProtocol
-from template_structure import TemplateStructure
+from  template_kit.template_writer import TemplateWriter
+from template_kit.template_parser import TemplateParser, TemplateParseError
+from template_kit.components_behavior_protocols import ComponentResponseProtocol, ComponentWriteProtocol
+from template_kit.template_structure import TemplateStructure
 import csv
 
 class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol):
@@ -197,6 +197,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                             # convert it to the sink value
                             sinkdat = sinkcoldef.convert(src_datcol_zip)
 
+                            
                             # print('output:',sinkdat)
                             # save the sink value to the last row
                             self.sink[-1][sinkcoldef] = sinkdat
