@@ -7,6 +7,7 @@ from template_kit.template_parser import TemplateParser, TemplateParseError
 from template_kit.components_behavior_protocols import ComponentResponseProtocol, ComponentWriteProtocol
 from template_kit.template_structure import TemplateStructure
 import csv
+from os import startfile
 
 class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol):
     ''' this class is responsible for implementing the
@@ -283,14 +284,14 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                            'rocket quitting. Error: %s') % (errstr, err))
             utils.exit(1)
 
+        templ_path = _get_template_path_()
         try:
-            templ_path = _get_template_path_()
-            tw = self.template_structure.get_template_writer(delegate=self, delimiter=self.delimiter)
-            tw.write_template(templ_path)
-            tw.close_and_save_file()
+            template_writer = self.template_structure.get_template_writer(delegate=self, delimiter=self.delimiter)
+            template_writer.write_template(templ_path)
+            template_writer.close_and_save_file()
 
-   #     except Exception as e:
-   #         handle_tmeplate_err("Template Error", e)
+        except Exception as e:
+            handle_tmeplate_err("Template Error", e)
         # the template fields for each handler are defined upon initialization
         # of the handlers. they are defined in the code and extended for each
         # custom handler if they so choose.
@@ -320,15 +321,18 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
             '''
 
         map_log.debug('Template created')
-        inp = input(('\n\nThe template file has been written. \n'
+        while True:
+            inp = input(('\n\nThe template file has been written. \n'
                      'Please hit enter when you are done with the file and you will'
                      ' continue to the conversion if you have selected both options\n'
                      'enter "q" if you would like to quit now and fill the template at '
                      'another time\n>>'))
-
-        if inp == 'q':
-            map_log.critical('User elected to quit after template was created')
-            utils.exit()
+            if inp == 'q':
+                map_log.critical('User elected to quit after template was created')
+                utils.exit()
+            if inp == 'o':
+                map_log.critical('User selected to open template file after template was created')
+                startfile(templ_path)
 
         return templ_path
 

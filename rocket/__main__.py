@@ -12,6 +12,7 @@ from __init__ import mapping_managers
 from Controller import controller
 import utils
 
+
 parser = utils.make_args('runs the rocket data mapping package',
                          args={
                                 ('-mm', '--mappingmanager'): {
@@ -46,33 +47,35 @@ parser = utils.make_args('runs the rocket data mapping package',
                          )
 
 if __name__ == '__main__':
-    # if this is run as a package
-    # it requires arguments
-    args = parser.parse_args()
-    # print ('sources: %s <= %s'%(handlers['source'].keys(), args.source))
-    # print ('sinks: %s <= %s'%(handlers['sink'].keys(), args.sink))
-    # src = handlers['source'][args.source]
-    # sink = handlers['sink'][args.sink]
+    try:
+        # if this is run as a package
+        # it requires arguments
+        args = parser.parse_args()
+        # print ('sources: %s <= %s'%(handlers['source'].keys(), args.source))
+        # print ('sinks: %s <= %s'%(handlers['sink'].keys(), args.sink))
+        # src = handlers['source'][args.source]
+        # sink = handlers['sink'][args.sink]
 
-    mappingManager = mapping_managers[args.mm]
+        mappingManager = mapping_managers[args.mm]
 
-    # print('chosen source: %s'%src)
-    # print('chosen sink: %s'%sink)
-    c = controller(mappingManager)
+        # print('chosen source: %s'%src)
+        # print('chosen sink: %s'%sink)
+        c = controller(mappingManager)
 
-    template_path = None
-    if args.template:
-        template_path = c.make_template()
-        print('created template at %s' % template_path)
-    else:
-        print('--template not provided skipping that')
+        template_path = None
+        if args.template:
+            template_path = c.make_template()
+            print('created template at %s' % template_path)
+        else:
+            print('--template not provided skipping that')
 
-    outfile_path = None
-    if args.convert:
-        outfile_path = c.do_convert(template_path=template_path)
-        print('created outfile at %s' % outfile_path)
-
-    else:
-        print('--convert not provided skipping that')
-
-    input('\nConverting ends. Please press ENTER to leave or just close the window to leave')
+        outfile_path = None
+        if args.convert:
+            outfile_path = c.do_convert(template_path=template_path)
+            print('created outfile at %s' % outfile_path)
+        else:
+            print('--convert not provided skipping that')
+    except Exception as e:
+        print("%s"%e)
+    finally:
+        input('\nConverting ends. Please press ENTER to leave or just close the window to leave')
