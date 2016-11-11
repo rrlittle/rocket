@@ -9,6 +9,7 @@ from Managers import sinkManager
 from threading import Timer
 import utils
 from loggers import func_log
+from Functions.function_api import Function
 
 # where to store secret files i.e. coins secret key and PPI file
 temp_data_path = secretdir
@@ -30,15 +31,6 @@ get_ppi_script_path = utils.join(scriptdir, get_ppi_script_filename)
 func_log.info('ppi script is %s' % get_ppi_script_path)
 first_time_enter = True
 
-def findGender(ursi, args=None):
-    print('finding the gender')
-    ursi_data_manager = UrsiDataManager(temp_data_path,first_time_enter)
-    data_dict = ursi_data_manager.get_ursi_data()
-
-    assert ursi != '', 'No ursi has been passed'
-    gender = data_dict[ursi]["gender"]
-    return gender
-
 
 def findBirthdate(ursi, args=None):
     """
@@ -56,51 +48,108 @@ def findBirthdate(ursi, args=None):
     return DOB_date
 
 
-def findGuid(ursi, args=None):
-    data_dict = ''
-    GUID = ''
-    ursi_data_manager = UrsiDataManager(temp_data_path,first_time_enter)
-    data_dict = ursi_data_manager.get_ursi_data()
+class FindGender(Function):
+    def __init__(self,*args,**kwargs):
+        super(FindGender, self).__init__(*args, **kwargs)
 
-    try:
+    def get_documentation(self):
+        return "Find the participant's gender based on ursi"
+
+    def get_name(self):
+        return "findGender"
+
+    def _func_(self, data_list, args=None):
+        print('finding the gender')
+        ursi = data_list[0]
         assert ursi != '', 'No ursi has been passed'
-        GUID = data_dict[ursi]['GUID']
 
-        if GUID == "NONE":
-            raise sinkManager.DropRowException(('No guid found '
-                                                'matching ursi %s') % ursi)
-
-    except Exception as e:
-        raise sinkManager.DropRowException(e)
-
-    return GUID
+        ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+        data_dict = ursi_data_manager.get_ursi_data()
+        gender = data_dict[ursi]["gender"]
+        return gender
 
 
-def findAge(olddate=None, recentdate=None):
-    """ both argument will be the datetime object. The ndar way to calculate the
-    age is the total
-    """
+class FindBirthdate(Function):
+    def __init__(self,*args, **kwargs):
+        super(FindBirthdate, self).__init__(*args,**kwargs)
 
-    assert olddate != None and recentdate != None, "**** findAge goes wrong ***"
+    def get_name(self):
+        return "findBirthdate"
 
-    # import ipdb; ipdb.set_trace()
+    def _func_(self, data_list, args=None):
+        return findBirthdate(data_list[0])
 
-    age = relativedelta.relativedelta(olddate, recentdate)
-    year = abs(age.years)
-    month = abs(age.months)
-    day = abs(age.days)
-    if day > 15:
-        month = month + 1
 
-    total_months = year * 12 + month
-    return total_months
+class FindGuid(Function):
+    def get_documentation(self):
+        return "Find the participants's GUID based on the given ursi"
 
-def findGuidByWBIC(wbic, args = None):
+    def get_name(self):
+        return "findGuid"
 
+    def _func_(self, data_list, args=None):
+        data_dict = ''
+        GUID = ''
+        ursi = data_list[0]
+        ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+        data_dict = ursi_data_manager.get_ursi_data()
+
+        try:
+            assert ursi != '', 'No ursi has been passed'
+            GUID = data_dict[ursi]['GUID']
+
+            if GUID == "NONE":
+                raise sinkManager.DropRowException(('No guid found '
+                                                    'matching ursi %s') % ursi)
+
+        except Exception as e:
+            raise sinkManager.DropRowException(e)
+
+        return GUID
+
+
+class FindAge(Function):
+    def get_documentation(self):
+        return "Find the participants's Age based on the given ursi, and assessment date. " \
+               "Put two coins id into the mapping id.Like 1,4"
+
+    def get_name(self):
+        return "findAge"
+
+    def _func_(self, data_list, args=None):
+        """ both argument will be the datetime object. The ndar way to calculate the
+            age is the total
+            """
+
+        ursi = data_list[0]
+        olddate = findBirthdate(ursi)
+        recentdate = data_list[1]
+
+        assert olddate != None and recentdate != None, "**** findAge goes wrong ***"
+        # import ipdb; ipdb.set_trace()
+
+        age = relativedelta.relativedelta(olddate, recentdate)
+        year = abs(age.years)
+        month = abs(age.months)
+        day = abs(age.days)
+        if day > 15:
+            month = month + 1
+
+        total_months = year * 12 + month
+        return total_months
+
+
+class FindGuidByWBIC (Function):
+    """"""
+    def get_name(self):
+        return "FindGuidByWbic"
+
+    def _func_(self, data_list, args=None):
+        wbic = data_list[0]
         if wbic == "":
             raise sinkManager.DropRowException("The wbic passed in has nothing ")
 
-        ursi_data_manager = UrsiDataManager(temp_data_path,first_time_enter)
+        ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
         data_dict = ursi_data_manager.get_ursi_data()
         for ursi, ursi_dict in data_dict.items():
             try:
@@ -110,7 +159,6 @@ def findGuidByWBIC(wbic, args = None):
                 raise sinkManager.DropRowException("WBIC or GUID key is not in the information file")
 
         raise sinkManager.DropRowException("The WBIC provided can't be found")
-        
 
 
 class UrsiDataManager(object):

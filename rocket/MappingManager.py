@@ -383,13 +383,18 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
             :return:
             '''
             all_funcs = []
-            for x in self.globalfuncs:
-                func_name = x
-                try:
-                    func_explanation = self.globalfuncs[x]['doc']
-                except KeyError:
-                    func_explanation = "NO EXPLANATION right now"
-                func = ["", func_name, func_explanation]
+
+            # If I add the class for Function. You can default the func_explanation in the function superclass
+            # and no catch needs to be done.
+
+            for func in self.globalfuncs:
+
+                # try:
+                #     func_explanation = self.globalfuncs[x]['doc']
+                # except KeyError:
+                #     func_explanation = "NO EXPLANATION right now"
+                # Generate the function line
+                func = ["", func.func_name, func.documentation]
                 all_funcs.append(func)
             return all_funcs
 

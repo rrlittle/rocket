@@ -1,10 +1,11 @@
 from MappingManager import MappingManager
 from data_handlers import coins, ndar
-from Functions import calc_functions as func
 from Functions import ursi_functions
 from loggers import map_log
 from __init__ import templatedir, secretdir
-from Functions import subject_01_extension as s1
+from Functions.calc_functions import Mean, Sum
+from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC
+from Functions.subject_01_extension import GetCommentMisc, GetCotwinGuid, GetMotherGuid, GetCotwinCommentMotherUrsi
 
 class coins2ndar(MappingManager):
     ''' this manager is to define the mappping between coins and ndar type files.
@@ -22,6 +23,19 @@ class coins2ndar(MappingManager):
         #   ursi_data_manager.initialize_data_file();
 
     def load_functions(self):
+        functions_list = []
+        functions_list.append(Mean())
+        functions_list.append(Sum())
+        functions_list.append(FindAge())
+        functions_list.append(FindBirthdate())
+        functions_list.append(FindGender())
+        functions_list.append(FindGuid())
+        functions_list.append(FindGuidByWBIC())
+        functions_list.append(GetCommentMisc())
+        functions_list.append(GetCotwinCommentMotherUrsi())
+        functions_list.append(GetMotherGuid())
+        functions_list.append(GetCotwinGuid())
+
         functions = {}
 
         def findAge(ursi, ass_date, args=None):
@@ -33,6 +47,8 @@ class coins2ndar(MappingManager):
 
             return ursi_functions.findAge(olddate=bd, recentdate=ass_date)
 
+        return functions_list
+    '''
         functions['mean'] = {'ref': func.mean, 'doc':"Calculate the mean. Put the coins ids "
                                                      "for all the columns into the mapping id"}
         functions['sum'] = {'ref': func.sum, 'doc':"Calculate the sum. Put the coins ids for all"
@@ -55,8 +71,8 @@ class coins2ndar(MappingManager):
                                             'doc': "Subjective01 Extension: Given mother's ursi, it will return "
                                                    "comment containing her twins GUID information. "
                                                    "PLEASE put subject01 file name into the args!"}
+                                                   '''
 
-        return functions
 
     def want_update_ursi_data(self):
         yes = 'y'

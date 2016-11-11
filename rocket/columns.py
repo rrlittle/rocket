@@ -1,5 +1,6 @@
 import Managers
 from loggers import col_log
+from Functions.function_api import PlainCopy
 
 class Col(object):
     ''' this represents one row from the template file.
@@ -153,12 +154,18 @@ class sinkCol(Col):
         # set self.func to an actual function
         # use self.handler.globalfuncs to get func refereances or throw err
         if isinstance(self.func, self.handler.NoDataError): self.func = ''
-        if self.func.strip() in self.handler.globalfuncs:
-            self.func = self.handler.globalfuncs[self.func.strip()]['ref']
-        elif self.func.strip() == '':
-            self.func = lambda *x, args: x[0]
-        else:
-            raise self.handler.TemplateError(('function %s for column '
+        func_name = self.func.strip().lstrip()
+
+        if func_name == '':
+            self.func = PlainCopy()
+            return
+
+        for func in self.handler.globalfuncs:
+            if func.func_name == func_name:
+                self.func = func
+                return
+        #self.func = self.handler.globalfuncs[self.func.strip()]['ref']
+        raise self.handler.TemplateError(('function %s for column '
                                               '%s is not valid. please change the template'
                                               ' to a valid function or blank') % (self.func, self.col_name))
 
@@ -203,19 +210,19 @@ class sinkCol(Col):
             col_log.debug('CONVERTING %s for handler %s' % (self,
                                                             self.handler))
             col_log.debug('FROM dat (%s) using %s with args (%s)' % (
-                srcdat, self.func.__name__, self.args))
+                srcdat, self.func.func_name, self.args))
 
 
             if isinstance(srcdat, self.handler.NoDataError):
                 self.dat = srcdat
             elif hasattr(self.args, '__len__') and self.args.__len__() > 0:
-                col_log.debug('CALLING %s(%s, %s)' % (self.func.__name__,
+                col_log.debug('CALLING %s(%s, %s)' % (self.func.func_name,
                                                       srcdat, [arg for arg in self.args]))
                 arg  = [i for i in self.args]
-                self.dat = self.func(*srcdat, args=arg)
+                self.dat = self.func.execute(*srcdat, args=arg)
             else:
                 col_log.debug('CALLING %s(%s)' % (self.func.__name__, srcdat))
-                self.dat = self.func(*srcdat)
+                self.dat = self.func.execute(*srcdat)
         except self.handler.DropRowException as e:
             raise self.handler.DropRowException(('Error raised while '
                                                  'running %s(%s). Error: %s') % (self.func, srcdat, e))

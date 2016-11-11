@@ -13,4 +13,4 @@ class wtp2wtp(MappingManager):
         functions = {}
         functions['mean'] = mean
         functions['data_sum'] = data_sum
-        return functions;
+        return functions

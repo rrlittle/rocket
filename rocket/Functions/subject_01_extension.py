@@ -3,7 +3,7 @@ from os.path import split, join
 from path_finder import get_path_finder
 from tkinter import filedialog
 import logging
-
+from Functions.function_api import Function
 
 s1_logger = logging.getLogger("main_log.subject01_extension")
 
@@ -203,11 +203,14 @@ class SubjectInfoDatabase(object):
 
  # This method is a highly customized data, but can't guarantee
         #  to get the cleaned data by the program
+
+
 def get_data_from_column(ursi, args):
     subject01_path = args[0]
     data_key = args[1]
     db = get_subject01Manager().get_subject01_db(subject01_path)
     return db.find_column_based_on_ursi(ursi, data_key)
+
 
 # the subject01_path
 def get_guid(ursi, args=None):
@@ -237,14 +240,23 @@ def get_someone_id(ursi, args = None, search_key = "", type="m"):
         return search_result
 
 
-def get_mother_guid(ursi, args=None):
-    mother_key = "subjectkey_mother"
-    return get_someone_id(ursi, args=args, search_key=mother_key, type="g")
+class GetMotherGuid (Function):
+    """"""
 
+    def get_documentation(self):
+        return "Get the mother's GUID based on child's ursi"
 
-def get_cotwin_guid(ursi, args = None):
-    cotwin_key = "subjectkey_sibling1"
-    return get_someone_id(ursi, args=args, search_key=cotwin_key, type="g")
+    def get_name(self):
+        return "findMotherGuidS1"
+
+    def _func_(self, data_list, args=None):
+        ursi = data_list[0]
+        mother_key = "subjectkey_mother"
+        return get_someone_id(ursi, args=args, search_key=mother_key, type="g")
+
+#def get_mother_guid(ursi, args=None):
+#    mother_key = "subjectkey_mother"
+#    return get_someone_id(ursi, args=args, search_key=mother_key, type="g")
 
 
 def is_valid_guid(guid_candidate):
@@ -259,18 +271,56 @@ def is_valid_ursi(ursi_candidate):
     return False
 
 
-#
-def get_comment_misc(ursi, args=None):
-    comment_key = "comments_misc"
-    return get_someone_id(ursi, args=args, search_key=comment_key)
+class GetCotwinGuid(Function):
+
+    def get_documentation(self):
+        return "Subjective01 Extension: Given one child's ursi, " \
+               "it will return his or her cotwin's GUID. " \
+               "PLEASE put subject01 file name into the args!"
+
+    def get_name(self):
+        return "findCotwinGuidS1"
+
+    def _func_(self, data_list, args=None):
+        ursi = data_list[0]
+        cotwin_key = "subjectkey_sibling1"
+        return get_someone_id(ursi, args=args, search_key=cotwin_key, type="g")
 
 
-def get_cotwoin_comment_based_on_mother_ursi(mother_ursi, args=None):
-    comment_key = "comments_misc"
-    subject01_path = args[0]
-    db = get_subject01Manager().get_subject01_db(subject01_path)
-    child_ursis = db.find_childs_for_a_mother_ursi(mother_ursi=mother_ursi, child_num=1)
-    return get_someone_id(child_ursis[0], args=args, search_key=comment_key)
+class GetCommentMisc(Function):
+
+    def get_documentation(self):
+        return "Subjective01 Extension: Given one child's ursi," \
+               "it will return the comment about her in Subjective 01 " \
+               "PLEASE put subject01 file name into the args!"
+
+    def get_name(self):
+        return "findCommentsS1"
+
+    def _func_(self, data_list, args=None):
+        comment_key = "comments_misc"
+        ursi = data_list[0]
+        return get_someone_id(ursi, args=args, search_key=comment_key)
+
+
+class GetCotwinCommentMotherUrsi(Function):
+
+    def get_documentation(self):
+        return "Subjective01 Extension: Given mother's ursi, it will return "" \
+        ""comment containing her twins GUID information. "" \
+        ""PLEASE put subject01 file name into the args!"
+
+    def get_name(self):
+        return 'findCommentMotherS1'
+
+    def _func_(self, data_list, args=None):
+        mother_ursi = data_list[0]
+        comment_key = "comments_misc"
+        subject01_path = args[0]
+        db = get_subject01Manager().get_subject01_db(subject01_path)
+        child_ursis = db.find_childs_for_a_mother_ursi(mother_ursi=mother_ursi, child_num=1)
+        return get_someone_id(child_ursis[0], args=args, search_key=comment_key)
+
 
 def test():
     data = get_cotwoin_comment_based_on_mother_ursi("M53721739",["rdoc_subject01_data_20160623.csv"])

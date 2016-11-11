@@ -27,7 +27,7 @@ InstruInfo>,,,,,,,,,,,
 User Notice>,,,,,,,,,,,
 <Mapping Template,,,,,,,,,,,
 ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins id,coins name,coins range,coins missing value
-1,subjectkey,,,1,findGuid,,t,1,queried_ursi,,"~<userSkipped>~,~<condSkipped>~,"
+1,subjectkey,,,"1,4",findGuid,,t,1,queried_ursi,,"~<userSkipped>~,~<condSkipped>~,"
 2,src_subject_id,,,1,,,t,2,oldest_ursi,,"~<userSkipped>~,~<condSkipped>~,"
 3,interview_date,,,4,,,t,3,asmt_ursi,,"~<userSkipped>~,~<condSkipped>~,"
 4,interview_age,,,"1,4",findAge,,t,4,assessment_date,,"~<userSkipped>~,~<condSkipped>~,"
@@ -35,7 +35,7 @@ ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins 
 6,bro1,,9999,15,,,,6,instrument,,"~<userSkipped>~,~<condSkipped>~,"
 12,bro_sum,,9999,"15,16,17,18,19",sum,,,7,segment_interval,,"~<userSkipped>~,~<condSkipped>~,"
 13,bro_mean,,9999,"15,16,17,18",mean,,,8,segment_instance,,"~<userSkipped>~,~<condSkipped>~,"
-,,,,,,,,9,entry_code,,"~<userSkipped>~,~<condSkipped>~,"
+14,comment,,9999,1,findCotwinGuidS1,rdoc_subject01_data_20160623.csv,,9,entry_code,,"~<userSkipped>~,~<condSkipped>~,"
 ,,,,,,,,10,site_id,,"~<userSkipped>~,~<condSkipped>~,"
 ,,,,,,,,11,source_type,,"~<userSkipped>~,~<condSkipped>~,"
 ,,,,,,,,12,rater1,,"~<userSkipped>~,~<condSkipped>~,"
