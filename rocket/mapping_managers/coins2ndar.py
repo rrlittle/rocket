@@ -6,6 +6,7 @@ from __init__ import templatedir, secretdir
 from Functions.calc_functions import Mean, Sum
 from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC
 from Functions.subject_01_extension import GetCommentMisc, GetCotwinGuid, GetMotherGuid, GetCotwinCommentMotherUrsi
+from Functions.bdi_extension import GetBDIScore
 
 class coins2ndar(MappingManager):
     ''' this manager is to define the mappping between coins and ndar type files.
@@ -35,6 +36,7 @@ class coins2ndar(MappingManager):
         functions_list.append(GetCotwinCommentMotherUrsi())
         functions_list.append(GetMotherGuid())
         functions_list.append(GetCotwinGuid())
+        functions_list.append(GetBDIScore())
 
         functions = {}
 

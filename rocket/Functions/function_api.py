@@ -41,6 +41,13 @@ class Function():
         return result
 
     def _func_(self, data_list, args=None):
+        '''
+        This is the overrided part for execution. Put the logic of function here. It's best to return one thing
+        :param data_list: the data in a list
+        :param args: args used by user to configure the behavior of a Function
+        :return:
+        '''
+
         raise NotImplementedError
 
 
