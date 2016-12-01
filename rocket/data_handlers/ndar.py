@@ -25,6 +25,7 @@ class ndar_snk(sinkManager):
     def interview_date_write_formatter(self, dateobj, coldef):
         if isinstance(dateobj, self.NoDataError):
             return coldef.missing_vals
+
         return dateobj.strftime('%m/%d/%Y')
 
     def ensure_row(self, datarow):
@@ -48,4 +49,4 @@ class ndar_snk(sinkManager):
         outwriter = utils.writer(outfile, delimiter=self.delimiter)
         outwriter.writerow([insr, vers])
 
-        pass;
+        pass

@@ -156,6 +156,8 @@ class ssManager(Manager):
             raise AttributeError
 
     def __next__(self):
+        # self.data is order dict
+
         if self.row_pointer_for_iter == len(self.data): raise StopIteration()
         tmp = self.data[self.row_pointer_for_iter]
         self.row_pointer_for_iter += 1
@@ -295,6 +297,7 @@ class sourceManager(ssManager):
         srcpath = self.get_src_datpath()
         srcfile = open(srcpath, errors='ignore')
         srcreader = utils.DictReader(srcfile, delimiter=self.delimiter)
+
 
         # assert the file has all the expected fields
         man_log.debug('expected fieldnames: %s' % self.col_defs)

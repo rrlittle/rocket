@@ -31,6 +31,22 @@ get_ppi_script_path = utils.join(scriptdir, get_ppi_script_filename)
 func_log.info('ppi script is %s' % get_ppi_script_path)
 first_time_enter = True
 
+dateformat_candidates =[
+    "%m/%d/%Y %H:%M",
+    "%m-%d-%Y %I:%M:%S %p",
+    "%m/%d/%Y"
+    ]
+def parse_assessment_date(assessment_date):
+    for dateformat in dateformat_candidates:
+        try:
+            assessment_date = utils.datetime.strptime(assessment_date,
+                                                      dateformat)
+            return assessment_date
+        except Exception as e:
+            pass
+
+    raise ValueError("The assessment_date in data file is not matched in any acceptable date format in rocket")
+
 
 def findBirthdate(ursi, args=None):
     """
@@ -46,6 +62,27 @@ def findBirthdate(ursi, args=None):
     DOB_date = datetime.strptime(birth_date, DOB_dateformat)
 
     return DOB_date
+
+def findBirthdateByWBIC(wbic, args= None):
+    DOB_dateformat = "%m/%d/%Y"
+    ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+    data_dict = ursi_data_manager.get_ursi_data()
+    ursi = get_ursi_by_wbic(data_dict=data_dict, wbic=wbic)
+    assert ursi != '', 'No ursi has been passed'
+
+    birth_date = data_dict[ursi]['birth_date']
+    DOB_date = datetime.strptime(birth_date, DOB_dateformat)
+    return DOB_date
+
+
+# Help Function
+def get_ursi_by_wbic(data_dict, wbic):
+    for ursi, ursi_dict in data_dict.items():
+        try:
+            if ursi_dict["WBIC"] == wbic:
+                return ursi
+        except KeyError as e:
+            raise sinkManager.DropRowException("WBIC or URSI key is not in the information file")
 
 
 class FindGender(Function):
@@ -69,6 +106,38 @@ class FindGender(Function):
         return gender
 
 
+class FindGenderByWBIC(Function):
+    def get_name(self):
+        return "findGenderByWBIC"
+
+    def get_documentation(self):
+        return "Same as findGender, except receive as a wbic"
+
+    def _func_(self, data_list, args=None):
+        print('finding the gender')
+        wcib = data_list[0]
+        ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+        data_dict = ursi_data_manager.get_ursi_data()
+
+        # convert wcib to ursi, use that as a key
+        ursi = get_ursi_by_wbic(data_dict, wcib)
+        assert ursi != '', 'No ursi has been passed'
+
+        gender = data_dict[ursi]["gender"]
+        return gender
+
+class FindBirthdateByWBIC(Function):
+    def get_name(self):
+        return "findBirthdateByWBIC"
+
+    def get_documentation(self):
+        return "Same as FindBirthdate, but it accepts a wbic as input"
+
+    def _func_(self, data_list, args=None):
+
+        return findBirthdateByWBIC(data_list[0])
+
+
 class FindBirthdate(Function):
     def __init__(self,*args, **kwargs):
         super(FindBirthdate, self).__init__(*args,**kwargs)
@@ -78,7 +147,6 @@ class FindBirthdate(Function):
 
     def _func_(self, data_list, args=None):
         return findBirthdate(data_list[0])
-
 
 class FindGuid(Function):
     def get_documentation(self):
@@ -123,8 +191,8 @@ class FindAge(Function):
 
         ursi = data_list[0]
         olddate = findBirthdate(ursi)
-        recentdate = data_list[1]
-
+        #recentdate = parse_assessment_date(data_list[1])
+        recentdate = data_list[1];
         assert olddate != None and recentdate != None, "**** findAge goes wrong ***"
         # import ipdb; ipdb.set_trace()
 
@@ -138,6 +206,34 @@ class FindAge(Function):
         total_months = year * 12 + month
         return total_months
 
+
+class FindAgeByWBIC(Function):
+    def get_name(self):
+        return "findAgeByWBIC"
+
+    def get_documentation(self):
+        return "Same as findAge, except it receives a wbic"
+
+    def _func_(self, data_list, args=None):
+        wbic = data_list[0]
+        import ipdb;
+        ipdb.set_trace()
+
+        olddate = findBirthdateByWBIC(wbic)
+        recentdate = data_list[1]
+
+        assert olddate != None and recentdate != None, "**** findAge goes wrong ***"
+       # import ipdb; ipdb.set_trace()
+
+        age = relativedelta.relativedelta(olddate, recentdate)
+        year = abs(age.years)
+        month = abs(age.months)
+        day = abs(age.days)
+        if day > 15:
+            month = month + 1
+
+        total_months = year * 12 + month
+        return total_months
 
 class FindGuidByWBIC (Function):
     """"""

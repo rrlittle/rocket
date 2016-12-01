@@ -4,7 +4,8 @@ from Functions import ursi_functions
 from loggers import map_log
 from __init__ import templatedir, secretdir
 from Functions.calc_functions import Mean, Sum
-from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC
+from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC, FindAgeByWBIC,\
+                                    FindBirthdateByWBIC,FindGenderByWBIC
 from Functions.subject_01_extension import GetCommentMisc, GetCotwinGuid, GetMotherGuid, GetCotwinCommentMotherUrsi
 from Functions.bdi_extension import GetBDIScore
 
@@ -28,8 +29,12 @@ class coins2ndar(MappingManager):
         functions_list.append(Mean())
         functions_list.append(Sum())
         functions_list.append(FindAge())
+        functions_list.append(FindAgeByWBIC())
         functions_list.append(FindBirthdate())
+        functions_list.append(FindBirthdateByWBIC())
         functions_list.append(FindGender())
+        functions_list.append(FindGenderByWBIC())
+
         functions_list.append(FindGuid())
         functions_list.append(FindGuidByWBIC())
         functions_list.append(GetCommentMisc())

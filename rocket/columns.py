@@ -131,8 +131,10 @@ class srcCol(Col):
         ''' sourceCol requires some special things'''
         assert isinstance(sourcehandler, Managers.sourceManager), (
             'sinkCols require a source handler')
+
         Col.__init__(self, sourcehandler, template_row)
 
+        # if there is no data in missing value, our default is the missing values
         if isinstance(self.missing_vals, self.handler.NoDataError):
             self.missing_vals = ''
 
@@ -146,24 +148,31 @@ class sinkCol(Col):
         '''sinkCol requires the handler to be a sinkManager'''
         assert isinstance(sinkhandler, Managers.sinkManager), (
             'sinkCols require a sink handler')
+
         Col.__init__(self, sinkhandler, template_row)
 
+        # If no default has been entered, we see the default as a blank
+        # Do I need to change
         if isinstance(self.default, self.handler.NoDataError):
             self.default = ''
 
         # set self.func to an actual function
         # use self.handler.globalfuncs to get func refereances or throw err
         if isinstance(self.func, self.handler.NoDataError): self.func = ''
+
         func_name = self.func.strip().lstrip()
 
+        # If there is no function, then just use the plain copy
         if func_name == '':
             self.func = PlainCopy()
             return
 
+        # if the function name actually exists as a function
         for func in self.handler.globalfuncs:
             if func.func_name == func_name:
                 self.func = func
                 return
+
         #self.func = self.handler.globalfuncs[self.func.strip()]['ref']
         raise self.handler.TemplateError(('function %s for column '
                                               '%s is not valid. please change the template'

@@ -190,6 +190,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
                             # get the data
                             srcdat = [srcrow[col.col_name] for col in srccols]
+
                             # list of data values from src datafile
                             # zip the data with it's defining object
                             # needed for sinkcol.convert
