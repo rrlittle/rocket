@@ -1,56 +1,77 @@
 from Managers import sourceManager, sinkManager
 import utils
 import re 
+from loggers import man_log
+import pyodbc
 
-class wtp_source(sourceManager):
+class WtpSource(sourceManager):
     ''' this is used to pull data and stuff from the wtp database 
         or yaml files defining the instruments and things 
     '''
-    
+
     def __init__(self):
         sourceManager.__init__(self)
-        self.con = utils.open_con(DSN='wtp_data')
+        self.template_fields['id'] = 'wtp id'
+        self.template_fields['col_name'] = 'wtp name'
+        self.template_fields['col_range'] = 'wtp range'
+        self.template_fields['missing_vals'] = 'wtp missing value'
+        self.data = None
 
+    def _get_fieldnames_(self, desc):
+        fieldnames = []
+        for column in desc:
+            fieldnames.append(column[0])
+        return fieldnames
 
-class wtp_sink(sinkManager):
-    ''' this is used to write data and stuff to the wtp dtabase '''
-    def __init__(self):
-        sinkManager.__init__(self)
-        self.template_fields['reversed'] = 'reversed?'
-        self.template_fields['pk'] = 'primary key?'
-
-    def get_file_outpath(self):
-        ''' this sets self.outpath, in the case of wtphandler that will be a tablename
-            which tells the destination table
+    def _read_data_(self):
         '''
-        if hasattr(self, 'outpath'): return self.outpath
-        else:
-
-            def validator(txt): 
-                # ensure it's just a simple string that doesn't start with numbers
-                return len(re.findall(r'^[a-zA-Z][a-zA-Z_0-9]*$', txt)) == 1
-
-            self.outpath = utils.get_input(('enter the table you would like to save '
-                'the data to\n this will overwrite the table. so be careful.'
-                '\n if the table does not exist now, it will be overwritten'),
-                validator=validator, errtxt ='{err} plaese try again')
-
-            if self.outpath == None: 
-                print(('you did not indicate where the data should go. '
-                    'we can go no further'))
-                utils.exit()
-
-            return self.outpath 
-
-    def write_outfile(self):
-        ''' for the wtp we're actually writing to the database, not a csv. 
-            so this is fairly different from the defualt.
-
-            this does support making new tables because this forces the template to have 
-            all the important info for defining the sink table if it doesn't already exist
+        Follow the api for read data
+        :return:
         '''
-        if self.outpath not in utils.db.get_tablenames(self.con):
-            keys = [c for c in self.col_defs if c.pk]
-            utils.db.create_table(self.con, self.outpath, self.col_defs, keys=None)
+        data = []
+        tablename = "user_3_disc_091509"
+        con = pyodbc.connect("DSN=wtp_data")
+        select_cmd = "select * from {0}".format(tablename)
+        cursor = con.cursor()
+        cursor.execute(select_cmd)
+        desc = cursor.description
+        fieldnames = self._get_fieldnames_(desc)
 
-            
+        # assert the file has all the expected fields
+        man_log.debug('expected fieldnames: %s' % self.col_defs)
+        for col_name in self.col_defs:
+            if col_name not in fieldnames:
+                raise self.TemplateError(('expected column %s not '
+                                          'found in source datafile, with fields: %s') % (
+                                             col_name, list(fieldnames)))
+
+        sql_data = cursor.fetchall()
+        # load each row
+        for rowid, datarow in enumerate(sql_data):
+            man_log.info('loading row %s' % rowid)
+            man_log.debug('parsing row %s : %s' % (rowid, datarow))
+            row = utils.OrderedDict()
+            for col in self.col_defs:
+                try:
+                    # Find the data position due to the fact that you can only access the data in datarow
+                    # with index
+                    col_name = col.col_name
+                    index = fieldnames.index(col_name)
+
+                    # prepare parser
+                    col_parser_name = 'parse_' + str(col)
+                    man_log.debug('parsing %s from %s using %s' % (col,
+                                                                   datarow[index], col_parser_name))
+                    col_parser = getattr(self, col_parser_name,
+                                         self.default_parser)
+
+
+
+                    # I parse everything into datarow
+                    row[col] = col_parser(str(datarow[index]), col)
+                except Exception as e:
+                    man_log.debug('Exception while parsing %s: %s' % (col, e))
+                    row[col] = self.NoDataError('%s' % e)
+            data.append(row)
+        con.close()
+        return data

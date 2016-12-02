@@ -250,7 +250,14 @@ class FindGuidByWBIC (Function):
         for ursi, ursi_dict in data_dict.items():
             try:
                 if ursi_dict["WBIC"] == wbic:
-                    return ursi_dict["GUID"]
+
+                    guid = ursi_dict["GUID"]
+                    # Check whether the guid is None
+                    if guid == "NONE":
+                        raise KeyError()
+                    else:
+                        return guid
+
             except KeyError as e:
                 raise sinkManager.DropRowException("WBIC or GUID key is not in the information file")
 

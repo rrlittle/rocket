@@ -167,6 +167,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
         for rowid, srcrow in enumerate(self.source):
             self.sink.add_row()  # we want to fill in a new row
+            map_log.info('converting row {0}'.format(rowid))
 
             try:
                 # go through all the columns defined in the template
@@ -229,7 +230,6 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                 continue
 
         map_log.critical('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDONE CONVERSION')
-
         return self.sink.data
 
     def get_mapperids(self, mapper_string):

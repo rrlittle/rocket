@@ -293,11 +293,28 @@ class sourceManager(ssManager):
         # if we want to clear the src
         if clear_src: self.initialize_data()
 
+        # get source data im memory and validate data
+        data = self._read_data_()
+        if data is not None:
+            self.data = data
+        else:
+            man_log.debug('Data source corrupted.')
+            raise Exception("Data source corrupted. Please check the data source")
+
+
+    def _read_data_(self):
+        '''
+            The implementation of reading data from a local file. It uses a dialog to get data path
+
+            Overridable: if anyone wants to get data from different source, override this function
+
+        :return: An array of ordered dictionary that contains the data
+        '''
+        data = []
         # open file
         srcpath = self.get_src_datpath()
         srcfile = open(srcpath, errors='ignore')
         srcreader = utils.DictReader(srcfile, delimiter=self.delimiter)
-
 
         # assert the file has all the expected fields
         man_log.debug('expected fieldnames: %s' % self.col_defs)
@@ -323,8 +340,8 @@ class sourceManager(ssManager):
                 except Exception as e:
                     man_log.debug('Exception while parsing %s: %s' % (col, e))
                     row[col] = self.NoDataError('%s' % e)
-            self.data.append(row)
-
+            data.append(row)
+        return data
 
 class sinkManager(ssManager):
     '''this should work as a sink manager
