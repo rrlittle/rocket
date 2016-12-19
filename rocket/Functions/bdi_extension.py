@@ -13,7 +13,8 @@ class GetBDIScore(Function):
         # scenario, choose the highest score.
         # However, it's also possible to have 11 or 1 as the input. For these two, we all think it as
         # 1
-        bdi_score = -1 #-1 as the missing value
+        highest_bdi_score = -1 #-1 as the missing value
+        bdi_score = -1
         for data in data_list:
 
             if isinstance(data, ssManager.NoDataError):
@@ -22,10 +23,13 @@ class GetBDIScore(Function):
                 data = str(data)
                 bdi_score = data[0]
                 try:
-                    if int(bdi_score) >= bdi_score:
-                        bdi_score = int(bdi_score)
+                    if int(bdi_score) >= highest_bdi_score:
+                        highest_bdi_score = int(bdi_score)
                 except KeyError as e:
                     raise Exception("The data contains Non-number")
+
+        if bdi_score == -1:
+            return ssManager.NoDataError("No data")
 
         return bdi_score
 

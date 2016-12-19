@@ -216,8 +216,6 @@ class FindAgeByWBIC(Function):
 
     def _func_(self, data_list, args=None):
         wbic = data_list[0]
-        import ipdb;
-        ipdb.set_trace()
 
         olddate = findBirthdateByWBIC(wbic)
         recentdate = data_list[1]
