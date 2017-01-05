@@ -49,12 +49,13 @@ class Manager(object):
         # print(kwargs)
         fpath = openfunc(
             title=title,
-
             **kwargs)
 
+        # Check path validity
         if fpath == '' or len(fpath) == 0:
             print('no %s file selected. quitting' % filetype)
             utils.exit()
+
         setattr(self, filetype, fpath)
         man_log.debug('selected %s to be %s.' % (filetype, fpath))
         return fpath
@@ -66,10 +67,8 @@ class Manager(object):
         '''
 
         header.append([type(self).__name__])
-
         for line in self.template_header:
             header.append(line)
-
         return header
 
     def __repr__(self):
@@ -97,9 +96,8 @@ class ssManager(Manager):
         def __getitem__(self, item): return self
 
     delimiter = ','
-    col_archetype = columns.Col  # override this for different managers
 
-    # srcCol and sinkCol behave slightly differently
+    col_archetype = columns.Col  # override this for different managers
 
     def load_schema(self):
         ''' fills self.template_rows with all the things this needs.
@@ -134,9 +132,15 @@ class ssManager(Manager):
         self.template_fields['id'] = 'default_id_col'
         self.template_fields['col_name'] = 'default_colname'
 
+        # Col_defs are the columns for the dataf file for both input and output. They are the
+        # row of the mapping files
         self.col_defs = []
+
         self.row_pointer_for_iter = 0
         # ordered list of col objects in the data files
+
+        # The mapping_manager for this specific manager
+        self.mapping_manager = None
 
     # used to set what type of column to use to parse the template files
 
@@ -163,26 +167,6 @@ class ssManager(Manager):
         self.row_pointer_for_iter += 1
         return tmp
 
-    def getcolumn_defs(self, *collist):
-        ''' collist is: tuple of string names that are the
-                column headers
-        return the specified column objects from self.col_defs'''
-        # initialize ignore errors
-        ignore_errors = True
-        cols = []  # hold desired col instances
-        for col in collist:  # iterate the whole collist and save desired ones
-            try:
-                i = self.col_defs.index(col)  # get the index of value
-                cols.append(self.col_defs[i])
-            except ValueError as e:
-                errstr = ('while looking for column %s '
-                          'none found in %s') % (col, self)
-                if ignore_errors:
-                    pass  # print(errstr)
-                else:
-                    raise ValueError(errstr, e)
-        return cols
-
     def load_template(self, templ_csv_file):
         ''' both managers need to be able to load a template
             and parse it to get what they need out of it.
@@ -193,13 +177,17 @@ class ssManager(Manager):
         '''
         templ_csv_reader = utils.DictReader(templ_csv_file)
 
+        # reinitialize the col_defs
         self.col_defs = []
         for rid, template_row in enumerate(templ_csv_reader):
-            # use the column to parse the row as we would like it to be
+            # use the column to parse the part of the row as we would like it to
             try:
+
                 # create the column for the corresponding handler
+                # given a template_row
                 col = self.col_archetype(self, template_row)
                 self.col_defs.append(col)
+
                 man_log.info(('Loading template for %s: row %s. '
                               'created column %s') % (self, rid, col))
             except self.col_archetype.BadColErr as e:
@@ -219,27 +207,26 @@ class ssManager(Manager):
         '''
         if value == '':
             return self.NoDataError('template fld empty')
-        else:
-            return str(value)
 
-    def default_parser(self, value, coldef):
-        ''' just a simple parser if no other is defined
-            used when parsing the template?'''
-        man_log.debug('parsing [%s] from (%s)' % (coldef, value))
-        missing = []  # updated below if exists
-
-        if hasattr(coldef, 'missing_vals'):
-            man_log.debug('checking if %s in missing vals: %s' % (value,
-                                                                  coldef.missing_vals))
-            missing = coldef.missing_vals.split(",")
-
-        # If the data is in missing vals, then a no data error will be return as the placeholder
-        if hasattr(coldef, 'missing_vals') and value in missing:
-            man_log.debug('replacing row[%s](%s) with NoData' % (coldef, value))
-            return self.NoDataError(('value %s identified as a missing '
-                                     'value for col %s') % (value, coldef))
-        man_log.debug('parse result is (%s)' % value)
         return str(value)
+
+    def get_column_defs(self, *collist):
+        ''' collist is: tuple of string names that are the
+                column headers
+        return the specified column objects from self.col_defs'''
+        # initialize ignore errors
+        ignore_errors = True
+        cols = []  # hold desired col instances
+        for col in collist:  # iterate the whole collist and save desired ones
+            try:
+                i = self.col_defs.index(col)  # get the index of value
+                cols.append(self.col_defs[i])
+            except ValueError as e:
+                errstr = ('while looking for column %s '
+                          'none found in %s') % (col, self)
+                if not ignore_errors:
+                    raise ValueError(errstr, e)
+        return cols
 
 
 class sourceManager(ssManager):
@@ -253,8 +240,6 @@ class sourceManager(ssManager):
     defaultdatadir = srcdatdir
     col_archetype = columns.srcCol  # override this for different managers
     # srcCol and sinkCol behave slightly differently
-
-    col_archetype = columns.srcCol
 
     class BadSourceRowErr(Exception):
         pass
@@ -294,15 +279,14 @@ class sourceManager(ssManager):
         if clear_src: self.initialize_data()
 
         # get source data im memory and validate data
-        data = self._read_data_()
+        data = self._read_data_from_source_()
         if data is not None:
             self.data = data
         else:
             man_log.debug('Data source corrupted.')
             raise Exception("Data source corrupted. Please check the data source")
 
-
-    def _read_data_(self):
+    def _read_data_from_source_(self):
         '''
             The implementation of reading data from a local file. It uses a dialog to get data path
 
@@ -312,11 +296,11 @@ class sourceManager(ssManager):
         '''
         data = []
         # open file
-        srcpath = self.get_src_datpath()
-        srcfile = open(srcpath, errors='ignore')
+        srcfile = open(self.get_src_datpath(), errors='ignore')
         srcreader = utils.DictReader(srcfile, delimiter=self.delimiter)
 
         # assert the file has all the expected fields
+        # e.g, the column can't
         man_log.debug('expected fieldnames: %s' % self.col_defs)
         for col_name in self.col_defs:
             if col_name not in srcreader.fieldnames:
@@ -324,24 +308,68 @@ class sourceManager(ssManager):
                                           'found in source datafile, with fields: %s') % (
                                              col_name, list(srcreader.fieldnames)))
 
-        # load each row
+        # load each row with each col's parser
         for rowid, datarow in enumerate(srcreader):
             man_log.info('loading row %s' % rowid)
             man_log.debug('parsing row %s : %s' % (rowid, datarow))
+
             row = utils.OrderedDict()
             for col in self.col_defs:
                 try:
-                    col_parser_name = 'parse_' + str(col)
-                    man_log.debug('parsing %s from %s using %s' % (col,
-                                                                   datarow[col], col_parser_name))
-                    col_parser = getattr(self, col_parser_name,
-                                         self.default_parser)
-                    row[col] = col_parser(datarow[col.col_name], col)
+                    # the parser name is defined as "parse_" + col.col_name
+                    # e.g, for source_col "subjectID", the parser will be "parse_subjectID"
+                    row[col] = self._parse_value_with_corresponding_parser_(datarow[col], col)
+
                 except Exception as e:
                     man_log.debug('Exception while parsing %s: %s' % (col, e))
                     row[col] = self.NoDataError('%s' % e)
+
             data.append(row)
+
         return data
+
+    def _parse_value_with_corresponding_parser_(self, value, col):
+        col_parser_name = 'parse_' + str(col)
+        man_log.debug('parsing %s from %s using %s' % (col,
+                                                       value, col_parser_name))
+        col_parser = getattr(self, col_parser_name,
+                             self.default_parser)
+        return col_parser(value, col)
+
+    def default_parser(self, value, coldef):
+        ''' just a simple parser if no other is defined
+            used when parsing the template?'''
+        man_log.debug('parsing [%s] from (%s)' % (coldef, value))
+
+        if self._value_is_in_missing_list_(value, coldef):
+            # If the data is in missing vals, then a no data error will be return as the placeholder
+            man_log.debug('replacing row[%s](%s) with NoData' % (coldef, value))
+            return self.NoDataError(('value %s identified as a missing '
+                                     'value for col %s') % (value, coldef))
+
+        # 999 problem?
+        man_log.debug('parse result is (%s)' % value)
+        return str(value)
+
+    def _value_is_in_missing_list_(self, value, col_def):
+        """
+        Check whether the value is in the missing value of the col_def, if col_def has missing value list
+        :param value: data value
+        :param col_def:
+        :return:
+        """
+        if hasattr(col_def, 'missing_vals'):
+            man_log.debug('checking if %s in missing vals: %s' % (value,
+                                                                  col_def.missing_vals))
+            missing = col_def.missing_vals.split(",")
+            if value in missing:
+                return True
+            else:
+                return False
+
+        man_log.debug("column: %s doesn't have missing vals" % col_def)
+        return False
+
 
 class sinkManager(ssManager):
     '''this should work as a sink manager
@@ -357,8 +385,7 @@ class sinkManager(ssManager):
 
     defaultdatadir = sinkdatdir
     col_archetype = columns.sinkCol  # override this for different managers
-
-    # srcCol and sinkCol behave slightly differently
+    #  srcCol and sinkCol behave slightly differently
 
     def __init__(self):
         ssManager.__init__(self)
@@ -370,41 +397,17 @@ class sinkManager(ssManager):
         self.template_fields['func'] = 'function'
         self.template_fields['args'] = 'args'
 
-    def get_file_outpath(self, allownew=False):
-        ''' this sets self.outpath
-            this is called if the class doesn't know where to put the
-            outpath
-            it can also be called in preperation
-
-            allownew allows new files to be created
-        '''
-        if hasattr(self, 'outpath'):
-            return self.outpath
-        else:
-            self.outpath = self.get_filepath(save=True, filetype='outpath',
-                                             initialdir=self.defaultdatadir,
-                                             title=('please select a new or exisiting file to '
-                                                    'save sink datafile to'))
-        return self.outpath
-
     def write_outfile(self):
         ''' writes self.data to a the outfile. which the user provides'''
 
-        outfile = None
-        outpath = self.get_file_outpath()
-
-        try:
-            outfile = open(outpath, 'w', newline="")
-        except PermissionError as e:
-            input(('%s was not opened successfully. perhaps it is open. '
-                   'close it and hit neter to cont') % outpath)
-            outfile = open(outpath, 'w', newline="")
-
+        outpath, outfile = self.read_output_file()
         self.write_header(outfile)
+
         outwriter = utils.DictWriter(outfile,
                                      fieldnames=self.col_defs,
                                      delimiter=self.delimiter)
         outwriter.writeheader()
+        import ipdb; ipdb.set_trace()
         for rowid, row in enumerate(self.data):
             for coldef, elem in row.items():
                 if isinstance(elem, ssManager.NoDataError):  # print the default value.
@@ -424,17 +427,48 @@ class sinkManager(ssManager):
 
         return outpath
 
+    def read_output_file(self):
+        """
+            First, the file path will be loaded. If the file path doesn't exist,
+        a message box will jump out to ask for selecting the output file path
+            Then, the program will try to open the file. If the file is currently open,
+        the program will give the user a second try to pick the file after he closes it.
+        :return:
+        """
+
+        outpath = self.get_file_outpath()
+        #import ipdb; ipdb.set_trace()
+        try:
+            outfile = open(outpath, 'r+', newline = "")
+            return outpath, outfile
+        except PermissionError as e:
+            input(('%s was not opened successfully. perhaps it is open. '
+                   'close it and hit neter to cont') % outpath)
+            outfile = open(outpath, 'r+', newline = "")
+            return outpath,outfile
+
+    def get_file_outpath(self, allownew=False):
+        ''' this sets self.outpath
+            this is called if the class doesn't know where to put the
+            outpath
+            it can also be called in preperation
+
+            allownew allows new files to be created
+        '''
+        if hasattr(self, 'outpath'):
+            return self.outpath
+        else:
+            self.outpath = self.get_filepath(save=True, filetype='outpath',
+                                             initialdir=self.defaultdatadir,
+                                             title=('please select a new or exisiting file to '
+                                                    'save sink datafile to'))
+        return self.outpath
+
     def write_header(self, outfile):
         ''' this is a hook for handler to write headers on the
             outfile
         '''
         pass
-
-    def add_row(self):
-        self.data.append(utils.OrderedDict())
-
-    def drop_row(self):
-        self.data.pop()
 
     def default_write_formatter(self, value, coldef):
         ''' this is the default output formatter. you can overwrite this
@@ -447,6 +481,12 @@ class sinkManager(ssManager):
         if isinstance(value, self.NoDataError):
             return coldef.default
         return str(value)
+
+    def add_row(self):
+        self.data.append(utils.OrderedDict())
+
+    def drop_row(self):
+        self.data.pop()
 
     def ensure_row(self, datarow):
         ''' default ensure row function always accepts rows.

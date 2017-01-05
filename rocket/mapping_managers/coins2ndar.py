@@ -3,7 +3,7 @@ from data_handlers import coins, ndar
 from Functions import ursi_functions
 from loggers import map_log
 from __init__ import templatedir, secretdir
-from Functions.calc_functions import Mean, Sum
+from Functions.calc_functions import Mean, Sum, FindFirstValid
 from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC, FindAgeByWBIC,\
                                     FindBirthdateByWBIC,FindGenderByWBIC
 from Functions.subject_01_extension import GetCommentMisc, GetCotwinGuid, GetMotherGuid, GetCotwinCommentMotherUrsi
@@ -21,8 +21,6 @@ class coins2ndar(MappingManager):
                                 sink=ndar.ndar_snk)
         # print('functions', self.globalfuncs)
         #ursi_data_manager = ursi_functions.UrsiDataManager(secretdir)
-        #if self.want_update_ursi_data:
-        #   ursi_data_manager.initialize_data_file();
 
     def load_functions(self):
         functions_list = []
@@ -42,17 +40,7 @@ class coins2ndar(MappingManager):
         functions_list.append(GetMotherGuid())
         functions_list.append(GetCotwinGuid())
         functions_list.append(GetBDIScore())
-
-        functions = {}
-
-        def findAge(ursi, ass_date, args=None):
-            ''' finds the age from the ursi and the assment date
-                requires the ursi first and ass_date second'''
-            map_log.critical("Ursi: %s, ass_date: %s" % (ursi, ass_date))
-
-            bd = ursi_functions.findBirthdate(ursi)
-
-            return ursi_functions.findAge(olddate=bd, recentdate=ass_date)
+        functions_list.append(FindFirstValid())
 
         return functions_list
     '''

@@ -9,6 +9,7 @@ from template_kit.template_structure import TemplateStructure
 import csv
 from os import startfile
 
+
 class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol):
     ''' this class is responsible for implementing the
         core algorithms governing the operation of
@@ -26,62 +27,76 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         '''
         super(MappingManager, self).__init__()
 
-        # deal with source
-        errstr = ('if source must be a '
-                  'class referance class refd '
-                  'must be subclass of sourceManager. '
-                  'not %s') % source
-        assert issubclass(source, sourceManager), errstr
+        assert issubclass(source, sourceManager), 'Source has to be the'\
+                                                  'subclass of sourceManager, not %s' % source
+        assert issubclass(sink, sinkManager), 'Sink must be the subclass of sinkManager, '\
+                                              'not %s' % sink
         self.source = source()
-
-        # deal with sink
-        errstr = ('if source must be a '
-                  'class referance class refd '
-                  'must be subclass of sinkManager. '
-                  'not %s') % sink
-        assert issubclass(sink, sinkManager), errstr
         self.sink = sink()
+        # let the source and sink know which mapping manager it is
+        self.source.mapping_manager = self
+        self.sink.mapping_manager = self
 
+        # ensures that src and sink do not have colliding fieldnames
+        # if they do there will be an issue with parsing and creating the
+        # template all the headers must template headers must be unique
         self.check_valid_src_sink_combo()
 
         # make the functions of each available via utils
         # check for naming conflicts
+        # pass functions down to sink manager for the sinkcolumns to use
         self.globalfuncs = self.load_functions()
-
-        # set the structure
-        self.template_structure = TemplateStructure()
-        self.template_structure.set_to_default_structure()
-        self.user_notice = ""
-
-        # pass functions down to sink maanager for the sinkcolumns to use
         setattr(self.sink, 'globalfuncs', self.globalfuncs)
 
+        # set the structure
+        # I want to update the structure
+        self.template_structure = self.get_template_structure()
+        self.user_notice = ""
+
+    def get_template_structure(self):
+        """
+        validate the type of the template_structure
+        :return:
+        """
+        template_structure = self._set_template_structure_()
+        if isinstance(template_structure, TemplateStructure):
+            return template_structure
+        raise Exception("set template structure has to set an instance of TemplateStructure")
+
+    def _set_template_structure_(self):
+        template_structure = TemplateStructure()
+        template_structure.set_to_default_structure()
+        return template_structure
+
     def load_functions(self):
-        """ must be overwritten by Mapping manager subclasses.in order to include functions
+        """ must be overriden by Mapping manager subclasses.in order to include functions
         that are aware of both source and sink schemes.It should be a dictionary looks like
         {"mean":{"ref": mean }  },
         mean is the reference of the mean function
         """
         return {}
 
-    def get_template(self, title='Template', allownew=False, save=False):
-        ''' this gets the filepath to a file. which is assumed to be
-            a template file. we will rely on source sink handlers for error
-            checking when they load it in
+    def check_valid_src_sink_combo(self):
+        ''' ensures that src and sink do not have colliding fieldnames
+            if they do there will be an issue with parsing and creating the
+            template all the headers must template headers must be unique'''
+        # generate list of all the headers
+        template_headers = list(self.source.template_fields.values()) + list(self.sink.template_fields.values())
 
-            allownew should decide if it's okay to allow a new file or not
-        '''
-        templ_path = None
-        if hasattr(self, 'templ_path'):
-            return self.templ_path
-        else:
-            templ_path = tmppath = self.get_filepath(title=title,
-                                                     initialdir=templatedir,
-                                                     save=save,
-                                                     filetype='templates',
-                                                     allownew=allownew)
-            self.templ_path = templ_path
-            return self.templ_path
+        # find collisions
+        collisions = []
+        tmp = []
+        for header in template_headers:
+            if header not in tmp:
+                tmp.append(header)
+            else:
+                collisions.append(header)
+
+        # raise error if there are any collisions
+        if len(collisions) != 0:
+            raise self.TemplateError(('collisions detected in src and'
+                                      ' sink handler template_fieldnames. please modify these fields '
+                                      'to ensure unique headers: %s') % collisions)
 
     def parse_template(self):
         ''' this function utilises self.sink and self.source
@@ -92,44 +107,38 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
             the protocal method implemented below, started with "respond_to_...".
 
             For "mapping info", after the mapping manager receives the mapping info, it will ask the
-            sink and source manager to parse it
+            sink and source manager to parse it by using load-template
 
             For "User notice",
 
         '''
 
         '''This is a hard code template parser. Later it shall be refactored to accept customized template'''
-        mapping_part = ""
         try:
-            templ_path = self.get_template()
             parser = self.template_structure.get_template_parser(self)
-            parser.parse_template(templ_path)
+
+            parser.parse_template(self.get_template())
 
         except TemplateParseError as e:
             print(e)
             return
 
-    def check_valid_src_sink_combo(self):
-        ''' ensures that src and sink do not have colliding fieldnames
-            if they do there will be an issue with parsing and creating the
-            template all the headers must template headers must be unique'''
-        # generate list of all the headers
-        srctemplateheaders = list(self.source.template_fields.values())
-        sinktemplateheaders = list(self.sink.template_fields.values())
-        templateheaders = srctemplateheaders + sinktemplateheaders
-        # find collisions
-        collisions = []
-        tmp = []
-        for header in templateheaders:
-            if header not in tmp:
-                tmp.append(header)
-            else:
-                collisions.append(header)
-        # and raise error if there are any collisions
-        if len(collisions) != 0:
-            raise self.TemplateError(('collisions detected in src and'
-                                      ' sink handler template_fieldnames. pleae modify these fields '
-                                      'to ensure unique headers: %s') % collisions)
+    def get_template(self, title='Template', allownew=False, save=False):
+        ''' this gets the filepath to a file. which is assumed to be
+            a template file. we will rely on source sink handlers for error
+            checking when they load it in
+
+            allownew should decide if it's okay to allow a new file or not
+        '''
+        if hasattr(self, 'templ_path'):
+            return self.templ_path
+
+        self.templ_path = self.get_filepath(title=title,
+                                            initialdir=templatedir,
+                                            save=save,
+                                            filetype='templates',
+                                            allownew=allownew)
+        return self.templ_path
 
     def _remind_user_notice_(self):
         '''This will be called before user tries to load the data
@@ -143,7 +152,11 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
             prompt += "%s" % self.user_notice
             input(prompt)
 
-        pass
+    def load_source_data(self):
+        # User notice may have some important information about how to load source data
+        map_log.critical('loading data')
+        self._remind_user_notice_()
+        self.source.load_data()  # ensure src has data
 
     def convert(self, clear_sink=True):
         ''' this function implements the core algorithm of rocket.
@@ -154,16 +167,11 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
             the goal here is to fill up sink.data in prep for sink.write
         '''
-        # import ipdb; ipdb.set_trace()
 
         if clear_sink:  # if sink is not already initialized
             self.sink.initialize_data()  # clear any data in sink
 
-        map_log.critical('loading data')
-        # ipdb.set_trace()
-
-        self._remind_user_notice_()
-        self.source.load_data()  # ensure src has data
+      #  import ipdb; ipdb.set_trace()
 
         for rowid, srcrow in enumerate(self.source):
             self.sink.add_row()  # we want to fill in a new row
@@ -179,14 +187,11 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                         sinkcoldef.map_src(srcrow)
                         # get col objs from src
 
-
-
                         mapperslist = sinkcoldef.mappers
                         # src cols required to compute the sink value
 
-
                         if not isinstance(mapperslist, self.sink.NoDataError):
-                            srccols = self.source.getcolumn_defs(*mapperslist)
+                            srccols = self.source.get_column_defs(*mapperslist)
                             # list of columns in the source datafile we need to grab
 
                             # get the data
@@ -197,7 +202,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                             # needed for sinkcol.convert
                             src_datcol_zip = zip(srcdat, srccols)
 
-                            # convert it to the sink value
+                            # convert it to the sink value using the function inside sinkcoldef
                             sinkdat = sinkcoldef.convert(src_datcol_zip)
 
                             
@@ -337,8 +342,10 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
         return templ_path
 
-    # These are the delegates method that is used to determine what to
+    #########################################################################################
+    # These are the delegates method that is used to determine what to do
     # with different components
+    ##################################################################################
     def respond_to_instru_info(self, instru_info):
         self.sink.set_instru_info(instru_name=instru_info.get_instru_name(), version=instru_info.get_version())
 

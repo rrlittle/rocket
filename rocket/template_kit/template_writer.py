@@ -31,3 +31,6 @@ def test():
     output_file_path = "test_template"
     header = "This is a test template"
     mapping_header = [["Name", "Gender", "height"]]
+
+    tw = TemplateWriter(output_file_path)
+

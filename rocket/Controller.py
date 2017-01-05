@@ -41,6 +41,9 @@ class controller(object):
         # need it. So I don't have to do it here
         self.mapper.parse_template()
 
+        # the source manager will extract the data from the designated source
+        self.mapper.load_source_data()
+
         # fill sink with converted data from source
         self.mapper.convert()
 

@@ -16,6 +16,10 @@ class WtpSource(sourceManager):
         self.template_fields['col_range'] = 'wtp range'
         self.template_fields['missing_vals'] = 'wtp missing value'
         self.data = None
+        # Data table means which sql data table the wtp data comes from
+        # User needs to provide it in the template. Empty string means
+        # the user hasn't entered any. The program can quit
+        self.data_table = ""
 
     def _get_fieldnames_(self, desc):
         fieldnames = []
@@ -23,7 +27,7 @@ class WtpSource(sourceManager):
             fieldnames.append(column[0])
         return fieldnames
 
-    def _read_data_(self):
+    def _read_data_from_source_(self):
         '''
         Follow the api for read data
         :return:
@@ -37,7 +41,8 @@ class WtpSource(sourceManager):
         desc = cursor.description
         fieldnames = self._get_fieldnames_(desc)
 
-        # assert the file has all the expected fields
+        # assert the data source has all the source fields defined in the template
+        # so that no col_defs will map to nothing in the data source
         man_log.debug('expected fieldnames: %s' % self.col_defs)
         for col_name in self.col_defs:
             if col_name not in fieldnames:
@@ -64,7 +69,6 @@ class WtpSource(sourceManager):
                                                                    datarow[index], col_parser_name))
                     col_parser = getattr(self, col_parser_name,
                                          self.default_parser)
-
 
 
                     # I parse everything into datarow

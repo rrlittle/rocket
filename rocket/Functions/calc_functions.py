@@ -133,6 +133,24 @@ class Mean(Function):
         mean = mean_sum / valid_num
         return mean
 
+
+class FindFirstValid(Function):
+
+    def get_name(self):
+        return "findFirstValid"
+
+    def get_documentation(self):
+        return "Gets the first Non-missing value in the data list."
+
+    def _func_(self, data_list, args=None):
+
+        # return the first element that has data.
+        for data in data_list:
+            if not isinstance(data, ssManager.NoDataError):
+                return data
+
+        return ssManager.NoDataError("No data for this field")
+
 def mean(*srcdat, args=None):
     # data will be coerced in the sum
     #import ipdb; ipdb.set_trace()

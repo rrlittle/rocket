@@ -15,6 +15,10 @@ class ComponentResponseProtocol(object):
         """User notice will be passed as a string"""
         pass
 
+    def repond_to_data_table(self, data_table):
+        """Data table will be passed as a string.
+        An empty string means nothing has been returned"""
+        pass
 
 class ComponentWriteProtocol(object):
 

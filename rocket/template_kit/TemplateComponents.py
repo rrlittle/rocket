@@ -1,21 +1,27 @@
 import csv
 import io
 
+class TemplateStructureError(Exception): pass
 
 class TemplateComponenet(object):
     '''
-    This component represents the section in the template file.
-    Each template component has its name, has its content. The start tag is <"name" and the end
-    tag is "name">
-    Each subclass of the template will come with a function that reads the line between these tags.
-    It has two methods that require delegates to make decision about what to do. You can add delegates
-    method to the components_behavior_protocals.py
+        This component represents the section in the template file
+        This class controls the logic of how to write the section
+        Each template component has its name, has its content. The start tag is set as "<name" and the end
+    tag is "name>"
+        Each subclass of the template will come with a function that reads the line between these tags. The
+    template parser will run the read_in_line method and the _process_after_reading_ method to get the information
+        It has two methods that provide delegates the flexibility to make decision about what to do. One is for
+    the action of processing after the template action has been processed. The other one is for the action of
+    writing customized section for a specific component
+        You can add those two delegate methods to components_behavior_protocals.py, which is also in
+    template_kit module
 
     @property:
-        start_token: the tag that shows the start of the component (Override it)
-        end_token: the tag that shows the end of the component (Override it)
-        content: the lines between start tag and end tag (Override it)
-        line_num: the line number between start tag and end tag (Override it)
+        start_token: the tag that indicates the start of the component (Override it)
+        end_token: the tag that indicates the end of the component (Override it)
+        content: the lines between start tag and end tag
+        line_num: the line number between start tag and end tag
     '''
     def __init__(self):
         self.start_token = "<"
@@ -24,50 +30,73 @@ class TemplateComponenet(object):
         self.line_num = 0
 
     def read_in_line(self, file):
-        def start_read_until_end_token(reader):
-            content_lines = []
-            line_num = 0
-            for row in reader:
-                if not self.end_token in row:
-                    content_lines.append(row)
-                    line_num += 1
-                else:
-                    break
-            return content_lines, line_num
-
         reader = csv.reader(file)
 
         # find the first token to start the processing
         for row in reader:
             if self.start_token in row:
-                self.content, self.line_num = start_read_until_end_token(reader)
+                self.content, self.line_num = self._start_read_until_end_token_(reader)
                 break
 
         return self._process_after_reading_(self.content)
 
+    def _start_read_until_end_token_(self, reader):
+        content_lines = []
+        line_num = 0
+        for row in reader:
+            if not self.end_token in row:
+                content_lines.append(row)
+                line_num += 1
+            else:
+                break
+        return content_lines, line_num
+
     def _process_after_reading_(self, content=[]):
+        '''
+            Override this method to parse the information read from the template component
+        Store this information in the component class. Content will be a list of lines, in which each
+        line is a list of string.
+        :param content: the lines information in the component
+        :return: anything you want parser to catch
+        '''
+
         return content
 
     def send_message_to_delegate(self, delegate):
-        """This method will be called to delegate to process the information
+        """This method will be called by template_parser to delegate to process the information
          after this component get parsed"""
         pass
 
-    def _extra_write_requirement_(self, file, delegate, delimiter):
-        """This method is used to configure what happened after the
-        start token is written. A protocal will also be provided
-        for this method to help auto generate the template based on the
-        information from Mapping Manager or other delegate
-        """
-
-        pass
-
     def written_to_file(self, file, delegate= None, delimiter= ","):
+        """
+            This function writes the start token, end token and customized information to the
+        section
+
+        :param file:
+        :param delegate:
+        :param delimiter:
+        :return:
+        """
         file.write(self.start_token + "\n")
 
         self._extra_write_requirement_(file, delegate, delimiter)
 
         file.write("\n" + self.end_token + "\n")
+
+    def _extra_write_requirement_(self, file, delegate, delimiter):
+        """
+            This method is used to configure what happened after the
+        start token is written. It can be implemented just in the component.
+        Or a protocol can be provided for this method to help auto
+        generate the template based on the information from Mapping
+        Manager or other delegate
+        :param file: the file object which represents the output file. Use this to write content to the section
+        :param delegate: the delegate can be used to configure the output of the content from the outside
+        :param delimiter: delimiter for the file. e.g for csv, the delimiter is ","
+        :return: nothing.
+        """
+
+        pass
 
 class Header(TemplateComponenet):
     def __init__(self):
@@ -136,11 +165,11 @@ class InstruInfoComponent(TemplateComponenet):
         self.instru_info = parse_line_to_instru(line)
         return self.instru_info
 
-    def get_instru_info(self, ):
+    def get_instru_info(self):
         return self.instru_info
 
     def send_message_to_delegate(self, delegate):
-        #print("Instru Info sending message")
+
         delegate.respond_to_instru_info(self.get_instru_info())
 
     def _extra_write_requirement_(self, file, delegate, delimiter):
@@ -229,8 +258,51 @@ class NoticeComponent(TemplateComponenet):
         delegate.respond_to_user_notice(self.get_user_notice())
 
 
+class DataTableComponent(TemplateComponenet):
+    def __init__(self):
+        super(DataTableComponent, self).__init__()
+        self.start_token = "<Data Table"
+        self.end_token = "Data Table>"
+        self.DATA_TABLE_KEY = "Data table:"
+        self.data_table = "" # data_table will be nothing if there is no data table
+
+    def _process_after_reading_(self, content=[]):
+        'data table content should look like this: [,,Data table:,data_3_ ]'
+
+        # An Template Structure Error can be thrown
+        line = self.find_data_table_line(content)
+
+        # If no data table name has been found, it will just return an empty string
+        self.data_table = self.extract_data_table(line)
+
+        return self.data_table
+
+    def find_data_table_line(self,list_line):
+        for line in list_line:
+            if self.DATA_TABLE_KEY in line:
+                return line
+        raise TemplateStructureError("The template has wrong format for data table section")
+
+    def extract_data_table(self, line):
+        for index, data in enumerate(line):
+            if data == self.DATA_TABLE_KEY:
+                self.data_table = line[index + 1].strip()
+                return self.data_table
+        return ""
+
+    def send_message_to_delegate(self, delegate):
+        delegate.respond_to_data_table(self.data_table)
+
+    def _extra_write_requirement_(self, file, delegate, delimiter):
+        'data table content should look like this: [,,Data table:,data_3_ ]'
+        content = ["", self.DATA_TABLE_KEY, ""]
+        fwriter = csv.writer(file, delimiter=delimiter)
+        fwriter.writerow(content)
+
+
 def open_test_file():
-    file = open("templateComponentTest.csv", "r")
+    #file = open("templateComponentTest.csv", "r")
+    file = open("data_table_test.csv", "r")
     return file
 
 
@@ -261,8 +333,14 @@ def test_user_notice(file = ""):
     user_notice = user_notice_cop.read_in_line(file)
     print(user_notice)
 
+def test_data_table (file = ""):
+    data_table_cop = DataTableComponent()
+    data_table = data_table_cop.read_in_line(file)
+    print(data_table)
+
 def test():
     file = open_test_file()
+    test_data_table(file)
     test_header(file)
     test_template(file)
     test_user_notice(file)

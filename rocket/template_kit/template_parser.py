@@ -1,5 +1,4 @@
 #from Managers import Manager
-from __init__ import templatedir
 from template_kit.TemplateComponents import Header, InstruInfoComponent, MappingInfo, InstruInfo, NoticeComponent
 from template_kit.components_behavior_protocols import ComponentResponseProtocol
 
@@ -19,7 +18,7 @@ class TemplateParser(object):
         self.delegate = delegate
 
     def _open_file_(self, path):
-        self.templ_file = open(path, "r", errors = "ignore")
+        self.templ_file = open(path, "r", errors="ignore")
         return self.templ_file
 
     def parse_template(self, file_path):

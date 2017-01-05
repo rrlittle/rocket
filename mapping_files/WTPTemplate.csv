@@ -1,23 +1,27 @@
-<Header,,,,,,,,,,,
-,wtp2ndar,,,,,,,,,,
-,example,template,header,,,,,,,,
-,ndar_snk,,,,,,,,,,
-,example,template,header,,,,,,,,
-,WtpSource,,,,,,,,,,
-,example,template,header,,,,,,,,
-,Possible functions you can use are: ,,,,,,,,,,
-,,sum,Calculate the sum. Put the coins ids for all the columns into the mapping id,,,,,,,,
-,,mean,Calculate the mean. Put the coins ids for all the columns into the mapping id,,,,,,,,
-,,,,,,,,,,,
-Header>,,,,,,,,,,,
-<InstruInfo,,,,,,,,,,,
-,Instrument Name:,wtp,Version:,1,,,,,,,
-,,,,,,,,,,,
-InstruInfo>,,,,,,,,,,,
-<User Notice,,,,,,,,,,,
-,,,,,,,,,,,
-User Notice>,,,,,,,,,,,
-<Mapping Template,,,,,,,,,,,
+<Header
+,wtp2ndar
+,example,template,header
+,ndar_snk
+,example,template,header
+,WtpSource
+,example,template,header
+,Possible functions you can use are: 
+,,sum,Calculate the sum. Put the coins ids for all the columns into the mapping id
+,,mean,Calculate the mean. Put the coins ids for all the columns into the mapping id
+
+Header>
+<Data Table
+,Data table:,
+
+Data Table>
+<InstruInfo
+,Instrument Name:,,Version:,
+
+InstruInfo>
+<User Notice
+
+User Notice>
+<Mapping Template
 ndar id,ndar name,ndar range,default value,mapping,function,args,required,wtp id,wtp name,wtp range,wtp missing value
-1,data,,,1,,,,1,familyid,,
-Mapping Template>,,,,,,,,,,,
+
+Mapping Template>
