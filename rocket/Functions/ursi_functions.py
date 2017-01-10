@@ -10,6 +10,7 @@ from threading import Timer
 import utils
 from loggers import func_log
 from Functions.function_api import Function
+from Functions.ursi_data_manager import get_ursi_data_manager
 
 # where to store secret files i.e. coins secret key and PPI file
 temp_data_path = secretdir
@@ -35,7 +36,8 @@ dateformat_candidates =[
     "%m/%d/%Y %H:%M",
     "%m-%d-%Y %I:%M:%S %p",
     "%m/%d/%Y"
-    ]
+]
+
 def parse_assessment_date(assessment_date):
     for dateformat in dateformat_candidates:
         try:
@@ -54,7 +56,8 @@ def findBirthdate(ursi, args=None):
         It will return a datetime object.
     """
     DOB_dateformat = "%m/%d/%Y"
-    ursi_data_manager = UrsiDataManager(temp_data_path,first_time_enter)
+    #ursi_data_manager = UrsiDataManager(temp_data_path,first_time_enter)
+    ursi_data_manager = get_ursi_data_manager()
     data_dict = ursi_data_manager.get_ursi_data()
     assert ursi != '', 'No ursi has been passed'
 
@@ -65,7 +68,8 @@ def findBirthdate(ursi, args=None):
 
 def findBirthdateByWBIC(wbic, args= None):
     DOB_dateformat = "%m/%d/%Y"
-    ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+    #ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+    ursi_data_manager = get_ursi_data_manager()
     data_dict = ursi_data_manager.get_ursi_data()
     ursi = get_ursi_by_wbic(data_dict=data_dict, wbic=wbic)
     assert ursi != '', 'No ursi has been passed'
@@ -100,7 +104,8 @@ class FindGender(Function):
         ursi = data_list[0]
         assert ursi != '', 'No ursi has been passed'
 
-        ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+        #ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+        ursi_data_manager = get_ursi_data_manager()
         data_dict = ursi_data_manager.get_ursi_data()
         gender = data_dict[ursi]["gender"]
         return gender
@@ -116,7 +121,8 @@ class FindGenderByWBIC(Function):
     def _func_(self, data_list, args=None):
         print('finding the gender')
         wcib = data_list[0]
-        ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+        #ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+        ursi_data_manager = get_ursi_data_manager()
         data_dict = ursi_data_manager.get_ursi_data()
 
         # convert wcib to ursi, use that as a key
@@ -159,7 +165,8 @@ class FindGuid(Function):
         data_dict = ''
         GUID = ''
         ursi = data_list[0]
-        ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+        #ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+        ursi_data_manager = get_ursi_data_manager()
         data_dict = ursi_data_manager.get_ursi_data()
 
         try:
@@ -243,7 +250,8 @@ class FindGuidByWBIC (Function):
         if wbic == "":
             raise sinkManager.DropRowException("The wbic passed in has nothing ")
 
-        ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+        #ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
+        ursi_data_manager = get_ursi_data_manager()
         data_dict = ursi_data_manager.get_ursi_data()
         for ursi, ursi_dict in data_dict.items():
             try:
@@ -261,7 +269,7 @@ class FindGuidByWBIC (Function):
 
         raise sinkManager.DropRowException("The WBIC provided can't be found")
 
-
+'''
 class UrsiDataManager(object):
     def __init__(self, secret_dir_path, first_time_enter):
         self.first_time_enter = first_time_enter
@@ -349,4 +357,4 @@ class UrsiDataManager(object):
                     first_time_enter = False
 
         else:
-            self.initialize_data_file()
+            self.initialize_data_file()'''

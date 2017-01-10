@@ -4,6 +4,7 @@ from ast import literal_eval
 from os import stat
 import utils
 import logging
+from __init__ import secretdir
 
 class UrsiDataManager(object):
     def __init__(self, secret_dir_path, first_time_enter, PPIfilename, ppiscript = None, func_log = logging):
@@ -68,7 +69,7 @@ class UrsiDataManager(object):
                     pass
         return data_dict
 
-    def ensure_data_file_exist(self, first_time_enter):
+    def ensure_data_file_exist(self):
         if path.exists(self.temp_file_path):
             # If the file is just an empty file, caused by a program crash last
             # I will still initialize it.
@@ -88,10 +89,21 @@ class UrsiDataManager(object):
                             break
                         else:
                             print("Please enter yes or no")
-                    first_time_enter = False
+                    self.first_time_enter = False
 
         else:
             self.initialize_data_file()
+
+ursi_data_manager = None
+
+
+def get_ursi_data_manager():
+    global ursi_data_manager
+
+    if ursi_data_manager is None:
+        ursi_data_manager = UrsiDataManager(secretdir, True, 'coinsPersonal.tmp')
+
+    return  ursi_data_manager
 
 
 class Unittests():

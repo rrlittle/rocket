@@ -407,7 +407,7 @@ class sinkManager(ssManager):
                                      fieldnames=self.col_defs,
                                      delimiter=self.delimiter)
         outwriter.writeheader()
-        import ipdb; ipdb.set_trace()
+   #     import ipdb; ipdb.set_trace()
         for rowid, row in enumerate(self.data):
             for coldef, elem in row.items():
                 if isinstance(elem, ssManager.NoDataError):  # print the default value.
@@ -439,12 +439,12 @@ class sinkManager(ssManager):
         outpath = self.get_file_outpath()
         #import ipdb; ipdb.set_trace()
         try:
-            outfile = open(outpath, 'r+', newline = "")
+            outfile = open(outpath, 'w', newline = "")
             return outpath, outfile
         except PermissionError as e:
             input(('%s was not opened successfully. perhaps it is open. '
                    'close it and hit neter to cont') % outpath)
-            outfile = open(outpath, 'r+', newline = "")
+            outfile = open(outpath, 'w', newline = "")
             return outpath,outfile
 
     def get_file_outpath(self, allownew=False):
