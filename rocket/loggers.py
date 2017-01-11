@@ -15,7 +15,7 @@ mainlog = make_logger('main_log',
     # lvl=logging.WARNING,
     # lvl=logging.ERROR,
     # lvl=logging.CRITICAL,
-    flvl = logging.DEBUG
+    flvl = logging.INFO
     )
 
 man_log = logging.getLogger("main_log.managers")

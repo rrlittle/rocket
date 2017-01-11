@@ -1,7 +1,7 @@
 igt,1
 subjectkey,src_subject_id,interview_date,interview_age,gender,days_baseline,assbdic,relationship,actbdic,site,sjtyp,wontotal,netscore,block1,block2,block3,block4,block5,comments_misc
-NDARTZ691LNA,9201212,12/22/2015,286,M,,,,,,,,76,-31,107,,,,
-NDARPR083AZ5,9703711,08/15/2015,214,M,,,,,,,,191,-2,193,,,,
-NDARMB436BZ9,9205302,06/27/2015,274,F,,,,,,,,37,38,-1,,,,
-NDARPW497TF4,9802631,11/05/2015,211,M,,,,,,,,-43,-68,25,,,,
-NDARUF093MPX,9800862,11/07/2015,214,F,,,,,,,,182,28,154,,,,
+NDARTZ691LNA,9201212,12/22/2015,286,M,,,,,,,,76,-31,107,Default,,,
+NDARPR083AZ5,9703711,08/15/2015,214,M,,,,,,,,191,-2,193,Default,,,
+NDARMB436BZ9,9205302,06/27/2015,274,F,,,,,,,,37,38,-1,Default,,,
+NDARPW497TF4,9802631,11/05/2015,211,M,,,,,,,,-43,-68,25,Default,,,
+NDARUF093MPX,9800862,11/07/2015,214,F,,,,,,,,182,28,154,Default,,,

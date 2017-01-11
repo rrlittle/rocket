@@ -3,7 +3,7 @@ from data_handlers import coins, ndar
 from Functions import ursi_functions
 from loggers import map_log
 from __init__ import templatedir, secretdir
-from Functions.calc_functions import Mean, Sum, FindFirstValid
+from Functions.calc_functions import Mean, Sum, FindFirstValid, TestNoData, ReverseBySubtractingFrom
 from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC, FindAgeByWBIC,\
                                     FindBirthdateByWBIC,FindGenderByWBIC
 from Functions.subject_01_extension import GetCommentMisc, GetCotwinGuid, GetMotherGuid, GetCotwinCommentMotherUrsi
@@ -41,6 +41,8 @@ class coins2ndar(MappingManager):
         functions_list.append(GetCotwinGuid())
         functions_list.append(GetBDIScore())
         functions_list.append(FindFirstValid())
+        functions_list.append(TestNoData())
+        functions_list.append(ReverseBySubtractingFrom())
 
         return functions_list
     '''

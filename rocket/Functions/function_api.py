@@ -43,8 +43,11 @@ class Function():
     def _func_(self, data_list, args=None):
         '''
         This is the overrided part for execution. Put the logic of function here. It's best to return one thing
+        Either raising exception or returning NoDataError will fill this cell with default value, except for raising
+        DroppingRowException, which will stop the execution for this row and drop the finished part.
+
         :param data_list: the data in a list
-        :param args: args used by user to configure the behavior of a Function
+        :param args: args used by user to configure the behavior of a Function. It should also be a list.
         :return:
         '''
 

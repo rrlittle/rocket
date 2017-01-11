@@ -151,6 +151,44 @@ class FindFirstValid(Function):
 
         return ssManager.NoDataError("No data for this field")
 
+
+class ReverseBySubtractingFrom(Function):
+
+    def get_documentation(self):
+        return "Given the cell score, it will reverse the score by subtracting it from a number given in the arg"
+
+    def get_name(self):
+        return "reverseBySubtractingFrom"
+
+    def _func_(self, data_list, args=None):
+        try:
+            upper_bound = float(args[0])
+
+            # Data validation
+            if isinstance(data_list[0], ssManager.NoDataError):
+                raise Exception("No data exists")
+
+            #
+            try:
+                data = float(data_list[0])
+
+                # the most essential part
+                return upper_bound - data
+            except ValueError as e:
+                raise ValueError("The data should be in number.")
+
+        except ValueError as e:
+            raise ValueError("The args entered is not a number. Please check the args")
+
+
+class TestNoData(Function):
+    def get_name(self):
+        return "noDataTest"
+
+    def _func_(self, data_list, args=None):
+
+        return ssManager.NoDataError("NO DATA")
+
 def mean(*srcdat, args=None):
     # data will be coerced in the sum
     #import ipdb; ipdb.set_trace()

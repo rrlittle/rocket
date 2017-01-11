@@ -220,7 +220,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                         map_log.error(('A not drop row exception happen when'
                                        'processing data in a row: %s') % e)
                         self.sink[-1][sinkcoldef] = sinkcoldef.default
-                        continue;
+                        continue
 
                 # after the row is done use ensure row
                 self.sink.ensure_row(self.sink.data[-1])  # raise drop row exception if row not right
