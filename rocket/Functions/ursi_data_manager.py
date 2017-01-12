@@ -4,7 +4,21 @@ from ast import literal_eval
 from os import stat
 import utils
 import logging
-from __init__ import secretdir
+from __init__ import secretdir,scriptdir
+from loggers import func_log
+
+get_ppi_script_ext = None
+if utils.systemName in ('Linux', 'Darwin'):  # use the
+    get_ppi_script_ext = '.sh'
+elif utils.systemName in ('Windows'):  #
+    get_ppi_script_ext = '.bat'
+else:
+    func_log.critical('This platform is not supported!')
+    utils.exit()
+
+get_ppi_script_filename = 'list_gender_birth_guid' + get_ppi_script_ext
+get_ppi_script_path = utils.join(scriptdir, get_ppi_script_filename)
+
 
 class UrsiDataManager(object):
     def __init__(self, secret_dir_path, first_time_enter, PPIfilename, ppiscript = None, func_log = logging):
@@ -54,7 +68,7 @@ class UrsiDataManager(object):
             for subject in data:
                 # tempfile.writelines()
                 tempfile.write(subject + '\n')
-
+    
     def get_ursi_data(self):
         data_dict = {}
         with open(self.temp_file_path, 'r') as tempfile:
@@ -99,9 +113,10 @@ ursi_data_manager = None
 
 def get_ursi_data_manager():
     global ursi_data_manager
-
+    
     if ursi_data_manager is None:
-        ursi_data_manager = UrsiDataManager(secretdir, True, 'coinsPersonal.tmp')
+        ursi_data_manager = UrsiDataManager(secretdir, True, 'coinsPersonal.tmp',
+                                            ppiscript=get_ppi_script_path)
 
     return  ursi_data_manager
 

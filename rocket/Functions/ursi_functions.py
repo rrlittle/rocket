@@ -165,6 +165,7 @@ class FindGuid(Function):
         data_dict = ''
         GUID = ''
         ursi = data_list[0]
+
         #ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
         ursi_data_manager = get_ursi_data_manager()
         data_dict = ursi_data_manager.get_ursi_data()
