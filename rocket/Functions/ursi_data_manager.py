@@ -7,6 +7,7 @@ import logging
 from __init__ import secretdir,scriptdir
 from loggers import func_log
 
+PPIfilename = "coinsPersonal.tmp"
 get_ppi_script_ext = None
 if utils.systemName in ('Linux', 'Darwin'):  # use the
     get_ppi_script_ext = '.sh'
@@ -115,7 +116,7 @@ def get_ursi_data_manager():
     global ursi_data_manager
     
     if ursi_data_manager is None:
-        ursi_data_manager = UrsiDataManager(secretdir, True, 'coinsPersonal.tmp',
+        ursi_data_manager = UrsiDataManager(secretdir, True, PPIfilename,
                                             ppiscript=get_ppi_script_path)
 
     return  ursi_data_manager

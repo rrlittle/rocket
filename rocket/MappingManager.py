@@ -8,7 +8,7 @@ from template_kit.components_behavior_protocols import ComponentResponseProtocol
 from template_kit.template_structure import TemplateStructure
 import csv
 from os import startfile
-
+from Functions.function_api import DropRowException
 
 class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol):
     ''' this class is responsible for implementing the
@@ -171,8 +171,6 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         if clear_sink:  # if sink is not already initialized
             self.sink.initialize_data()  # clear any data in sink
 
-      #  import ipdb; ipdb.set_trace()
-
         for rowid, srcrow in enumerate(self.source):
             self.sink.add_row()  # we want to fill in a new row
             map_log.info('converting row {0}'.format(rowid))
@@ -214,7 +212,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                             self.sink[-1][sinkcoldef] = sinkcoldef.default
 
 
-                    except sinkManager.DropRowException as e:
+                    except DropRowException as e:
                         raise e
                     except Exception as e:
                         map_log.error(('A not drop row exception happen when'
@@ -225,7 +223,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                 # after the row is done use ensure row
                 self.sink.ensure_row(self.sink.data[-1])  # raise drop row exception if row not right
 
-            except sinkManager.DropRowException as e:
+            except DropRowException as e:
                 # drop the row if it should't be included in the dataset
                 map_log.error(('not including source row %s in sink: err'
                                ' at %s (%s)') % (rowid, sinkcoldef, e))
@@ -251,7 +249,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                 mapper_ids = [str(x) for x in range(start, end + 1)]
                 return mapper_ids
             except ValueError:
-                raise sinkManager.DropRowException
+                raise DropRowException
 
     def make_template(self):
         ''' leverages the sink and source handlers to make the template

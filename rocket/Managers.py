@@ -2,7 +2,7 @@ import utils
 from __init__ import basedir, srcdatdir, sinkdatdir, templ_delimiter
 import columns
 from loggers import man_log
-
+from Functions.function_api import DropRowException
 
 class Manager(object):
     ''' the generic manager ensuring all managers have basic
@@ -407,7 +407,7 @@ class sinkManager(ssManager):
                                      fieldnames=self.col_defs,
                                      delimiter=self.delimiter)
         outwriter.writeheader()
-   #     import ipdb; ipdb.set_trace()
+        #import ipdb; ipdb.set_trace()
         for rowid, row in enumerate(self.data):
             for coldef, elem in row.items():
                 if isinstance(elem, ssManager.NoDataError):  # print the default value.

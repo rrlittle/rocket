@@ -267,7 +267,8 @@ class DataTableComponent(TemplateComponenet):
         self.data_table = "" # data_table will be nothing if there is no data table
 
     def _process_after_reading_(self, content=[]):
-        'data table content should look like this: [,,Data table:,data_3_ ]'
+        #data table content should look like this: [,,Data table:,data_3_ ]'
+        # TODO: Allow multiple table 
 
         # An Template Structure Error can be thrown
         line = self.find_data_table_line(content)

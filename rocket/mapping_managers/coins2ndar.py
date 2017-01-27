@@ -4,8 +4,12 @@ from Functions import ursi_functions
 from loggers import map_log
 from __init__ import templatedir, secretdir
 from Functions.calc_functions import Mean, Sum, FindFirstValid, TestNoData, ReverseBySubtractingFrom
-from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC, FindAgeByWBIC,\
-                                    FindBirthdateByWBIC,FindGenderByWBIC
+#from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC, FindAgeByWBIC,\
+#                                    FindBirthdateByWBIC,FindGenderByWBIC
+from Functions.ursi_functions import FindGuid, FindGuidByWBIC
+from Functions.personal_info_functions import FindAge, FindBirthdate, FindGender
+from Functions.wbic_functions import FindBirthdateByWBIC, FindAgeByWBIC, FindGenderByWBIC
+
 from Functions.subject_01_extension import GetCommentMisc, GetCotwinGuid, GetMotherGuid, GetCotwinCommentMotherUrsi
 from Functions.bdi_extension import GetBDIScore
 

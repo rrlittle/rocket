@@ -11,11 +11,11 @@
 ,,,,,,,,,,,
 Header>,,,,,,,,,,,
 <Data Table,,,,,,,,,,,
-,Data table:,calc_5_ti_m,,,,,,,,,
+,Data table:,calc_4_sp_m,,,,,,,,,
 ,,,,,,,,,,,
 Data Table>,,,,,,,,,,,
 <InstruInfo,,,,,,,,,,,
-,Instrument Name:,calc_5_ti_m,Version:,1,,,,,,,
+,Instrument Name:,calc_4_sp_m,Version:,1,,,,,,,
 ,,,,,,,,,,,
 InstruInfo>,,,,,,,,,,,
 <User Notice,,,,,,,,,,,
@@ -23,7 +23,7 @@ InstruInfo>,,,,,,,,,,,
 User Notice>,,,,,,,,,,,
 <Mapping Template,,,,,,,,,,,
 ndar id,ndar name,ndar range,default value,mapping,function,args,required,wtp id,wtp name,wtp range,wtp missing value
-1,id,,,"1,2",findGuidForWTPTwin,,,1,familyid,,"9999, 9998"
-2,birthdate,,,"1,2",findBirthdateForWTPTwin,,,2,twin,,"9999, 9998"
-3,gender,,,"1,2",findGenderForWTPTwin,,,,,,
+1,id,,,1,findGuidForWTPFamily,,,1,familyid,,"9999, 9998"
+2,birthdate,,,1,findBirthdateForWTPFamily,,,,,,
+3,gender,,,1,findGenderForWTPFamily,,,,,,
 Mapping Template>,,,,,,,,,,,

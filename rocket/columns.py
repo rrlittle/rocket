@@ -1,6 +1,6 @@
 import Managers
 from loggers import col_log
-from Functions.function_api import PlainCopy
+from Functions.function_api import PlainCopy, DropRowException
 
 class Col(object):
     ''' this represents one row from the template file.
@@ -232,8 +232,8 @@ class sinkCol(Col):
             else:
                 col_log.debug('CALLING %s(%s)' % (self.func.__name__, srcdat))
                 self.dat = self.func.execute(*srcdat)
-        except self.handler.DropRowException as e:
-            raise self.handler.DropRowException(('Error raised while '
+        except DropRowException as e:
+            raise DropRowException(('Error raised while '
                                                  'running %s(%s). Error: %s') % (self.func, srcdat, e))
 
         except Exception as e:

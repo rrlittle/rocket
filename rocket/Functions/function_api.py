@@ -1,4 +1,7 @@
 import logging
+class DropRowException(Exception):
+    pass
+
 logger = logging.getLogger("main_log.function")
 class Function():
     '''This class should be memoryless about the data because this instance will be used for many
@@ -53,6 +56,35 @@ class Function():
 
         raise NotImplementedError
 
+
+class DropRowFunction(Function):
+    '''
+        This class is for those function that meant to drop the row if something doesn't go well
+    '''
+
+    def execute(self, *data, args=None):
+        '''
+        This is the API for running the function. it receives *data from the
+        outside as the tuple. Here the tuple will be casted to list.
+        It also is used to provide debugger information, and error handling. No need to override this function
+        :param data:
+        :param args:
+        :return:
+        '''
+        data_list = list(data)
+
+        logger.debug("The function:%s is getting executed" %self.get_name())
+        logger.debug("The data is %s" %data_list)
+        logger.debug("The args is %s" %args)
+
+        # execute the function.
+        try:
+            result = self._func_(data_list=data_list, args=args)
+        except Exception as e:
+            raise DropRowException("%s" % e)
+
+        logger.debug("The function:%s finishes correctly" %self.get_name())
+        return result
 
 class PlainCopy(Function):
 

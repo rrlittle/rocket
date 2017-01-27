@@ -1,15 +1,9 @@
-from os import path
-from os import stat
-from subprocess import PIPE, Popen, call
-from ast import literal_eval
 from dateutil import relativedelta
 from datetime import datetime
 from __init__ import secretdir, waisman_user, scriptdir
-from Managers import sinkManager
-from threading import Timer
 import utils
 from loggers import func_log
-from Functions.function_api import Function
+from Functions.function_api import Function, DropRowFunction
 from Functions.ursi_data_manager import get_ursi_data_manager
 
 # where to store secret files i.e. coins secret key and PPI file
@@ -86,7 +80,7 @@ def get_ursi_by_wbic(data_dict, wbic):
             if ursi_dict["WBIC"] == wbic:
                 return ursi
         except KeyError as e:
-            raise sinkManager.DropRowException("WBIC or URSI key is not in the information file")
+            raise Exception("WBIC or URSI key is not in the information file")
 
 
 class FindGender(Function):
@@ -119,6 +113,8 @@ class FindGenderByWBIC(Function):
         return "Same as findGender, except receive as a wbic"
 
     def _func_(self, data_list, args=None):
+        import ipdb;
+        ipdb.set_trace()
         print('finding the gender')
         wcib = data_list[0]
         #ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
@@ -128,6 +124,7 @@ class FindGenderByWBIC(Function):
         # convert wcib to ursi, use that as a key
         ursi = get_ursi_by_wbic(data_dict, wcib)
         assert ursi != '', 'No ursi has been passed'
+
 
         gender = data_dict[ursi]["gender"]
         return gender
@@ -154,7 +151,7 @@ class FindBirthdate(Function):
     def _func_(self, data_list, args=None):
         return findBirthdate(data_list[0])
 
-class FindGuid(Function):
+class FindGuid(DropRowFunction):
     def get_documentation(self):
         return "Find the participants's GUID based on the given ursi"
 
@@ -170,16 +167,11 @@ class FindGuid(Function):
         ursi_data_manager = get_ursi_data_manager()
         data_dict = ursi_data_manager.get_ursi_data()
 
-        try:
-            assert ursi != '', 'No ursi has been passed'
-            GUID = data_dict[ursi]['GUID']
-
-            if GUID == "NONE":
-                raise sinkManager.DropRowException(('No guid found '
-                                                    'matching ursi %s') % ursi)
-
-        except Exception as e:
-            raise sinkManager.DropRowException(e)
+        assert ursi != '', 'No ursi has been passed'
+        GUID = data_dict[ursi]['GUID']
+        if GUID == "NONE":
+            raise Exception(('No guid found '
+                                 'matching ursi %s') % ursi)
 
         return GUID
 
@@ -241,15 +233,17 @@ class FindAgeByWBIC(Function):
         total_months = year * 12 + month
         return total_months
 
-class FindGuidByWBIC (Function):
+
+class FindGuidByWBIC (DropRowFunction):
     """"""
     def get_name(self):
         return "FindGuidByWbic"
 
     def _func_(self, data_list, args=None):
+
         wbic = data_list[0]
-        if wbic == "":
-            raise sinkManager.DropRowException("The wbic passed in has nothing ")
+        assert wbic != "", "The wbic passed in has nothing "
+
 
         #ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
         ursi_data_manager = get_ursi_data_manager()
@@ -266,9 +260,9 @@ class FindGuidByWBIC (Function):
                         return guid
 
             except KeyError as e:
-                raise sinkManager.DropRowException("WBIC or GUID key is not in the information file")
+                raise Exception("WBIC or GUID key is not in the information file")
 
-        raise sinkManager.DropRowException("The WBIC provided can't be found")
+        raise Exception("The WBIC provided can't be found")
 
 '''
 class UrsiDataManager(object):
