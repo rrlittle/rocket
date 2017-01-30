@@ -1,1 +1,1 @@
-{"workspace": {"mapping_file_dir": "Q:/Source_Code/rocket/rocket/mapping_files", "source_data_dir": "Q:/Source_Code/rocket/rocket/source_datafiles", "subject01_dir": "R:/rdoc_uploads", "sink_data_dir": "Q:/Source_Code/rocket/rocket/sink_datafiles"}}
+{"workspace": {"sink_data_dir": "Q:/Source_Code/rocket/rocket/sink_datafiles", "subject01_dir": "R:/rdoc_uploads", "mapping_file_dir": "Q:/Source_Code/rocket/rocket/mapping_files", "source_data_dir": "Q:/Source_Code/rocket/rocket/source_datafiles"}}

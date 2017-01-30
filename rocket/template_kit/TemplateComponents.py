@@ -264,16 +264,17 @@ class DataTableComponent(TemplateComponenet):
         self.start_token = "<Data Table"
         self.end_token = "Data Table>"
         self.DATA_TABLE_KEY = "Data table:"
-        self.data_table = "" # data_table will be nothing if there is no data table
+        self.data_table = [] # data_table will be nothing if there is no data table. data_table is a list
 
     def _process_after_reading_(self, content=[]):
         #data table content should look like this: [,,Data table:,data_3_ ]'
-        # TODO: Allow multiple table 
+
 
         # An Template Structure Error can be thrown
         line = self.find_data_table_line(content)
 
         # If no data table name has been found, it will just return an empty string
+        # TODO: Allow multiple table
         self.data_table = self.extract_data_table(line)
 
         return self.data_table
@@ -285,11 +286,17 @@ class DataTableComponent(TemplateComponenet):
         raise TemplateStructureError("The template has wrong format for data table section")
 
     def extract_data_table(self, line):
-        for index, data in enumerate(line):
-            if data == self.DATA_TABLE_KEY:
-                self.data_table = line[index + 1].strip()
-                return self.data_table
-        return ""
+        ind = line.index(self.DATA_TABLE_KEY)
+
+        for index in range(ind+1, len(line)):
+            if line[index].strip() != "":
+                self.data_table.append(line[index].strip())
+
+     #   for index, data in enumerate(line):
+     #         if data == self.DATA_TABLE_KEY:
+     #           self.data_table = line[index + 1].strip()
+     #          return self.data_table
+        return self.data_table
 
     def send_message_to_delegate(self, delegate):
         delegate.respond_to_data_table(self.data_table)
