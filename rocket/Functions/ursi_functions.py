@@ -113,8 +113,6 @@ class FindGenderByWBIC(Function):
         return "Same as findGender, except receive as a wbic"
 
     def _func_(self, data_list, args=None):
-        import ipdb;
-        ipdb.set_trace()
         print('finding the gender')
         wcib = data_list[0]
         #ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)

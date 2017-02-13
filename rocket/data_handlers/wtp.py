@@ -43,9 +43,7 @@ class WtpSource(sourceManager):
         '''
         data = []
 
-        # TODO: allow multiple table
         con = pyodbc.connect("DSN=wtp_data")
-
 
         # To test the primary key. The primary key can be familyid and twin or just familyid.
         table_type = self.check_table_type(self.data_table[0], con)
@@ -85,7 +83,6 @@ class WtpSource(sourceManager):
                     col_parser = getattr(self, col_parser_name,
                                          self.default_parser)
 
-
                     # I parse everything into datarow
                     row[col] = col_parser(str(datarow[index]), col)
                 except Exception as e:
@@ -107,7 +104,12 @@ class WtpSource(sourceManager):
 
 
     def get_join_stmt(self, data_tables, table_type):
-
+        """
+            This function returns a joint statement that Inner join given table names.
+        :param data_tables: The tables intended to be joined into one table
+        :param table_type: Choose from enum TableType. See more info in TableType
+        :return: Inner join statement as String
+        """
         return "SELECT * FROM {0} AS T0 {1} ;".format(data_tables[0], self.join_stmt(data_tables, 1, table_type))
 
     def _compare_stmts(self, table_type, first_table_identifier, second_table_identifier):

@@ -26,7 +26,7 @@ class Manager(object):
                      quit=True,
                      allownew=True,
                      **kwargs):
-        ''' this is a generic function that can be extended
+        """this is a generic function that can be extended
             it simply gets a filepath and asserts it's not empty.
             if it's empty the program quits unless quit is False.
             when it will throw an error
@@ -39,17 +39,18 @@ class Manager(object):
             - others check out utils.askopenfilename docs for more
             - initialdir - str path to where you would like to open
             TODO: figure out how to disallow new files being made/ allow
-        '''
-        openfunc = None
+        """
+        fpath = None
+        # I have hard coded the file types to csv and tsv.
         if save:
-            openfunc = utils.asksaveasfilename
+            fpath = utils.asksaveasfilename(title=title, filetypes=(("csv files", "*.csv"),
+                                                                    ("all files", "*.*")),
+                                            **kwargs)
         else:
-            openfunc = utils.askopenfilename
-
-        # print(kwargs)
-        fpath = openfunc(
-            title=title,
-            **kwargs)
+            fpath = utils.askopenfilename(title=title, filetypes=(("all files", "*.*"),
+                                                            ("tsv files", "*.tsv"),
+                                                          ("csv files", "*.csv"),),
+                                          **kwargs)
 
         # Check path validity
         if fpath == '' or len(fpath) == 0:
