@@ -11,6 +11,7 @@ def get_ursi_by_wbic(wbic):
             raise Exception("WBIC or URSI key is not in the information file")
 
 
+
 class FindGenderByWBIC(FindGender):
 
     def get_name(self):

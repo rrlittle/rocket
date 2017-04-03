@@ -33,7 +33,7 @@ User Notice>,,,,,,,,,,,
 <Mapping Template,,,,,,,,,,,
 ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins id,coins name,coins range,coins missing value
 1,subjectkey,,,3,FindGuidByWbic,,t,1,date,,"~<userSkipped>~,~<condSkipped>~,"
-2,src_subject_id,,,3,,,t,2,time,,"~<userSkipped>~,~<condSkipped>~,"
+2,src_subject_id,,,3,findUrsiByWbic,,t,2,time,,"~<userSkipped>~,~<condSkipped>~,"
 3,interview_date,,,1,,,t,3,subject,,"~<userSkipped>~,~<condSkipped>~,"
 4,interview_age,,,"3,1",findAgeByWBIC,,t,4,blocknum,,"~<userSkipped>~,~<condSkipped>~,"
 5,gender,,,3,findGenderByWBIC,,t,5,blockcode,,"~<userSkipped>~,~<condSkipped>~,"

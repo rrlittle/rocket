@@ -60,6 +60,8 @@ class Function():
 class DropRowFunction(Function):
     '''
         This class is for those function that meant to drop the row if something doesn't go well
+        Any subclass that raises exception in self._func_ will automatically trigger a DropRowException,
+        telling the rocket to drop row.
     '''
 
     def execute(self, *data, args=None):
@@ -67,6 +69,7 @@ class DropRowFunction(Function):
         This is the API for running the function. it receives *data from the
         outside as the tuple. Here the tuple will be casted to list.
         It also is used to provide debugger information, and error handling. No need to override this function
+        It wraps _func_ with a try-catch statement, which drops row when _func_ has any issue
         :param data:
         :param args:
         :return:

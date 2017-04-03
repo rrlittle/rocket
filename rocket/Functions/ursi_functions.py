@@ -5,7 +5,7 @@ import utils
 from loggers import func_log
 from Functions.function_api import Function, DropRowFunction
 from Functions.ursi_data_manager import get_ursi_data_manager
-
+from Managers import ssManager
 # where to store secret files i.e. coins secret key and PPI file
 temp_data_path = secretdir
 
@@ -82,6 +82,29 @@ def get_ursi_by_wbic(data_dict, wbic):
         except KeyError as e:
             raise Exception("WBIC or URSI key is not in the information file")
 
+class FindUrsiByWBIC(DropRowFunction):
+
+    def get_documentation(self):
+        return "Find the participants' ursi given a wbic"
+
+    def get_name(self):
+        return "findUrsiByWbic"
+
+    def _func_(self, data_list, args=None):
+        # given wbic I can get ursi
+
+        # The first element is considered as ursi.
+        wbic = data_list[0]
+
+        for ursi, ursi_dict in get_ursi_data_manager().get_ursi_data().items():
+            try:
+                if ursi_dict["WBIC"] == wbic:
+                    return ursi
+            except KeyError as e:
+                raise Exception("WBIC or URSI key is not in the information file")
+
+        # how to deal with data not found? Raise exception that will drop the row or return null?
+        return None
 
 class FindGender(Function):
     def __init__(self,*args,**kwargs):
@@ -126,6 +149,7 @@ class FindGenderByWBIC(Function):
 
         gender = data_dict[ursi]["gender"]
         return gender
+
 
 class FindBirthdateByWBIC(Function):
     def get_name(self):

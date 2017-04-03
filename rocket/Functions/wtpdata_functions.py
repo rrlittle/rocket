@@ -58,7 +58,6 @@ def get_ursi_by_wbic(data_dict, wbic):
         except KeyError as e:
             raise DropRowException("WBIC or URSI key is not in the information file")
 
-
 def lookup_guid_with_wbic(wbic):
 
     ursi = get_ursi_by_wbic(get_ursi_data_manager().get_ursi_data(), wbic)

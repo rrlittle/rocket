@@ -6,7 +6,7 @@ from __init__ import templatedir, secretdir
 from Functions.calc_functions import Mean, Sum, FindFirstValid, TestNoData, ReverseBySubtractingFrom
 #from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC, FindAgeByWBIC,\
 #                                    FindBirthdateByWBIC,FindGenderByWBIC
-from Functions.ursi_functions import FindGuid, FindGuidByWBIC
+from Functions.ursi_functions import FindGuid, FindGuidByWBIC, FindUrsiByWBIC
 from Functions.personal_info_functions import FindAge, FindBirthdate, FindGender
 from Functions.wbic_functions import FindBirthdateByWBIC, FindAgeByWBIC, FindGenderByWBIC
 
@@ -39,6 +39,7 @@ class coins2ndar(MappingManager):
 
         functions_list.append(FindGuid())
         functions_list.append(FindGuidByWBIC())
+        functions_list.append(FindUrsiByWBIC())
         functions_list.append(GetCommentMisc())
         functions_list.append(GetCotwinCommentMotherUrsi())
         functions_list.append(GetMotherGuid())
