@@ -312,7 +312,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         # of the handlers. they are defined in the code and extended for each
         # custom handler if they so choose.
         # they will be in order of definition in the __init__
-
+            return None
         finally:
             pass
 
@@ -420,7 +420,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         return header_content
 
     def add_extra_content_to_mapping_info(self, mapping):
-        mapping.content = [self._add_mapping_headers_from_src_sink()]
+        mapping.content.append(self._add_mapping_headers_from_src_sink())
 
     def _add_mapping_headers_from_src_sink(self):
         srctemplatefields = list(self.source.template_fields.values())

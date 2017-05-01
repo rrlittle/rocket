@@ -1,2 +1,4 @@
 1: Template update function. Given a rocket template, it will rewrite the header to get the latest methods
-2: Auto-populate the fieldnames. ****
+2: Auto-populate the fieldnames for wtp.
+3: Have a error log that tracks the user error
+****

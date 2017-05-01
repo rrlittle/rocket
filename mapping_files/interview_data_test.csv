@@ -14,14 +14,17 @@
 
 Header>
 <Data Table
+,Data table:
 
 Data Table>
 <InstruInfo
+,Instrument Name:,,Version:,
 
 InstruInfo>
 <User Notice
 
 User Notice>
 <Mapping Template
+ndar id,ndar name,ndar range,default value,mapping,function,args,required,wtp id,wtp name,wtp range,wtp missing value
 
 Mapping Template>

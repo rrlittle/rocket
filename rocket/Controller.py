@@ -2,6 +2,7 @@ from Managers import sourceManager, sinkManager
 from MappingManager import MappingManager
 import utils
 from sys import exit
+import subprocess
 
 class controller(object):
     ''' this class is aware of all three types of managers.
@@ -28,20 +29,23 @@ class controller(object):
             as they will be used by the mapping manager to
             create the template
         '''
-        self.mapper.make_template()
+        filepath = self.mapper.make_template()
 
-        while True:
-            inp = input(('\n\nThe template file has been written. \n'
-                     'Please hit enter when you are done with the file and you will'
-                     ' continue to the conversion if you have selected both options\n'
-                     'enter "q" if you would like to quit now and fill the template at '
-                     'another time\n>>'))
-            if inp == 'q':
-                print('User elected to quit after template was created')
-                exit()
-            if inp == 'o':
-                print('User selected to open template file after template was created')
-                #startfile(templ_path)
+        if filepath is not None:
+            subprocess.call('start excel.exe "{0}"'.format(filepath), shell=True)
+
+        # while True:
+        #     inp = input(('\n\nThe template file has been written. \n'
+        #              'Please hit enter when you are done with the file and you will'
+        #              ' continue to the conversion if you have selected both options\n'
+        #              'enter "q" if you would like to quit now and fill the template at '
+        #              'another time\n>>'))
+        #     if inp == 'q':
+        #         print('User elected to quit after template was created')
+        #         exit()
+        #     if inp == 'o':
+        #         print('User selected to open template file after template was created')
+        #         #startfile(templ_path)
 
 
     def do_convert(self, template_path=None):
