@@ -1,4 +1,4 @@
-from template_kit.components_behavior_protocols import ComponentWriteProtocol
+from template_kit.components_behavior_protocols import ComponentWriteProtocol, ComponentResponseProtocol
 from template_kit.TemplateComponents import TemplateComponenet, Header, InstruInfoComponent, NoticeComponent,MappingInfo
 from template_kit.TemplateComponents import DataTableComponent
 from template_kit.template_parser import TemplateParser
@@ -36,7 +36,7 @@ class TemplateStructure:
         return TemplateWriter(self.components, delegate=delegate, delimiter=delimiter)
         pass
 
-    def get_template_parser(self, delegate=ComponentWriteProtocol()):
+    def get_template_parser(self, delegate=ComponentResponseProtocol()):
         return TemplateParser(self.components, delegate)
 
 

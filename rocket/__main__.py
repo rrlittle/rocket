@@ -38,10 +38,10 @@ parser = utils.make_args('runs the rocket data mapping package',
                                           'datafile using template')
                                 },
                                 ('-u', '--update'):{
-                                    'dest':'update',
+                                    'dest':'update_template',
                                     'const': True,
                                     'action':'store_const',
-                                    'help':'update the coins personal information to home drive'
+                                    'help':'update the template function'
                                 }
                          }
                          )
@@ -75,6 +75,10 @@ if __name__ == '__main__':
             print('created outfile at %s' % outfile_path)
         else:
             print('--convert not provided skipping that')
+
+        if args.update_template:
+            outfile_path = c.update_template(template_path=template_path)
+            print('update template at %s' % outfile_path)
     except Exception as e:
         print("%s"%e)
     finally:

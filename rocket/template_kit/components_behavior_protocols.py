@@ -15,15 +15,23 @@ class ComponentResponseProtocol(object):
         """User notice will be passed as a string"""
         pass
 
-    def repond_to_data_table(self, data_table):
+    def respond_to_data_table(self, data_table):
         """Data table will be passed as a string.
         An empty string means nothing has been returned"""
         pass
 
+
 class ComponentWriteProtocol(object):
 
-    def write_init_header(self, file, delimiter):
+    def add_extra_content_to_header(self, header):
         pass
 
-    def write_init_mapping_info(self, file, delimiter):
+    def add_extra_content_to_mapping_info(self, mapping_info):
         pass
+
+    def add_extra_content_to_instru_info(self, instru_info):
+        pass
+
+    def add_extra_content_to_data_table(self, data_table):
+        pass
+

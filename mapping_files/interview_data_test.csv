@@ -1,0 +1,27 @@
+<Header
+,wtp2ndar
+,example,template,header
+,ndar_snk
+,example,template,header
+,WtpSource
+,example,template,header
+,Possible functions you can use are: 
+,,sum,Calculate the sum. Put the coins ids for all the columns into the mapping id
+,,mean,Calculate the mean. Put the coins ids for all the columns into the mapping id
+,,findGuidByWTPInt,NO DOCUMENTATION IMPLEMENTED
+,,findGenderByWTPInt,Find gender given the familyid and twin or just familyid. Twin should always follow familyid
+,,findAgeByWTPInt,return the age given the familyid and twin or just familyid. Twin should always follow familyid
+
+Header>
+<Data Table
+
+Data Table>
+<InstruInfo
+
+InstruInfo>
+<User Notice
+
+User Notice>
+<Mapping Template
+
+Mapping Template>

@@ -53,7 +53,7 @@ class WtpSource(sourceManager):
         desc = cursor.description
         fieldnames = self._get_fieldnames_(desc)
 
-        import ipdb;ipdb.set_trace();
+        #import ipdb;ipdb.set_trace();
         # assert the data source has all the source fields defined in the template
         # so that no col_defs will map to nothing in the data source
         man_log.debug('expected fieldnames: %s' % self.col_defs)

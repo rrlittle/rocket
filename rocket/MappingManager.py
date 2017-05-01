@@ -4,10 +4,11 @@ from __init__ import templatedir, templ_delimiter, secretdir
 from loggers import map_log
 from  template_kit.template_writer import TemplateWriter
 from template_kit.template_parser import TemplateParser, TemplateParseError
+from template_kit.TemplateComponents import Header
 from template_kit.components_behavior_protocols import ComponentResponseProtocol, ComponentWriteProtocol
 from template_kit.template_structure import TemplateStructure
 import csv
-from os import startfile
+from os import startfile,rename, path, remove
 from Functions.function_api import DropRowException
 
 class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol):
@@ -98,8 +99,9 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                                       ' sink handler template_fieldnames. please modify these fields '
                                       'to ensure unique headers: %s') % collisions)
 
-    def parse_template(self):
-        ''' this function utilises self.sink and self.source
+    def parse_template(self, will_respond=True):
+        """
+            this function utilises self.sink and self.source
             to parse the template file. each manager will
             take the columns they know about.
 
@@ -111,17 +113,24 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
             For "User notice",
 
-        '''
+        :param will_respond:
+                    If this flg is true, than the template will use itself as the delegator, leading those
+                delegate methods get executed after the completion of the parser.
+
+                    If this flag is false, than the template will use a default delegater, which basically does nothing
+        :return:
+        """
 
         '''This is a hard code template parser. Later it shall be refactored to accept customized template'''
-        try:
+
+        parser = None
+        if will_respond:
             parser = self.template_structure.get_template_parser(self)
+        else:
+            parser = self.template_structure.get_template_parser()
+        parser.parse_template(self.get_template())
+        parser.close_file()
 
-            parser.parse_template(self.get_template())
-
-        except TemplateParseError as e:
-            print(e)
-            return
 
     def get_template(self, title='Template', allownew=False, save=False):
         ''' this gets the filepath to a file. which is assumed to be
@@ -203,7 +212,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                             # convert it to the sink value using the function inside sinkcoldef
                             sinkdat = sinkcoldef.convert(src_datcol_zip)
 
-                            
+
                             # print('output:',sinkdat)
                             # save the sink value to the last row
                             self.sink[-1][sinkcoldef] = sinkdat
@@ -251,7 +260,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
             except ValueError:
                 raise DropRowException
 
-    def make_template(self):
+    def make_template(self, itself_as_delegate=True):
         ''' leverages the sink and source handlers to make the template
             file.
 
@@ -264,7 +273,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
             then calls source header to write it's documentation as the third
             header
 
-            then wtites global funcs with their documentation as the 4th header
+            then writes global funcs with their documentation as the 4th header
 
             finally uses sink.get_template_fields and source.get_template_fields
             to populate the final template header.
@@ -286,11 +295,14 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         def handle_tmeplate_err(errstr, err):
             map_log.error(('%s... Template field getting deleted and '
                            'rocket quitting. Error: %s') % (errstr, err))
-            utils.exit(1)
+            raise Exception()
 
         templ_path = _get_template_path_()
         try:
-            template_writer = self.template_structure.get_template_writer(delegate=self, delimiter=self.delimiter)
+            if itself_as_delegate:
+                template_writer = self.template_structure.get_template_writer(delegate=self, delimiter=self.delimiter)
+            else:
+                template_writer = self.template_structure.get_template_writer(delimiter=self.delimiter)
             template_writer.write_template(templ_path)
             template_writer.close_and_save_file()
 
@@ -303,42 +315,40 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
         finally:
             pass
-        '''
-        try:
-            # write the column defs for sink
-            self.sink.populate_template(templfile, templatefields)
-            templfile.close()
-        except Exception as e:
-            handle_tmeplate_err('error while populating sink columns', e)
-
-        try:
-            # allow rewrite of rows starting just below the headers
-            templfile = open(templ_path, 'w+')
-            # skip to below headers
-            for i in range(self.header_lines):
-                templfile.readline()
-            # write the column defs for source
-            self.source.populate_template(templfile, templatefields)
-            templfile.close() # done with template. wait for user input
-        except Exception as e:
-            handle_tmeplate_err('error while populating sink columns', e)
-            '''
 
         map_log.debug('Template created')
-        while True:
-            inp = input(('\n\nThe template file has been written. \n'
-                     'Please hit enter when you are done with the file and you will'
-                     ' continue to the conversion if you have selected both options\n'
-                     'enter "q" if you would like to quit now and fill the template at '
-                     'another time\n>>'))
-            if inp == 'q':
-                map_log.critical('User elected to quit after template was created')
-                utils.exit()
-            if inp == 'o':
-                map_log.critical('User selected to open template file after template was created')
-                startfile(templ_path)
-
         return templ_path
+
+    def update_header(self):
+
+        try:
+            self.parse_template(will_respond=False)
+        except TemplateParseError as e:
+            map_log.critical("Template Error, exiting updating")
+            return
+
+        # Update the data in the header
+        for c in self.template_structure.components:
+            if isinstance(c, Header):
+                header_list = self._get_headers_content_()
+                header_list_with_indention = [[""] + line for line in header_list]
+                c.content = header_list_with_indention
+            break
+
+        # rename the old file as backup
+        template = self.get_template()
+        template_dir, filename = path.split(template)
+        temp_name = path.join(template_dir, filename + "temp")
+        rename(template, temp_name)
+
+        # if the any exception happens
+        try:
+            self.make_template(itself_as_delegate=False)
+            remove(temp_name)
+        except Exception as e:
+            rename(temp_name,template)
+        return template
+
 
     #########################################################################################
     # These are the delegates method that is used to determine what to do
@@ -361,14 +371,12 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         self.user_notice = user_notice
 
     # delegate method for writing the tempalte
-    def write_init_header(self, file, delimiter):
-        csv_writer = csv.writer(file, delimiter=delimiter)
+    def add_extra_content_to_header(self, header):
         header_list = self._get_headers_content_()
-        for header in header_list:
-            csv_writer.writerow([""] + header)
+        header_list_with_indention = [[""]+line for line in header_list]
+        header.content = header_list_with_indention
 
     def _get_headers_content_(self):
-
         header = []
         header = self.add_templ_header(header)
         header = self.sink.add_templ_header(header)
@@ -377,7 +385,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         return header
 
     # I want to add the explanation to function name
-    # One line a funtion explanation
+    # One line a function explanation
     def _get_func_names_(self, header_content=[]):
         def _add_all_func_name():
             all_func_name = [x for x in self.globalfuncs]
@@ -411,11 +419,16 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         header_content += func_header
         return header_content
 
-    def write_init_mapping_info(self, file, delimiter):
-        csv_writer = csv.writer(file, delimiter=delimiter)
-        csv_writer.writerow(self._add_mapping_headers_from_src_sink())
+    def add_extra_content_to_mapping_info(self, mapping):
+        mapping.content = [self._add_mapping_headers_from_src_sink()]
 
     def _add_mapping_headers_from_src_sink(self):
         srctemplatefields = list(self.source.template_fields.values())
         sinktemplatefields = list(self.sink.template_fields.values())
         return sinktemplatefields + srctemplatefields
+
+    def add_extra_content_to_instru_info(self, instru_info):
+        instru_key = instru_info.INSTRU_NAME_KEY
+        version_key = instru_info.VERSION_KEY
+        instru_info_line = ["", instru_key, "", version_key, ""]
+        instru_info.content.append(instru_info_line)

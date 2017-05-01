@@ -13,6 +13,7 @@ from Managers import sinkManager
 
 '''
 
+
 def convert_wtpfamily_to_wbic_decorator(conv_func):
     '''
         Decorator function for convert wtpfamilyid to wbic
@@ -24,6 +25,7 @@ def convert_wtpfamily_to_wbic_decorator(conv_func):
         wbic = generate_wbic_with_familyid_twin(familyid)
         return conv_func(self,[wbic])
     return wrapper
+
 
 def convert_wtptwin_to_wbic_decorator(conv_func):
     '''

@@ -20,7 +20,8 @@ class TemplateComponenet(object):
     @property:
         start_token: the tag that indicates the start of the component (Override it)
         end_token: the tag that indicates the end of the component (Override it)
-        content: the lines between start tag and end tag
+        content: the lines between start tag and end tag, it reads with a csv reader, so expect it to be
+                 each line is an array of elements
         line_num: the line number between start tag and end tag
     '''
     def __init__(self):
@@ -44,7 +45,7 @@ class TemplateComponenet(object):
         content_lines = []
         line_num = 0
         for row in reader:
-            if not self.end_token in row:
+            if self.end_token not in row:
                 content_lines.append(row)
                 line_num += 1
             else:
@@ -70,7 +71,7 @@ class TemplateComponenet(object):
     def written_to_file(self, file, delegate= None, delimiter= ","):
         """
             This function writes the start token, end token and customized information to the
-        section
+        section.
 
         :param file:
         :param delegate:
@@ -79,11 +80,15 @@ class TemplateComponenet(object):
         """
         file.write(self.start_token + "\n")
 
-        self._extra_write_requirement_(file, delegate, delimiter)
+        self._extra_write_content_(file, delegate, delimiter)
+
+        # Write the component content to the file
+        writer = csv.writer(file)
+        writer.writerows(self.content)
 
         file.write("\n" + self.end_token + "\n")
 
-    def _extra_write_requirement_(self, file, delegate, delimiter):
+    def _extra_write_content_(self, file, delegate, delimiter):
         """
             This method is used to configure what happened after the
         start token is written. It can be implemented just in the component.
@@ -111,8 +116,9 @@ class Header(TemplateComponenet):
         #print("Header sending message")
         delegate.respond_to_header(self.get_headers())
 
-    def _extra_write_requirement_(self, file, delegate, delimiter):
-        delegate.write_init_header(file, delimiter)
+    def _extra_write_content_(self, file, delegate, delimiter):
+       # delegate.write_init_header(file, delimiter)
+        delegate.add_extra_content_to_header(self)
 
 
 class InstruInfoComponent(TemplateComponenet):
@@ -172,12 +178,8 @@ class InstruInfoComponent(TemplateComponenet):
 
         delegate.respond_to_instru_info(self.get_instru_info())
 
-    def _extra_write_requirement_(self, file, delegate, delimiter):
-        instru_key = self.INSTRU_NAME_KEY
-        version_key = self.VERSION_KEY
-        instru_info_line = ["", instru_key, "", version_key, ""]
-        csv_writer = csv.writer(file, delimiter=delimiter)
-        csv_writer.writerow(instru_info_line)
+    def _extra_write_content_(self, file, delegate, delimiter):
+        delegate.add_extra_content_to_instru_info(instru_info=self)
 
 
 class InstruInfo(object):
@@ -200,9 +202,16 @@ class MappingInfo(TemplateComponenet):
         super(MappingInfo, self).__init__()
         self.start_token = "<Mapping Template"
         self.end_token = "Mapping Template>"
-        self.mapping_info = None
+        self.mapping_info = None # string buffer that behaves like a file
 
     def _process_after_reading_(self, content=[]):
+        """
+            This turns the content of the mapper (original as line of string) into the
+            a string buffer to mimic the behavior of file. The reason is that the converter
+            needs to accept a file as its argument
+        :param content:
+        :return:
+        """
         if len(content) == 0:
             raise Exception("Template file")
         if len(content) == 1:
@@ -228,8 +237,8 @@ class MappingInfo(TemplateComponenet):
         #print("mapping info sending message")
         delegate.respond_to_mapping_info( self.get_mapping_info())
 
-    def _extra_write_requirement_(self, file, delegate, delimiter):
-        delegate.write_init_mapping_info(file, delimiter)
+    def _extra_write_content_(self, file, delegate, delimiter):
+        delegate.add_extra_content_to_mapping_info(self)
 
 
 class NoticeComponent(TemplateComponenet):
@@ -301,11 +310,9 @@ class DataTableComponent(TemplateComponenet):
     def send_message_to_delegate(self, delegate):
         delegate.respond_to_data_table(self.data_table)
 
-    def _extra_write_requirement_(self, file, delegate, delimiter):
+    def _extra_write_content_(self, file, delegate, delimiter):
         'data table content should look like this: [,,Data table:,data_3_ ]'
-        content = ["", self.DATA_TABLE_KEY, ""]
-        fwriter = csv.writer(file, delimiter=delimiter)
-        fwriter.writerow(content)
+        delegate.add_extra_content_to_data_table(self)
 
 
 def open_test_file():

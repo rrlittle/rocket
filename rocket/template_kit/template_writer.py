@@ -17,7 +17,7 @@ class TemplateWriter(object):
         self.output_file_path = output_file_path
         self.file = open(output_file_path, "w", errors="replace", newline="")
         for c in self.components:
-            c.written_to_file(file=self.file, delegate= self.delegate, delimiter= self.delimiter)
+            c.written_to_file(file=self.file, delegate=self.delegate, delimiter=self.delimiter)
 
     def close_and_save_file(self):
         self.file.close()

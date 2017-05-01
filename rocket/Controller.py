@@ -1,7 +1,7 @@
 from Managers import sourceManager, sinkManager
 from MappingManager import MappingManager
 import utils
-
+from sys import exit
 
 class controller(object):
     ''' this class is aware of all three types of managers.
@@ -30,6 +30,20 @@ class controller(object):
         '''
         self.mapper.make_template()
 
+        while True:
+            inp = input(('\n\nThe template file has been written. \n'
+                     'Please hit enter when you are done with the file and you will'
+                     ' continue to the conversion if you have selected both options\n'
+                     'enter "q" if you would like to quit now and fill the template at '
+                     'another time\n>>'))
+            if inp == 'q':
+                print('User elected to quit after template was created')
+                exit()
+            if inp == 'o':
+                print('User selected to open template file after template was created')
+                #startfile(templ_path)
+
+
     def do_convert(self, template_path=None):
         ''' this takes an existing template and asks the
             mapping manager to parse it using the source and sink
@@ -48,3 +62,11 @@ class controller(object):
         self.mapper.convert()
 
         return self.mapper.sink.write_outfile()
+
+    def update_template(self, template_path=None):
+        """
+            This method will update the header for the given template .
+        :param template_path:
+        :return:
+        """
+        return self.mapper.update_header()
