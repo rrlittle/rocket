@@ -3,7 +3,7 @@ from MappingManager import MappingManager
 import utils
 from sys import exit
 import subprocess
-
+from loggers import control_log
 class controller(object):
     ''' this class is aware of all three types of managers.
         source sink and mapping.
@@ -29,7 +29,7 @@ class controller(object):
             as they will be used by the mapping manager to
             create the template
         '''
-        filepath = self.mapper.make_template()
+        filepath = self.mapper.make_template(self.mapper)
 
         if filepath is not None:
             subprocess.call('start excel.exe "{0}"'.format(filepath), shell=True)
@@ -54,18 +54,28 @@ class controller(object):
             managers
         '''
 
-        # parse the template, setting up src and sink
-        # different managers will prompt the user for what they need when they
-        # need it. So I don't have to do it here
-        self.mapper.parse_template()
 
-        # the source manager will extract the data from the designated source
-        self.mapper.load_source_data()
+        try:
+            # parse the template, setting up src and sink
+            # different managers will prompt the user for what they need when they
+            # need it. So I don't have to do it here
+            self.mapper.parse_template()
 
-        # fill sink with converted data from source
-        self.mapper.convert()
+            # the source manager will extract the data from the designated source
+            self.mapper.load_source_data()
 
-        return self.mapper.sink.write_outfile()
+            # fill sink with converted data from source
+            self.mapper.convert()
+
+            self.mapper.sink.write_outfile()
+
+            # Update the mapping file to update data
+        except Exception as e:
+            control_log.critical("Rocket exit due to exception: %s" %e)
+            control_log.critical("Start error logging")
+         #   self.mapper.update_error()
+
+        return
 
     def update_template(self, template_path=None):
         """
@@ -73,4 +83,6 @@ class controller(object):
         :param template_path:
         :return:
         """
+
+        #return self.mapper.update_error()
         return self.mapper.update_header()

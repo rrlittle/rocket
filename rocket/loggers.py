@@ -67,6 +67,8 @@ col_log = make_logger('columns',
     '''
 
 func_log = logging.getLogger('main_log.functions')
+
+control_log = logging.getLogger('main_log.control')
 '''
 func_log = make_logger('functions',
     frmt=frmt,

@@ -37,11 +37,17 @@ class TemplateComponenet(object):
         for row in reader:
             if self.start_token in row:
                 self.content, self.line_num = self._start_read_until_end_token_(reader)
-                break
+                return self._process_after_reading_(self.content)
 
-        return self._process_after_reading_(self.content)
+        raise TemplateStructureError("Missing Template Component {0}".format(type(self).__name__))
 
     def _start_read_until_end_token_(self, reader):
+        """
+            A helper function to read the content of a component until reaching the end token
+            If the end token is missing, then it will raise exception
+        :param reader:
+        :return:
+        """
         content_lines = []
         line_num = 0
         for row in reader:
@@ -49,8 +55,8 @@ class TemplateComponenet(object):
                 content_lines.append(row)
                 line_num += 1
             else:
-                break
-        return content_lines, line_num
+                return content_lines, line_num
+        raise TemplateStructureError("No ending token for component {0}".format(type(self).__name__))
 
     def _process_after_reading_(self, content=[]):
         '''
@@ -85,8 +91,7 @@ class TemplateComponenet(object):
         # Write the component content to the file
         writer = csv.writer(file)
         writer.writerows(self.content)
-
-        file.write("\n" + self.end_token + "\n")
+        file.write(self.end_token + "\n")
 
     def _extra_write_content_(self, file, delegate, delimiter):
         """
@@ -314,6 +319,35 @@ class DataTableComponent(TemplateComponenet):
         'data table content should look like this: [,,Data table:,data_3_ ]'
         delegate.add_extra_content_to_data_table(self)
 
+
+class RocketIgnoredComponent(TemplateComponenet):
+    """
+        This component won't get scanned in the rocket, thus no need to be present in the template
+    """
+    def read_in_line(self, file):
+        try:
+            super().read_in_line(file)
+        except Exception as e:
+            return None
+
+
+class ErrorComponent(RocketIgnoredComponent):
+    """
+        This componenet should have no effect in running. Just for the log
+    """
+    def __init__(self):
+        super(ErrorComponent, self).__init__()
+        self.start_token = "<Error"
+        self.end_token = "Error>"
+
+    def _process_after_reading_(self, content=[]):
+        pass
+
+    def send_message_to_delegate(self, delegate):
+        delegate.respond_to_error(self)
+
+    def _extra_write_content_(self, file, delegate, delimiter):
+        delegate.add_extra_content_to_error(self)
 
 def open_test_file():
     #file = open("templateComponentTest.csv", "r")

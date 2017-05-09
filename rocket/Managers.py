@@ -3,6 +3,7 @@ from __init__ import basedir, srcdatdir, sinkdatdir, templ_delimiter
 import columns
 from loggers import man_log
 from Functions.function_api import DropRowException
+from error_generator import user_error_log
 
 class Manager(object):
     ''' the generic manager ensuring all managers have basic
@@ -301,13 +302,19 @@ class sourceManager(ssManager):
         srcreader = utils.DictReader(srcfile, delimiter=self.delimiter)
 
         # assert the file has all the expected fields
-        # e.g, the column can't
         man_log.debug('expected fieldnames: %s' % self.col_defs)
-        for col_name in self.col_defs:
+
+        error_flag = False
+        for index, col_name in enumerate(self.col_defs):
             if col_name not in srcreader.fieldnames:
-                raise self.TemplateError(('expected column %s not '
-                                          'found in source datafile, with fields: %s') % (
-                                             col_name, list(srcreader.fieldnames)))
+                user_error_log.log_mapping_error(col_name, column_id=index + 1, message="this field missing in data file")
+                error_flag = True
+                continue
+
+        if error_flag:
+            raise self.TemplateError(('expected columns not '
+                                      'found in source datafile, with fields: %s') % (
+                                         list(srcreader.fieldnames)))
 
         # load each row with each col's parser
         for rowid, datarow in enumerate(srcreader):

@@ -11,6 +11,8 @@ class Function():
         name: for the external change of the function name
     '''
 
+    argument_number = None
+
     def __init__(self, *args, **kwargs):
         super(Function, self).__init__()
         self.documentation = kwargs.get("documentation", self.get_documentation())

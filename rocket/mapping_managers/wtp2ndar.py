@@ -4,7 +4,8 @@ from MappingManager import MappingManager
 from Functions.calc_functions import Sum, Mean
 from template_kit.template_structure import TemplateStructure
 from template_kit.TemplateComponents import DataTableComponent
-from Functions.interview_functions import FindGuidByWTPInt, FindGenderByWTPInt, FindAgeByWTPInt
+from Functions.interview_functions import FindGuidByWTPInt, FindGenderByWTPInt, FindAgeByWTPInt, FindAssessByWTPInt, \
+                                          FindWbicByWTPInt
 import pyodbc
 from loggers import map_log
 
@@ -21,6 +22,8 @@ class wtp2ndar (MappingManager):
         function_list.append(FindGuidByWTPInt())
         function_list.append(FindGenderByWTPInt())
         function_list.append(FindAgeByWTPInt())
+        function_list.append(FindAssessByWTPInt())
+        function_list.append(FindWbicByWTPInt())
         return function_list
 
     def _set_template_structure_(self):
@@ -61,16 +64,16 @@ class wtp2ndar (MappingManager):
         col_id_index = mapping_header.index(self.source.template_fields["id"])
         col_name_index = mapping_header.index(self.source.template_fields["col_name"])
         missing_value_index = mapping_header.index(self.source.template_fields["missing_vals"])
-        index = 0
+        col_id = 0
         for fields in fields_for_tables:
             if fields is None: continue
             for field in fields:
                 new_row = ["" for x in mapping_header]
-                new_row[col_id_index] = index
+                new_row[col_id_index] = col_id
                 new_row[col_name_index] = field
                 new_row[missing_value_index] = "9998, 9999"
                 mapping.content.append(new_row)
-                index += 1
+                col_id += 1
 
     def _get_table_fields_(self, tablename):
 

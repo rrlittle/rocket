@@ -20,6 +20,8 @@ class ComponentResponseProtocol(object):
         An empty string means nothing has been returned"""
         pass
 
+    def respond_to_error(self, error_componenet):
+        pass
 
 class ComponentWriteProtocol(object):
 
@@ -35,3 +37,5 @@ class ComponentWriteProtocol(object):
     def add_extra_content_to_data_table(self, data_table):
         pass
 
+    def add_extra_content_to_error(self, error):
+        pass

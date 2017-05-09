@@ -28,7 +28,6 @@ class TemplateParser(object):
             for c in self.components:
                 # read in content
                 c.read_in_line(file)
-               # import ipdb; ipdb.set_trace();
                 # the component will send message to the delegate
                 c.send_message_to_delegate(self.delegate)
 

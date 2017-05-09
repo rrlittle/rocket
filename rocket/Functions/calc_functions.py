@@ -39,6 +39,27 @@ def sum(*data, args = [0.8,'int']):
         return ssManager.NoDataError()
 
 
+class Subtract(Function):
+
+    argument_number = 1
+
+    def get_documentation(self):
+        return "The data will be subtracted by the first argument."
+
+    def get_name(self):
+        return "subtractBy"
+
+    def _func_(self, data_list, args=None):
+        if args is None or len(args) == 0:
+            raise Exception("No argument for subtract")
+
+        offset = int(args[0])
+        try:
+            return int(data_list[0]) - offset
+        except ValueError as e:
+            raise e
+
+
 class Sum(Function):
 
     def get_documentation(self):
@@ -173,7 +194,7 @@ class ReverseBySubtractingFrom(Function):
                 data = float(data_list[0])
 
                 # the most essential part
-                return upper_bound - data
+                return int(upper_bound - data)
             except ValueError as e:
                 raise ValueError("The data should be in number.")
 

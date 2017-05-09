@@ -35,6 +35,7 @@ class FindGuidByWTPInt(Function):
         The second option will be seen as caregiver, suggesting that its twin number will be 3 in gen_family_guid
 
     """
+    argument_number = 2
 
     def get_name(self):
         return "findGuidByWTPInt"
@@ -67,6 +68,8 @@ class FindGuidByWTPInt(Function):
 
 
 class FindGenderByWTPInt(Function):
+
+    argument_number = 2
 
     # this mapping defines how to translate our database coding to NDAR requirement
     gender_mapping = {
@@ -118,6 +121,8 @@ class FindAgeByWTPInt(Function):
 
     """
 
+    argument_number = 2
+
     def get_name(self):
         return "findAgeByWTPInt"
 
@@ -138,26 +143,11 @@ class FindAgeByWTPInt(Function):
             return self._calculate_age_(dob_date, assessment)
 
         else:
-
             dob_date = self._get_birth_date_(familyid=data_list[0], twin=data_list[1])
             if dob_date is None:
                 return ssManager.NoDataError()
             assessment_date = self._get_assessment_date_(familyid=data_list[0])
             return self._calculate_age_(dob_date,assessment_date)
-
-    def _get_gender_for_cg_(self, familyid):
-        con = get_open_connection()
-        cur = con.cursor()
-        sql = "SELECT pc FROM data_r1_tr WHERE familyid = '{0}' AND datamode = 'Entry';".format(familyid)
-        cur.execute(sql)
-
-        rows = cur.fetchmany()
-        if len(rows) > 1:
-            raise Exception("Duplicate gender for caregiver. familyid: {0}".format(familyid))
-        if len(rows) == 0:
-            raise Exception("No guid for familyid: %s" % familyid)
-        con.close()
-        return rows[0][0]
 
     def _get_birth_date_(self, familyid, twin):
         con = get_open_connection()
@@ -173,24 +163,6 @@ class FindAgeByWTPInt(Function):
         date_string = rows[0][0]
         if date_string == "9998":
             raise Exception("NoDOBDataForParticipant")
-        return datetime.strptime(date_string, '%m/%d/%Y')
-
-    def _get_birth_date_twin(self, familyid, twin):
-        con = get_open_connection()
-        cur = con.cursor()
-        sql = "SELECT dateofbirth FROM gen_twins WHERE familyid = '{0}' AND twin = {1};".format(familyid, twin)
-        cur.execute(sql)
-        rows = cur.fetchmany()
-        if len(rows) > 1:
-            raise Exception("Duplicate dob for twin: familyid: {0}, twin: {1}".format(familyid, twin))
-        if len(rows) == 0:
-            raise Exception("No dob for familyid: %s, twin: %s" % (familyid, twin))
-        con.close()
-        date_string = rows[0][0]
-
-        if date_string == "9998":
-            raise Exception("NoDOBDataForParticipant")
-
         return datetime.strptime(date_string, '%m/%d/%Y')
 
     def _get_assessment_date_(self, familyid):
@@ -226,3 +198,56 @@ class FindAgeByWTPInt(Function):
         return "return the age given the familyid and twin or just familyid. Twin should always follow familyid"
 
 
+class FindAssessByWTPInt(Function):
+
+    argument_number = 2
+
+    def get_name(self):
+        return "findAssessDateByWTPInt"
+
+    def get_documentation(self):
+        return "Given the familyid and twin or just familyid. it will give you interview date string, like 09/30/1995"
+
+    def _get_assessment_date_(self, familyid):
+        con = get_open_connection()
+        cur = con.cursor()
+        sql = "SELECT twadps FROM data_r1_tr WHERE familyid = '{0}';".format(familyid)
+        cur.execute(sql)
+        rows = cur.fetchmany()
+        if len(rows) > 1:
+            raise Exception("Duplicate dob for twin: familyid: {0}".format(familyid))
+        if len(rows) == 0:
+            raise Exception("No guid for familyid: %s " %familyid)
+        con.close()
+        date_string = rows[0][0]
+
+        if date_string == "9998":
+            raise Exception("NoAssessDataForParticipant")
+
+        return date_string
+
+    def _func_(self, data_list, args=None):
+        if len(data_list) != 1 and len(data_list) != 2:
+            raise Exception("data_list should be length of 1 or 2")
+
+        return self._get_assessment_date_(data_list[0])
+
+
+class FindWbicByWTPInt(Function):
+    argument_number = 2
+
+    def get_name(self):
+        return "findWbicByWTPInt"
+
+    def _func_(self, data_list, args=None):
+        if len(data_list) != 1 and len(data_list) != 2:
+            raise Exception("data_list should be length of 1 or 2")
+
+        if len(data_list) == 1:
+            return data_list[0][3:] + "3"
+
+        if len(data_list) == 2:
+            return data_list[0][3:] + str(data_list[1])
+
+    def get_documentation(self):
+        return "Given the familyid and twin or just familyid, it will return you its wbic, used by Goldsmith lab"

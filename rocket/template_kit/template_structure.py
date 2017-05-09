@@ -1,5 +1,5 @@
 from template_kit.components_behavior_protocols import ComponentWriteProtocol, ComponentResponseProtocol
-from template_kit.TemplateComponents import TemplateComponenet, Header, InstruInfoComponent, NoticeComponent,MappingInfo
+from template_kit.TemplateComponents import TemplateComponenet, Header, InstruInfoComponent, NoticeComponent,MappingInfo, ErrorComponent
 from template_kit.TemplateComponents import DataTableComponent
 from template_kit.template_parser import TemplateParser
 from template_kit.template_writer import TemplateWriter
@@ -29,7 +29,7 @@ class TemplateStructure:
             print(c)
             
     def set_to_default_structure(self):
-        self.components = [Header(),InstruInfoComponent(), NoticeComponent(), MappingInfo()]
+        self.components = [Header(), InstruInfoComponent(), NoticeComponent(), MappingInfo(), ErrorComponent()]
         return self.components
 
     def get_template_writer(self, delegate=ComponentWriteProtocol(), delimiter=","):
@@ -39,6 +39,7 @@ class TemplateStructure:
     def get_template_parser(self, delegate=ComponentResponseProtocol()):
         return TemplateParser(self.components, delegate)
 
+    
 
 def test():
     template_structure = TemplateStructure()

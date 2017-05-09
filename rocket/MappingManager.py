@@ -10,6 +10,7 @@ from template_kit.template_structure import TemplateStructure
 import csv
 from os import startfile,rename, path, remove
 from Functions.function_api import DropRowException
+from error_generator import user_error_log
 
 class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol):
     ''' this class is responsible for implementing the
@@ -87,6 +88,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         # find collisions
         collisions = []
         tmp = []
+
         for header in template_headers:
             if header not in tmp:
                 tmp.append(header)
@@ -130,7 +132,6 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
             parser = self.template_structure.get_template_parser()
         parser.parse_template(self.get_template())
         parser.close_file()
-
 
     def get_template(self, title='Template', allownew=False, save=False):
         ''' this gets the filepath to a file. which is assumed to be
@@ -260,7 +261,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
             except ValueError:
                 raise DropRowException
 
-    def make_template(self, itself_as_delegate=True):
+    def make_template(self, delegate=None):
         ''' leverages the sink and source handlers to make the template
             file.
 
@@ -299,8 +300,8 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
         templ_path = _get_template_path_()
         try:
-            if itself_as_delegate:
-                template_writer = self.template_structure.get_template_writer(delegate=self, delimiter=self.delimiter)
+            if delegate is not None:
+                template_writer = self.template_structure.get_template_writer(delegate=delegate, delimiter=self.delimiter)
             else:
                 template_writer = self.template_structure.get_template_writer(delimiter=self.delimiter)
             template_writer.write_template(templ_path)
@@ -343,12 +344,31 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
         # if the any exception happens
         try:
-            self.make_template(itself_as_delegate=False)
+            self.make_template(delegate=None)
             remove(temp_name)
         except Exception as e:
             rename(temp_name,template)
         return template
 
+    def update_error(self):
+        try:
+            self.parse_template(will_respond=False)
+        except TemplateParseError as e:
+            map_log.critical("Template Error, exiting updating")
+            return
+
+        template = self.get_template()
+        template_dir, filename = path.split(template)
+        temp_name = path.join(template_dir, filename + "temp")
+        rename(template, temp_name)
+
+        try:
+            self.make_template(delegate=user_error_log)
+            remove(temp_name)
+        except Exception as e:
+            remove(template)
+            rename(temp_name, template)
+        return template
 
     #########################################################################################
     # These are the delegates method that is used to determine what to do

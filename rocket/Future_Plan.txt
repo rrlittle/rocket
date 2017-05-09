@@ -1,4 +1,16 @@
 1: Template update function. Given a rocket template, it will rewrite the header to get the latest methods
 2: Auto-populate the fieldnames for wtp.
 3: Have a error log that tracks the user error
+
+User Readable error-log Construction:
+    Principle for user readable error-log:
+        clean, no error cascading
+        easy trace
+        language fitting user's cognitive model
+
+    Idea:
+        Make the error log as a part of the template
+        Update the error part of the template after each time it gets run, suggesting that the template has to be closed.
+
+
 ****
