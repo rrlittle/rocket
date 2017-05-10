@@ -3,7 +3,7 @@ from data_handlers import coins, ndar
 from Functions import ursi_functions
 from loggers import map_log
 from __init__ import templatedir, secretdir
-from Functions.calc_functions import Mean, Sum, FindFirstValid, TestNoData, ReverseBySubtractingFrom, Subtract
+from Functions.calc_functions import Mean, Sum, FindFirstValid, TestNoData, ReverseBySubtractingFrom, Subtract, MaxLength
 #from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC, FindAgeByWBIC,\
 #                                    FindBirthdateByWBIC,FindGenderByWBIC
 from Functions.ursi_functions import FindGuid, FindGuidByWBIC, FindUrsiByWBIC
@@ -31,6 +31,7 @@ class coins2ndar(MappingManager):
         functions_list.append(Mean())
         functions_list.append(Sum())
         functions_list.append(Subtract())
+        functions_list.append(MaxLength())
 
         functions_list.append(FindAge())
         functions_list.append(FindAgeByWBIC())

@@ -210,6 +210,27 @@ class TestNoData(Function):
 
         return ssManager.NoDataError("NO DATA")
 
+
+class MaxLength(Function):
+
+    def get_name(self):
+        return "maxLength"
+
+    def get_documentation(self):
+        return "The data will be limited to this number of characters. The argument will accept an integer as" \
+               " the number of characters allowed in a max string"
+
+    def _func_(self, data_list, args=None):
+        if args is None or len(args) == 0:
+            raise ValueError("There should be one argument for this function")
+
+        max_length = int(args[0])
+        if max_length < 0:
+            raise ValueError("The argument should be bigger than or equal 0")
+
+        return data_list[0][0: max_length]
+
+
 def mean(*srcdat, args=None):
     # data will be coerced in the sum
     #import ipdb; ipdb.set_trace()
