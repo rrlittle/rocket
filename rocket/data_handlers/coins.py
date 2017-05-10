@@ -3,6 +3,7 @@ import utils
 
 dateformat_candidates =[
     "%m/%d/%Y %H:%M",
+    "%m/%d/%y %H:%M",
     "%m-%d-%Y %I:%M:%S %p",
     "%m/%d/%Y"
     ]
@@ -33,7 +34,6 @@ class coins_src(sourceManager):
                 return assessment_date
             except Exception as e:
                 pass
-
         raise ValueError("The assessment_date in data file is not matched in any acceptable date format in rocket")
 
 
