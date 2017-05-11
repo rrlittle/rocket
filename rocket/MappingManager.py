@@ -9,7 +9,7 @@ from template_kit.components_behavior_protocols import ComponentResponseProtocol
 from template_kit.template_structure import TemplateStructure
 import csv
 from os import startfile,rename, path, remove
-from Functions.function_api import DropRowException
+from Functions.function_api import DropRowException, UserErrorNotificationException, UserWarningNotificationException
 from error_generator import user_error_log
 
 class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol):

@@ -1,6 +1,7 @@
 import Managers
 from loggers import col_log
-from Functions.function_api import PlainCopy, DropRowException
+from Functions.function_api import PlainCopy, DropRowException, UserWarningNotificationException, UserErrorNotificationException
+from error_generator import user_error_log
 
 class Col(object):
     ''' this represents one row from the template file.
@@ -172,8 +173,11 @@ class sinkCol(Col):
             if func.func_name == func_name:
                 self.func = func
                 return
+            user_error_log.log_mapping_error(self.col_name, self.id, "The function name is invalid.")
 
         #self.func = self.handler.globalfuncs[self.func.strip()]['ref']
+        # This place can log user
+
         raise self.handler.TemplateError(('function %s for column '
                                               '%s is not valid. please change the template'
                                               ' to a valid function or blank') % (self.func, self.col_name))
@@ -232,6 +236,14 @@ class sinkCol(Col):
             else:
                 col_log.debug('CALLING %s(%s)' % (self.func.__name__, srcdat))
                 self.dat = self.func.execute(*srcdat)
+
+        except UserErrorNotificationException as e:
+            user_error_log.log_mapping_error(self.col_name, self.id, str(e))
+            raise Exception(('Error raised while '
+                             'running %s(%s). Error: %s') % (self.func, srcdat, e))
+        except UserWarningNotificationException as e:
+            user_error_log.log_mapping_warning(self.col_name, self.id, str(e))
+
         except DropRowException as e:
             raise DropRowException(('Error raised while '
                                                  'running %s(%s). Error: %s') % (self.func, srcdat, e))

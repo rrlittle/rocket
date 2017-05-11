@@ -67,8 +67,10 @@ class controller(object):
             # fill sink with converted data from source
             self.mapper.convert()
 
-            self.mapper.sink.write_outfile()
+            filepath = self.mapper.sink.write_outfile()
 
+            if filepath is not None:
+                subprocess.call('start excel.exe "{0}"'.format(filepath), shell=True)
             # Update the mapping file to update data
         except Exception as e:
             control_log.critical("Rocket exit due to exception: %s" %e)
@@ -85,4 +87,8 @@ class controller(object):
         """
 
         #return self.mapper.update_error()
-        return self.mapper.update_header()
+        filepath = self.mapper.update_header()
+
+        if filepath is not None:
+            subprocess.call('start excel.exe "{0}"'.format(filepath), shell=True)
+        return

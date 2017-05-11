@@ -51,12 +51,13 @@ class FindGuidByWTPInt(Function):
         if len(data_list) == 1:
             return self._get_guid_for_familyid_and_twin(familyid=data_list[0], twin=3)
         else:
-            return self._get_guid_for_familyid_and_twin(familyid=data_list[0], twin=data_list[0])
+            return self._get_guid_for_familyid_and_twin(familyid=data_list[0], twin=data_list[1])
 
     def _get_guid_for_familyid_and_twin(self, familyid, twin):
         con = get_open_connection()
         cur = con.cursor()
-        cur.execute("SELECT guid from {0} WHERE familyid = '{1}' AND twin = {2}".format(guid_table, familyid, twin))
+        sql = "SELECT guid from {0} WHERE familyid = '{1}' AND twin = {2};".format(guid_table, familyid, twin)
+        cur.execute(sql)
         rows = cur.fetchmany()
         if len(rows) > 1:
             raise Exception("Duplicate guid for caregiver. familyid: {0}".format(familyid))

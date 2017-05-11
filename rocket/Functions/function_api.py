@@ -1,5 +1,20 @@
 import logging
+
 class DropRowException(Exception):
+    pass
+
+class UserErrorNotificationException(Exception):
+    """
+        This exception will be used to notify the column that uses this function to log the message
+        onto user's template. So if you want the user to know something, you should throw this exception in
+        function implementation
+    """
+    pass
+
+class UserWarningNotificationException(Exception):
+    pass
+
+class DebuggingException(Exception):
     pass
 
 logger = logging.getLogger("main_log.function")

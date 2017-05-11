@@ -11,6 +11,9 @@ User Readable error-log Construction:
     Idea:
         Make the error log as a part of the template
         Update the error part of the template after each time it gets run, suggesting that the template has to be closed.
+        Does this worth it ??????
+
+    Here is a list of potential error message that people can run into (But does it mean always?):
 
 
 ****
