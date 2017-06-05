@@ -26,7 +26,7 @@ def get_open_connection():
     return pyodbc.connect("DSN=wtp_data")
 
 
-class FindGuidByWTPInt(Function):
+class FindGuidByWTPInt(DropRowFunction):
     """
         This function accepts two possible keys: one is the combination of familyid and twin, and the other is just
          familyid
@@ -82,7 +82,7 @@ class FindGenderByWTPInt(Function):
     def _func_(self, data_list, args=None):
         if len(data_list) != 1 and len(data_list) !=2:
             raise Exception("data_list should be length of 1 or 2")
-
+      #  import ipdb; ipdb.set_trace()
         if len(data_list) == 1:
             # Use data_r1_tr to decide the gender for caregiver
             gender = self._get_gender_(familyid=data_list[0], twin=3)
