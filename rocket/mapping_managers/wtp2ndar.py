@@ -68,7 +68,7 @@ class wtp2ndar (MappingManager):
         col_id_index = mapping_header.index(self.source.template_fields["id"])
         col_name_index = mapping_header.index(self.source.template_fields["col_name"])
         missing_value_index = mapping_header.index(self.source.template_fields["missing_vals"])
-        col_id = 0
+        col_id = 1
         for fields in fields_for_tables:
             if fields is None: continue
             for field in fields:

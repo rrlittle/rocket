@@ -119,7 +119,6 @@ class FindAgeByWTPInt(Function):
         It fetches the assessment date from data_r1_tr column "twadps". It fetches the dob from gen_twin column dateofbirth
         for twin.
         Then use the function to calculate the age.
-
     """
 
     argument_number = 2
