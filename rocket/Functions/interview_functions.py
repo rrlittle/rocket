@@ -68,6 +68,7 @@ class FindGuidByWTPInt(DropRowFunction):
         return rows[0][0]
 
 
+
 class FindGenderByWTPInt(Function):
 
     argument_number = 2
@@ -215,9 +216,9 @@ class FindAssessByWTPInt(Function):
         cur.execute(sql)
         rows = cur.fetchmany()
         if len(rows) > 1:
-            raise Exception("Duplicate dob for twin: familyid: {0}".format(familyid))
+            raise Exception("Duplicate assessment date for twin: familyid: {0}".format(familyid))
         if len(rows) == 0:
-            raise Exception("No guid for familyid: %s " %familyid)
+            raise Exception("No assessment date for familyid: %s " %familyid)
         con.close()
         date_string = rows[0][0]
 
@@ -231,6 +232,43 @@ class FindAssessByWTPInt(Function):
             raise Exception("data_list should be length of 1 or 2")
 
         return self._get_assessment_date_(data_list[0])
+
+
+class FindUrsiByWTPInt(Function):
+    def get_name(self):
+        return "findUrsiByWTPInt"
+
+    def _func_(self, data_list, args=None):
+
+        # if the data_list has one element, it's just for family
+        if len(data_list) == 1:
+            return self.get_ursi_from_wtpdata(data_list[0], 3)
+        elif len(data_list) == 2: # if the data_list has two elements, it's for twin
+            return self.get_ursi_from_wtpdata(data_list[0], data_list[1])
+        else:
+            raise Exception("data_list should be length of 1 or 2")
+
+    def get_ursi_from_wtpdata(self, familyid, twin):
+        con = get_open_connection()
+        cur = con.cursor()
+        sql = "SELECT ursi FROM {table} WHERE familyid = '{familyid}' and twin = {twin}"\
+            .format(table = guid_table, familyid = familyid, twin = twin)
+        cur.execute(sql)
+        rows = cur.fetchmany()
+        if len(rows) > 1:
+            raise Exception("Duplicate ursi for twin: familyid: {0}".format(familyid))
+        if len(rows) == 0:
+            raise Exception("No ursi for familyid: %s " % familyid)
+        con.close()
+        ursi = rows[0][0]
+
+        if ursi == "9998":
+            return ssManager.NoDataError("Empty ursi")
+        return ursi
+
+    def get_documentation(self):
+        return "Given the familyid and twin or just familyid, it will return you its ursi," \
+               " the unique identifier used by COINS"
 
 
 class FindWbicByWTPInt(Function):

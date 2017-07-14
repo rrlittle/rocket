@@ -5,7 +5,7 @@ from Functions.calc_functions import Sum, Mean, Subtract, MaxLength
 from template_kit.template_structure import TemplateStructure
 from template_kit.TemplateComponents import DataTableComponent
 from Functions.interview_functions import FindGuidByWTPInt, FindGenderByWTPInt, FindAgeByWTPInt, FindAssessByWTPInt, \
-                                          FindWbicByWTPInt
+                                          FindWbicByWTPInt, FindUrsiByWTPInt
 import pyodbc
 from loggers import map_log
 
@@ -28,6 +28,7 @@ class wtp2ndar (MappingManager):
         function_list.append(FindAgeByWTPInt())
         function_list.append(FindAssessByWTPInt())
         function_list.append(FindWbicByWTPInt())
+        function_list.append(FindUrsiByWTPInt())
         return function_list
 
     def _set_template_structure_(self):

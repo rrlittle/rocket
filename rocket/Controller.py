@@ -53,8 +53,6 @@ class controller(object):
             mapping manager to parse it using the source and sink
             managers
         '''
-
-
         try:
             # parse the template, setting up src and sink
             # different managers will prompt the user for what they need when they

@@ -15,6 +15,7 @@
 ,,findAgeByWTPInt,return the age given the familyid and twin or just familyid. Twin should always follow familyid,,,,,,,,
 ,,findAssessDateByWTPInt,"Given the familyid and twin or just familyid. it will give you interview date string, like 09/30/1995",,,,,,,,
 ,,findWbicByWTPInt,"Given the familyid and twin or just familyid, it will return you its wbic, used by Goldsmith lab",,,,,,,,
+,,findUrsiByWTPInt,"Given the familyid and twin or just familyid, it will return you its ursi, the unique identifier used by COINS",,,,,,,,
 Header>,,,,,,,,,,,
 <Data Table,,,,,,,,,,,
 ,Data table:,data_rd_ha_sp_c,,,,,,,,,
@@ -27,7 +28,7 @@ User Notice>,,,,,,,,,,,
 <Mapping Template,,,,,,,,,,,
 ndar id,ndar name,ndar range,default value,mapping,function,args,required,wtp id,wtp name,wtp range,wtp missing value
 1,subjectkey,,,"0,1",findGuidByWTPInt,,t,0,familyid,,"9998, 9999"
-2,src_subject_id,,,"0,1",findWbicByWTPInt,,t,1,twin,,"9998, 9999"
+2,src_subject_id,,,"0,1",findUrsiByWTPInt,,t,1,twin,,"9998, 9999"
 3,interview_date,,,"0,1",findAssessDateByWTPInt,,t,2,datamode,,"9998, 9999"
 4,interview_age,,,"0,1",findAgeByWTPInt,,t,3,checked,,"9998, 9999"
 5,gender,,,"0,1",findGenderByWTPInt,,t,4,spex000c,,"9998, 9999"
@@ -192,3 +193,5 @@ ndar id,ndar name,ndar range,default value,mapping,function,args,required,wtp id
 164,hbqsps_74,,,78,,,,,,,
 165,comments_misc,,,,,,,,,,
 Mapping Template>,,,,,,,,,,,
+<Error,,,,,,,,,,,
+Error>,,,,,,,,,,,

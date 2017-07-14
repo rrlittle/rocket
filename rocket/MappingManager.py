@@ -127,13 +127,19 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
         parser = None
         if will_respond:
-            parser = self.template_structure.get_template_parser(self)
-        else:
-            parser = self.template_structure.get_template_parser()
-        parser.parse_template(self.get_template())
-        parser.close_file()
 
-    def get_template(self, title='Template', allownew=False, save=False):
+            # the parser will notify the delegator to respond to the template
+            # Mapping manager will read in the mapping information here
+            parser_with_delegate = self.template_structure.get_template_parser(delegate=self)
+            parser_with_delegate.parse_template(self.get_template_filepath())
+            parser_with_delegate.close_file()
+            return
+        else:
+            parser_without_delegate = self.template_structure.get_template_parser()
+            parser_without_delegate.parse_template(self.get_template_filepath())
+            parser_without_delegate.close_file()
+
+    def get_template_filepath(self, title='Template', allownew=False, save=False):
         ''' this gets the filepath to a file. which is assumed to be
             a template file. we will rely on source sink handlers for error
             checking when they load it in
@@ -189,29 +195,23 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                 # go through all the columns defined in the template
                 for sinkcoldef in self.sink.col_defs:
                     try:
-                        # if rowid >= 25:
-                        #   ipdb.set_trace()
-                        # sinkcol maps from the id to sourceColMappers
-                        sinkcoldef.map_src(srcrow)
+                        mapperslist = sinkcoldef.find_mapping_columns(srcrow)
                         # get col objs from src
-
-                        mapperslist = sinkcoldef.mappers
                         # src cols required to compute the sink value
 
                         if not isinstance(mapperslist, self.sink.NoDataError):
-                            srccols = self.source.get_column_defs(*mapperslist)
+                         #   srccols = self.source.get_column_defs(*mapperslist)
                             # list of columns in the source datafile we need to grab
 
                             # get the data
-                            srcdat = [srcrow[col.col_name] for col in srccols]
+                            srcdat = [srcrow[col.col_name] for col in mapperslist]
 
                             # list of data values from src datafile
                             # zip the data with it's defining object
                             # needed for sinkcol.convert
-                            src_datcol_zip = zip(srcdat, srccols)
 
                             # convert it to the sink value using the function inside sinkcoldef
-                            sinkdat = sinkcoldef.convert(src_datcol_zip)
+                            sinkdat = sinkcoldef.convert(zip(srcdat, mapperslist))
 
 
                             # print('output:',sinkdat)
@@ -290,8 +290,8 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
             if hasattr(self, 'templ_path'):
                 return self.templ_path
             else:
-                return self.get_template(title='Select a template file',
-                                         save=True, allownew=True)
+                return self.get_template_filepath(title='Select a template file',
+                                                  save=True, allownew=True)
 
         def handle_tmeplate_err(errstr, err):
             map_log.error(('%s... Template field getting deleted and '
@@ -337,7 +337,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
             break
 
         # rename the old file as backup
-        template = self.get_template()
+        template = self.get_template_filepath()
         template_dir, filename = path.split(template)
         temp_name = path.join(template_dir, filename + "temp")
         rename(template, temp_name)
@@ -357,7 +357,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
             map_log.critical("Template Error, exiting updating")
             return
 
-        template = self.get_template()
+        template = self.get_template_filepath()
         template_dir, filename = path.split(template)
         temp_name = path.join(template_dir, filename + "temp")
         rename(template, temp_name)

@@ -29,19 +29,19 @@ class TemplateComponenet(object):
         self.end_token = ">"
         self.content = []
         self.line_num = 0
+        self.reader = None
 
     def read_in_line(self, file):
-        reader = csv.reader(file)
+        self.reader = csv.reader(file)
+        self.content, self.line_num = self.find_section_start_in_file(self.reader)._read_until_end_token_(self.reader)
+        return self._process_after_reading_(self.content)
 
-        # find the first token to start the processing
+    def find_section_start_in_file(self, reader):
         for row in reader:
-            if self.start_token in row:
-                self.content, self.line_num = self._start_read_until_end_token_(reader)
-                return self._process_after_reading_(self.content)
-
+            if self.start_token in row: return self
         raise TemplateStructureError("Missing Template Component {0}".format(type(self).__name__))
 
-    def _start_read_until_end_token_(self, reader):
+    def _read_until_end_token_(self, reader):
         """
             A helper function to read the content of a component until reaching the end token
             If the end token is missing, then it will raise exception
@@ -49,13 +49,11 @@ class TemplateComponenet(object):
         :return:
         """
         content_lines = []
-        line_num = 0
         for row in reader:
             if self.end_token not in row:
                 content_lines.append(row)
-                line_num += 1
             else:
-                return content_lines, line_num
+                return content_lines, len(content_lines)
         raise TemplateStructureError("No ending token for component {0}".format(type(self).__name__))
 
     def _process_after_reading_(self, content=[]):

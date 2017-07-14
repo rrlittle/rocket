@@ -189,7 +189,7 @@ class sinkCol(Col):
      #       if self.default == "NI":
       #          return True
 
-    def map_src(self, srcrow):
+    def find_mapping_columns(self, srcrow):
         '''This method turn the attribute mappers into a list
             of corresponding srcCol Object.
         '''
@@ -203,6 +203,7 @@ class sinkCol(Col):
                 assert len(cols) == 1, 'id (%s) specified does not exist' % mid
                 mappers_result.append(cols[0])
             self.mappers = mappers_result
+        return self.mappers
 
     def convert(self, src_datacol_zip):
         ''' this will convert the src_data to a proper value for this column

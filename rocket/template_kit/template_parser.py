@@ -22,7 +22,7 @@ class TemplateParser(object):
         return self.templ_file
 
     def parse_template(self, file_path):
-        # TODO: Add Comment
+        # Parse each component in the rocket template
         try:
             file = self._open_file_(file_path)
             for c in self.components:
