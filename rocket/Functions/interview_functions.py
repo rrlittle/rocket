@@ -19,6 +19,7 @@ from Managers import ssManager
 import pyodbc
 from dateutil import relativedelta
 from datetime import datetime
+from error_generator import user_error_log
 
 guid_table = "gen_rdmr_guid"
 rdoc_info = "user_jj_rdoc_ppt_info"
@@ -78,12 +79,16 @@ class FindGenderByWTPInt(Function):
         1 : "F",
         2 : "M",
         9998 : ssManager.NoDataError("Empty gender")
+
     }
 
     def _func_(self, data_list, args=None):
         if len(data_list) != 1 and len(data_list) !=2:
             raise Exception("data_list should be length of 1 or 2")
-      #  import ipdb; ipdb.set_trace()
+
+        if data_list[0] == "WTP000021":
+            import ipdb;
+
         if len(data_list) == 1:
             # Use data_r1_tr to decide the gender for caregiver
             gender = self._get_gender_(familyid=data_list[0], twin=3)
@@ -102,7 +107,7 @@ class FindGenderByWTPInt(Function):
         if len(rows) > 1:
             raise Exception("Duplicate gender for caregiver. familyid: {0}".format(familyid))
         if len(rows) == 0:
-            raise Exception("No guid for familyid: %s, twin: %s" % (familyid, twin))
+            raise Exception("No gender for familyid: %s, twin: %s" % (familyid, twin))
         con.close()
         return rows[0][0]
 
@@ -289,3 +294,4 @@ class FindWbicByWTPInt(Function):
 
     def get_documentation(self):
         return "Given the familyid and twin or just familyid, it will return you its wbic, used by Goldsmith lab"
+

@@ -73,8 +73,10 @@ class controller(object):
         except Exception as e:
             control_log.critical("Rocket exit due to exception: %s" %e)
             control_log.critical("Start error logging")
-         #   self.mapper.update_error()
-
+        finally:
+            template_file_path = self.mapper.update_error()
+            if template_file_path is not None:
+                subprocess.call('start excel.exe "{0}"'.format(template_file_path), shell=True)
         return
 
     def update_template(self, template_path=None):

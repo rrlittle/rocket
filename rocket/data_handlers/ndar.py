@@ -34,6 +34,7 @@ class ndar_snk(sinkManager):
     def ensure_row(self, datarow):
         man_log.debug("ENSURING DATA ROW %s" % datarow)
         for coldef, elem in datarow.items():
+
             if coldef.required:
                 man_log.debug('row[%s](%s) is required' % (coldef, elem))
                 if isinstance(elem, self.NoDataError):
@@ -46,10 +47,7 @@ class ndar_snk(sinkManager):
         self.version = version
 
     def write_header(self, outfile):
-        #import ipdb; ipdb.set_trace()
         insr = self.instrument_name
         vers = self.version
         outwriter = utils.writer(outfile, delimiter=self.delimiter)
         outwriter.writerow([insr, vers])
-
-        pass

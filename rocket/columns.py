@@ -171,9 +171,10 @@ class sinkCol(Col):
         # if the function name actually exists as a function
         for func in self.handler.globalfuncs:
             if func.func_name == func_name:
+                #import ipdb; ipdb.set_trace()
                 self.func = func
                 return
-            user_error_log.log_mapping_error(self.col_name, self.id, "The function name is invalid.")
+        user_error_log.log_mapping_error(self.col_name, self.id, "The function name is invalid.")
 
         #self.func = self.handler.globalfuncs[self.func.strip()]['ref']
         # This place can log user
@@ -247,14 +248,14 @@ class sinkCol(Col):
 
         except DropRowException as e:
             raise DropRowException(('Error raised while '
-                                                 'running %s(%s). Error: %s') % (self.func, srcdat, e))
+                                                 'running %s(%s). Error: %s') % (self.func.func_name, srcdat, e))
 
         except Exception as e:
             col_log.error('err while converting %s with %s: %s' % (self,
                                                                    src_datacol_zip, e))
             #return self.handler.NoDataError
             raise Exception(('Error raised while '
-            'running %s(%s). Error: %s')%(self.func, srcdat, e))
+            'running %s(%s). Error: %s')%(self.func.func_name, srcdat, e))
 
         col_log.debug('CONVERTED TO (%s)' % self.dat)
         return self.dat

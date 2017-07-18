@@ -1,4 +1,4 @@
-<Header,,,,,,,,,,,
+<Header
 ,coins2ndar,,,,,,,,,,
 ,example,template,header,,,,,,,,
 ,ndar_snk,,,,,,,,,,
@@ -26,17 +26,17 @@
 ,,findFirstValid,Gets the first Non-missing value in the data list.,,,,,,,,
 ,,noDataTest,NO DOCUMENTATION IMPLEMENTED,,,,,,,,
 ,,reverseBySubtractingFrom,"Given the cell score, it will reverse the score by subtracting it from a number given in the arg",,,,,,,,
-Header>,,,,,,,,,,,
-<InstruInfo,,,,,,,,,,,
+Header>
+<InstruInfo
 ,Instrument Name:,igt,Version:,1,,,,,,,
 ,,,,,,,,,,,
 ,,,,,,,,,,,
-InstruInfo>,,,,,,,,,,,
-<User Notice,,,,,,,,,,,
+InstruInfo>
+<User Notice
 ,,,,,,,,,,,
 ,,,,,,,,,,,
-User Notice>,,,,,,,,,,,
-<Mapping Template,,,,,,,,,,,
+User Notice>
+<Mapping Template
 ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins id,coins name,coins range,coins missing value
 1,subjectkey,,,3,FindGuidByWbic,,t,1,date,,"~<userSkipped>~,~<condSkipped>~,"
 2,src_subject_id,,,3,findUrsiByWbic,,t,2,time,,"~<userSkipped>~,~<condSkipped>~,"
@@ -84,14 +84,14 @@ ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins 
 ,,,,,,,,44,values.trackingcondition_2,,"~<userSkipped>~,~<condSkipped>~,"
 ,,,,,,,,,,,
 ,,,,,,,,,,,
-Mapping Template>,,,,,,,,,,,
-<Error,,,,,,,,,,,
-,Last Run:,51:31.0,,,,,,,,,
-,,,,,,,,,,,
-,Mapping Error,,,,,,,,,,
-,,Column name,Column id,Message,Type,,,,,,
-,,sub,3,this field missing in data file,Error,,,,,,
-,,blocknu,4,this field missing in data file,Error,,,,,,
-,,blockce,5,this field missing in data file,Error,,,,,,
-,,,,,,,,,,,
-Error>,,,,,,,,,,,
+Mapping Template>
+<Error
+,Last Run:,2017-07-18 15:14:22.777364
+
+,Runtime Warning
+,,Column name,Column id,Message,Type
+,,subjectkey,1,Error raised while running FindGuidByWbic(['101742']). Error: The WBIC provided can't be found,Warning
+,,subjectkey,1,Error raised while running FindGuidByWbic(['9800991']). Error: WBIC or GUID key is not in the information file,Warning
+,,subjectkey,1,Error raised while running FindGuidByWbic(['7121']). Error: The WBIC provided can't be found,Warning
+,
+Error>

@@ -219,15 +219,18 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                             self.sink[-1][sinkcoldef] = sinkdat
 
                         else:
-                            self.sink[-1][sinkcoldef] = sinkcoldef.default
+                            self.sink[-1][sinkcoldef] = self.sink.NoDataError()
+                            #self.sink[-1][sinkcoldef] = sinkcoldef.default
 
 
                     except DropRowException as e:
+                        user_error_log.log_runtime_warning(column_name=sinkcoldef.col_name, column_id=sinkcoldef.id,
+                                                           message=str(e))
                         raise e
                     except Exception as e:
                         map_log.error(('A not drop row exception happen when'
                                        'processing data in a row: %s') % e)
-                        self.sink[-1][sinkcoldef] = sinkcoldef.default
+                        self.sink[-1][sinkcoldef] = self.sink.NoDataError()
                         continue
 
                 # after the row is done use ensure row
@@ -360,7 +363,12 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         template = self.get_template_filepath()
         template_dir, filename = path.split(template)
         temp_name = path.join(template_dir, filename + "temp")
-        rename(template, temp_name)
+        try:
+            rename(template, temp_name)
+        except PermissionError as e:
+            input(('FAIL: Template %s was not opened successfully for updating error. perhaps it is open. '
+                   'close it and hit enter to cont') % template)
+            rename(template, temp_name)
 
         try:
             self.make_template(delegate=user_error_log)

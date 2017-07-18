@@ -15,7 +15,13 @@ class TemplateWriter(object):
 
     def write_template(self, output_file_path):
         self.output_file_path = output_file_path
-        self.file = open(output_file_path, "w", errors="replace", newline="")
+        try:
+            self.file = open(output_file_path, "w", errors="replace", newline="")
+        except PermissionError as e:
+            input(('%s was not opened successfully. perhaps it is open. '
+                   'close it and hit enter to cont') % output_file_path)
+            self.file = open(output_file_path, 'w', newline="")
+
         for c in self.components:
             c.written_to_file(file=self.file, delegate=self.delegate, delimiter=self.delimiter)
 
