@@ -71,6 +71,7 @@ class ndar_snk(sinkManager):
             ACCEPTABLE_FORMAT = "({number},)*{curly}?(,{number})*|{sequence}".format(number=INTEGER,
                                                                                      sequence=SEQUENCE_COMMA,
                                                                                      curly=CURLY_ITEM)
+            ACCEPTABLE_FORMAT = "({number}|{curly})(,({number}|{curly}))*".format(number=INTEGER, curly=CURLY_ITEM)
 
             if re.fullmatch(ACCEPTABLE_FORMAT, mappers) is None:
                 #user_error_log.log_mapping_error("Syntax for the mapper is wrong")

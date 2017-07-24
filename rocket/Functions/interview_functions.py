@@ -86,9 +86,6 @@ class FindGenderByWTPInt(Function):
         if len(data_list) != 1 and len(data_list) !=2:
             raise Exception("data_list should be length of 1 or 2")
 
-        if data_list[0] == "WTP000021":
-            import ipdb;
-
         if len(data_list) == 1:
             # Use data_r1_tr to decide the gender for caregiver
             gender = self._get_gender_(familyid=data_list[0], twin=3)
@@ -307,8 +304,8 @@ class GenderResponse(Function):
 
         # This function should have 3 argumennts
         if len(data_list) != 3:
-            user_error_log.log_mapping_error("Gender Response should contain 3 mapping files")
-            return ssManager.NoDataError()
+           # user_error_log.log_mapping_error("Gender Response should contain 3 mapping files")
+            return ssManager.NoDataError("Gender Response should contain 3 mapping files")
 
         # The male is "M", and "F" stands for female
         if data_list[2].strip() == "M":

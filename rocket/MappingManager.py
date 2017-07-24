@@ -196,7 +196,8 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                 for sinkcoldef in self.sink.col_defs:
                     try:
                        # mapperslist = sinkcoldef.find_mapping_columns(srcrow=srcrow, sinkrow=self.sink[-1])
-
+                        if sinkcoldef.col_name == "days_baseline":
+                            import ipdb;ipdb.set_trace()
                         mapperslist, srcdat = sinkcoldef.find_mapping_columns_development(srcrow=srcrow, sinkrow=self.sink[-1])
                         # get col objs from src
                         # src cols required to compute the sink value

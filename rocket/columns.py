@@ -185,33 +185,58 @@ class sinkCol(Col):
                                               '%s is not valid. please change the template'
                                               ' to a valid function or blank') % (self.func, self.col_name))
 
-    def find_mapping_columns(self, srcrow, sinkrow = None):
-        '''This method turn the attribute mappers into a list
-            of corresponding srcCol Object.
-        '''
 
-        mappers_result = []
-        sink_col_mapper = []
+    def find_mapping_columns_development(self, srcrow, sinkrow = None):
+        """
+            This method translates the mapper string to the actual data. Any column id surronded with "{}" is seen as
+            the column id from sink manager.
 
-        source_col_id = []
-        sink_col_id = []
+        :param srcrow: the data row for source
+        :param sinkrow: the data row for sink
+        :return:
+        """
 
+        def find_col_in_col_lists(id, col_list):
+            cols = [col for col in col_list if col.id == id]
+            assert len(cols) <= 1, 'non unique sink ids (%s) in template' % id
+            assert len(cols) == 1, 'id (%s) specified does not exist' % id
+            return cols[0]
 
-        # Still need change
+        INTEGER = "[0-9]+"
+        SEQUENCE_COMMA = "{number}(,{number})*".format(number=INTEGER)
         if isinstance(self.mappers, str):
+            s = re.split("({.*?})", self.mappers)
+            col_data = []
+            col_list = []
+            for substring in s:
+                if substring is None or substring == "":
+                    continue
+                match = re.search(SEQUENCE_COMMA, substring)
+                if match:
+                    items = match.group().split(",")
+                    for id in items:
+                        if "{" in substring and "}" in substring:
+                            # The number is the id, compare it with the sink row
+                            # Find the column, and use the name as key
+                            try:
+                                sink_col = find_col_in_col_lists(id, sinkrow)
+                                col_data.append(sinkrow[sink_col.col_name])
+                                col_list.append(sink_col)
+                            except KeyError as e:
+                                user_error_log.log_mapping_error("The sink column id in the mapper string has to be smaller"
+                                                                 "than the id of this column")
+                                raise e
+                        else:
+                            src_col = find_col_in_col_lists(id, srcrow)
+                            col_list.append(src_col)
+                            col_data.append(srcrow[src_col.col_name])
 
-            mappers_id = self.mappers.split(',')
-            for mid in mappers_id:
-                cols = [col for col in srcrow if col.id == mid]
-                assert len(cols) <= 1, 'non unique src ids (%s) in template' % mid
-                assert len(cols) == 1, 'id (%s) specified does not exist' % mid
-                mappers_result.append(cols[0])
-            self.mappers = mappers_result
-        return self.mappers
+            return col_list, col_data
+        raise Exception("Unexpected error")
 
     # What this method should do is to parse 1,2, {1,2,3}, 4 into two columns. One has the sink column, the other
     # has the source column
-    def find_mapping_columns_development(self, srcrow, sinkrow=None):
+    def find_mapping_columns_development2(self, srcrow, sinkrow=None):
         '''This method turn the attribute mappers into a list
             of corresponding srcCol Object.
         '''
