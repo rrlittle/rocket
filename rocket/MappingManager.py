@@ -186,7 +186,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
         if clear_sink:  # if sink is not already initialized
             self.sink.initialize_data()  # clear any data in sink
-
+        #import ipdb; ipdb.set_trace()
         for rowid, srcrow in enumerate(self.source):
             self.sink.add_row()  # we want to fill in a new row
             map_log.info('converting row {0}'.format(rowid))
@@ -195,16 +195,18 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                 # go through all the columns defined in the template
                 for sinkcoldef in self.sink.col_defs:
                     try:
-                        mapperslist = sinkcoldef.find_mapping_columns(srcrow)
+                       # mapperslist = sinkcoldef.find_mapping_columns(srcrow=srcrow, sinkrow=self.sink[-1])
+
+                        mapperslist, srcdat = sinkcoldef.find_mapping_columns_development(srcrow=srcrow, sinkrow=self.sink[-1])
                         # get col objs from src
                         # src cols required to compute the sink value
 
                         if not isinstance(mapperslist, self.sink.NoDataError):
-                         #   srccols = self.source.get_column_defs(*mapperslist)
+                            #srccols = self.source.get_column_defs(*mapperslist)
                             # list of columns in the source datafile we need to grab
 
                             # get the data
-                            srcdat = [srcrow[col.col_name] for col in mapperslist]
+                            # srcdat = [srcrow[col.col_name] for col in mapperslist]
 
                             # list of data values from src datafile
                             # zip the data with it's defining object
@@ -213,14 +215,13 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                             # convert it to the sink value using the function inside sinkcoldef
                             sinkdat = sinkcoldef.convert(zip(srcdat, mapperslist))
 
-
                             # print('output:',sinkdat)
                             # save the sink value to the last row
                             self.sink[-1][sinkcoldef] = sinkdat
 
                         else:
                             self.sink[-1][sinkcoldef] = self.sink.NoDataError()
-                            #self.sink[-1][sinkcoldef] = sinkcoldef.default
+                            # self.sink[-1][sinkcoldef] = sinkcoldef.default
 
 
                     except DropRowException as e:

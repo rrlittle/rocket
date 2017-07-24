@@ -51,3 +51,28 @@ class ndar_snk(sinkManager):
         vers = self.version
         outwriter = utils.writer(outfile, delimiter=self.delimiter)
         outwriter.writerow([insr, vers])
+
+
+    def parse_mappers(self, mappers, coldef):
+        # This will check the syntax for the mappers, and do some clean up
+        # The syntax should always be number seperated by comma. It's also possible to contain a pair of curly bracket,
+        # used to indicate the number seperated by comma in the curly bracket should denote the column id in sink data source.
+        import re
+        if isinstance(mappers, str):
+            mappers = mappers.replace(" ", "")
+
+            if mappers == "":
+                return "" # return the empty string
+
+            # Use regular expression to match the string
+            INTEGER = "[0-9]+"
+            SEQUENCE_COMMA = "{number}(,{number})*".format(number = INTEGER)
+            CURLY_ITEM = "\{%s\}" %SEQUENCE_COMMA
+            ACCEPTABLE_FORMAT = "({number},)*{curly}?(,{number})*|{sequence}".format(number=INTEGER,
+                                                                                     sequence=SEQUENCE_COMMA,
+                                                                                     curly=CURLY_ITEM)
+
+            if re.fullmatch(ACCEPTABLE_FORMAT, mappers) is None:
+                #user_error_log.log_mapping_error("Syntax for the mapper is wrong")
+                raise Exception()
+            return mappers

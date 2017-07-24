@@ -2,6 +2,7 @@ import Managers
 from loggers import col_log
 from Functions.function_api import PlainCopy, DropRowException, UserWarningNotificationException, UserErrorNotificationException
 from error_generator import user_error_log
+import re
 
 class Col(object):
     ''' this represents one row from the template file.
@@ -72,6 +73,7 @@ class Col(object):
 
         try:
             self._set_fieldkeyword_header_(fieldkeyword, post_fix='_header')
+
 
             # for every important field in a given hadler it should have a parse
             # function for that field called parse_'field'(fieldvalue)
@@ -183,20 +185,21 @@ class sinkCol(Col):
                                               '%s is not valid. please change the template'
                                               ' to a valid function or blank') % (self.func, self.col_name))
 
-   # def _other_condition_for_drop_col_(self):
-        # The NI in the default stands for Not Include, which will make this
-        # column not show up in the final output
-    #    if not isinstance(self.default, self.handler.NoDataError):
-     #       if self.default == "NI":
-      #          return True
-
-    def find_mapping_columns(self, srcrow):
+    def find_mapping_columns(self, srcrow, sinkrow = None):
         '''This method turn the attribute mappers into a list
             of corresponding srcCol Object.
         '''
 
         mappers_result = []
+        sink_col_mapper = []
+
+        source_col_id = []
+        sink_col_id = []
+
+
+        # Still need change
         if isinstance(self.mappers, str):
+
             mappers_id = self.mappers.split(',')
             for mid in mappers_id:
                 cols = [col for col in srcrow if col.id == mid]
@@ -205,6 +208,81 @@ class sinkCol(Col):
                 mappers_result.append(cols[0])
             self.mappers = mappers_result
         return self.mappers
+
+    # What this method should do is to parse 1,2, {1,2,3}, 4 into two columns. One has the sink column, the other
+    # has the source column
+    def find_mapping_columns_development(self, srcrow, sinkrow=None):
+        '''This method turn the attribute mappers into a list
+            of corresponding srcCol Object.
+        '''
+
+        mappers_result = []
+        sink_col_mapper = []
+
+        source_col_id = []
+        sink_col_id = []
+        data_list = []
+
+        def find_col_in_col_lists(id, col_list):
+            cols = [col for col in col_list if col.id == id]
+            assert len(cols) <= 1, 'non unique sink ids (%s) in template' % id
+            assert len(cols) == 1, 'id (%s) specified does not exist' % id
+            return cols[0]
+
+        if isinstance(self.mappers, str):
+
+            # split the string into a list of string by,
+            # Find the curly bracket
+            # then substring it
+            # create a new string by combing the rest if there is still something after the curly bracket
+            # split it
+
+            # Use regular expression to check the syntax
+            # This should be done before the program even gets down to this place
+
+            # And this is the format. We can parse string with the template of this format
+
+            curly_start_index = self.mappers.find("{")
+            curly_end_index = self.mappers.find("}")
+            if curly_start_index * curly_end_index < 0:
+                raise Exception("Format error and syntax check fail")
+
+            # If there are only source column
+            if curly_start_index == -1 and curly_end_index == -1:
+                mappers = [find_col_in_col_lists(id, srcrow) for id in self.mappers.split(",")]
+                data_list = [srcrow[col.col_name] for col in mappers]
+
+            if curly_start_index != -1 and curly_end_index != -1:
+                sink_col_string = ""
+                source_col_string = ""
+                if curly_start_index > 0:
+                    # Example: 1,2,3,{1,2},5
+                    sink_col_string = self.mappers[curly_start_index + 1 : curly_end_index] # 1,2
+                    source_col_string = self.mappers[:curly_start_index - 1] + self.mappers[curly_end_index + 1:] # 1,2,3,5
+                elif curly_start_index == 0:
+
+                    # Exmaple: {1,2,3},5,6
+                    # If no souce col defined, e.g {1,2,3}, the source_col_string will be ""
+                    sink_col_string = self.mappers[curly_start_index + 1: curly_end_index]  # 1,2,3
+                    source_col_string = self.mappers[curly_end_index + 2:]  # 5,6
+
+
+                sink_col = [find_col_in_col_lists(id, sinkrow) for id in sink_col_string.split(",")]
+                sink_data = [sinkrow[col.col_name] for col in sink_col]
+
+                source_col = []
+                source_data = []
+                if source_col_string != "":
+                    source_col = [find_col_in_col_lists(id, srcrow) for id in source_col_string.split(",")]
+                    source_data = [srcrow[col.col_name] for col in source_col]
+                # to restore the position order in the source_col 1,2,3,5 -> 1,2,3,1,2(two are for sink),5
+                mappers = source_col
+                mappers[curly_start_index: curly_start_index] = sink_col
+
+                data_list = source_data
+                data_list[curly_start_index: curly_start_index] = sink_data
+
+            return mappers, data_list
 
     def convert(self, src_datacol_zip):
         ''' this will convert the src_data to a proper value for this column
@@ -259,3 +337,5 @@ class sinkCol(Col):
 
         col_log.debug('CONVERTED TO (%s)' % self.dat)
         return self.dat
+
+

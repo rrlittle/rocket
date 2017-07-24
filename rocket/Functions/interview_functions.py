@@ -295,3 +295,31 @@ class FindWbicByWTPInt(Function):
     def get_documentation(self):
         return "Given the familyid and twin or just familyid, it will return you its wbic, used by Goldsmith lab"
 
+
+class GenderResponse(Function):
+    def get_name(self):
+        return "genderResponse"
+
+    def _func_(self, data_list, args=None):
+        # the mapper will look like this. 1,2,{0} This denotes that the data corresponding with the first data will be
+        # used in the female, and the data corresponding with the second will be used when the data corresponding to the
+        # third column indicates male
+
+        # This function should have 3 argumennts
+        if len(data_list) != 3:
+            user_error_log.log_mapping_error("Gender Response should contain 3 mapping files")
+            return ssManager.NoDataError()
+
+        # The male is "M", and "F" stands for female
+        if data_list[2].strip() == "M":
+            return data_list[0]
+        elif data_list[2].strip() == "F":
+            return data_list[1]
+        else:
+            return ssManager.NoDataError()
+
+    def get_documentation(self):
+        return "This method will choose one of the mapper column based on gender indicated by another column. In the " \
+               "mapping, you need to provide with 3 arguments. The third one is used as the indicator for gender. The " \
+               "first column will be used if the indicator shows 'F' (female) and the second column will be used if 'M'(Male)"
+

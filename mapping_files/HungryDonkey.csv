@@ -9,6 +9,9 @@
 ,,mean,Calculate the mean. Put the coins ids for all the columns into the mapping id,,,,,,,,
 ,,sum,Calculate the sum. Put the coins ids for all the columns into the mapping id,,,,,,,,
 ,,subtractBy,The data will be subtracted by the first argument.,,,,,,,,
+,,maxLength,The data will be limited to this number of characters. The argument will accept an integer as the number of characters allowed in a max string,,,,,,,,
+,,concatString,"Given a list of data source, it will concat those data source into a long string, seperated by ';' default",,,,,,,,
+,,genderResponse,"This method will choose one of the mapper column based on gender indicated by another column. In the mapping, you need to provide with 3 arguments. The third one is used as the indicator for gender. The first column will be used if the indicator shows 'F' (female) and the second column will be used if 'M'(Male)",,,,,,,,
 ,,findAge,"Find the participants's Age based on the given ursi, and assessment date. Put two coins id into the mapping id.Like 1,4",,,,,,,,
 ,,findAgeByWBIC,"Same as findAge, except receive as a wbic",,,,,,,,
 ,,findBirthdate,NO DOCUMENTATION IMPLEMENTED,,,,,,,,
@@ -43,7 +46,7 @@ ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins 
 3,interview_date,,,1,,,t,3,subject,,"~<userSkipped>~,~<condSkipped>~,"
 4,interview_age,,,"3,1",findAgeByWBIC,,t,4,blocknum,,"~<userSkipped>~,~<condSkipped>~,"
 5,gender,,,3,findGenderByWBIC,,t,5,blockcode,,"~<userSkipped>~,~<condSkipped>~,"
-6,days_baseline,,,,,,,6,trialcode,,"~<userSkipped>~,~<condSkipped>~,"
+6,days_baseline,,default,"1,3,{5}",genderResponse,,,6,trialcode,,"~<userSkipped>~,~<condSkipped>~,"
 7,assbdic,,,,,,,7,values.doorsselected,,"~<userSkipped>~,~<condSkipped>~,"
 8,relationship,,,,,,,8,latency,,"~<userSkipped>~,~<condSkipped>~,"
 9,actbdic,,,,,,,9,response,,"~<userSkipped>~,~<condSkipped>~,"
@@ -51,8 +54,8 @@ ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins 
 11,sjtyp,,,,,,,11,values.currentloss,,"~<userSkipped>~,~<condSkipped>~,"
 12,wontotal,,,,,,,12,expressions.total,,"~<userSkipped>~,~<condSkipped>~,"
 13,netscore,,,"12,29",sum,,,13,values.doorahposition,,"~<userSkipped>~,~<condSkipped>~,"
-14,block1,,,12,,,,14,values.doorbhposition,,"~<userSkipped>~,~<condSkipped>~,"
-15,block2,,,29,,,,15,values.doorchposition,,"~<userSkipped>~,~<condSkipped>~,"
+14,block1,,,,,,,14,values.doorbhposition,,"~<userSkipped>~,~<condSkipped>~,"
+15,block2,,,,,,,15,values.doorchposition,,"~<userSkipped>~,~<condSkipped>~,"
 16,block3,,Default,3,maxLength,100,,16,values.doordhposition,,"~<userSkipped>~,~<condSkipped>~,"
 17,block4,,Default,10,reverseBySubtractingFrom,0,,17,values.trackingcondition,,"~<userSkipped>~,~<condSkipped>~,"
 18,block5,,Default,3,maxLength,4,,18,date_2,,"~<userSkipped>~,~<condSkipped>~,"
@@ -86,7 +89,7 @@ ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins 
 ,,,,,,,,,,,
 Mapping Template>
 <Error
-,Last Run:,2017-07-18 15:14:22.777364
+,Last Run:,2017-07-24 14:00:42.495895
 
 ,Runtime Warning
 ,,Column name,Column id,Message,Type

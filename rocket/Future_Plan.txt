@@ -15,5 +15,14 @@ User Readable error-log Construction:
 
     Here is a list of potential error message that people can run into (But does it mean always?):
 
-
 ****
+
+Proposal for having a way to denote to read the source from the sink side data
+
+* In mapping, a curly bracket with the number inside will be seen as using the column with that id from the sink columns
+such as {1,2,3}, means using the sink columns 1,2,3 as mapping column
+
+* I'm thinking about to deter the computation for the function that has mapping of this syntax.
+
+
+

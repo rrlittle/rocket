@@ -3,7 +3,8 @@ from data_handlers import coins, ndar
 from Functions import ursi_functions
 from loggers import map_log
 from __init__ import templatedir, secretdir
-from Functions.calc_functions import Mean, Sum, FindFirstValid, TestNoData, ReverseBySubtractingFrom, Subtract, MaxLength
+from Functions.calc_functions import Mean, Sum, FindFirstValid, TestNoData, ReverseBySubtractingFrom, Subtract, MaxLength,\
+                                      ConcatString
 #from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC, FindAgeByWBIC,\
 #                                    FindBirthdateByWBIC,FindGenderByWBIC
 from Functions.ursi_functions import FindGuid, FindGuidByWBIC, FindUrsiByWBIC
@@ -12,6 +13,7 @@ from Functions.wbic_functions import FindBirthdateByWBIC, FindAgeByWBIC, FindGen
 
 from Functions.subject_01_extension import GetCommentMisc, GetCotwinGuid, GetMotherGuid, GetCotwinCommentMotherUrsi
 from Functions.bdi_extension import GetBDIScore
+from Functions.interview_functions import GenderResponse
 
 class coins2ndar(MappingManager):
     ''' this manager is to define the mappping between coins and ndar type files.
@@ -32,6 +34,8 @@ class coins2ndar(MappingManager):
         functions_list.append(Sum())
         functions_list.append(Subtract())
         functions_list.append(MaxLength())
+        functions_list.append(ConcatString())
+        functions_list.append(GenderResponse())
 
         functions_list.append(FindAge())
         functions_list.append(FindAgeByWBIC())

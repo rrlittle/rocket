@@ -231,6 +231,19 @@ class MaxLength(Function):
         return data_list[0][0: max_length]
 
 
+class ConcatString (Function):
+    def get_name(self):
+        return "concatString"
+
+    def get_documentation(self):
+        return "Given a list of data source, it will concat those data source into a long string, seperated by ';' default"
+
+    def _func_(self, data_list, args=None):
+        if len(data_list) == 0:
+            return ssManager.NoDataError()
+
+        return ";".join([str(x) for x in data_list])
+
 def mean(*srcdat, args=None):
     # data will be coerced in the sum
     #import ipdb; ipdb.set_trace()

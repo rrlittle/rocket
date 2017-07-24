@@ -1,11 +1,11 @@
 from data_handlers.wtp import WtpSource
 from data_handlers.ndar import ndar_snk
 from MappingManager import MappingManager
-from Functions.calc_functions import Sum, Mean, Subtract, MaxLength
+from Functions.calc_functions import Sum, Mean, Subtract, MaxLength, ConcatString
 from template_kit.template_structure import TemplateStructure
 from template_kit.TemplateComponents import DataTableComponent
 from Functions.interview_functions import FindGuidByWTPInt, FindGenderByWTPInt, FindAgeByWTPInt, FindAssessByWTPInt, \
-                                          FindWbicByWTPInt, FindUrsiByWTPInt
+                                          FindWbicByWTPInt, FindUrsiByWTPInt, GenderResponse
 import pyodbc
 from loggers import map_log
 
@@ -22,6 +22,8 @@ class wtp2ndar (MappingManager):
         function_list.append(Mean())
         function_list.append(Subtract())
         function_list.append(MaxLength())
+        function_list.append(ConcatString())
+        function_list.append(GenderResponse())
 
         function_list.append(FindGuidByWTPInt())
         function_list.append(FindGenderByWTPInt())
