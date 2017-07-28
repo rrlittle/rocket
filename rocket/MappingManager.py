@@ -186,7 +186,6 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
         if clear_sink:  # if sink is not already initialized
             self.sink.initialize_data()  # clear any data in sink
-        #import ipdb; ipdb.set_trace()
         for rowid, srcrow in enumerate(self.source):
             self.sink.add_row()  # we want to fill in a new row
             map_log.info('converting row {0}'.format(rowid))
@@ -196,9 +195,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                 for sinkcoldef in self.sink.col_defs:
                     try:
                        # mapperslist = sinkcoldef.find_mapping_columns(srcrow=srcrow, sinkrow=self.sink[-1])
-                        if sinkcoldef.col_name == "days_baseline":
-                            import ipdb;ipdb.set_trace()
-                        mapperslist, srcdat = sinkcoldef.find_mapping_columns_development(srcrow=srcrow, sinkrow=self.sink[-1])
+                        mapperslist, srcdat = sinkcoldef.find_mapping_columns(srcrow=srcrow, sinkrow=self.sink[-1])
                         # get col objs from src
                         # src cols required to compute the sink value
 

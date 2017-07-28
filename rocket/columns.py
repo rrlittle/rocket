@@ -186,7 +186,7 @@ class sinkCol(Col):
                                               ' to a valid function or blank') % (self.func, self.col_name))
 
 
-    def find_mapping_columns_development(self, srcrow, sinkrow = None):
+    def find_mapping_columns(self, srcrow, sinkrow = None):
         """
             This method translates the mapper string to the actual data. Any column id surronded with "{}" is seen as
             the column id from sink manager.
@@ -204,8 +204,11 @@ class sinkCol(Col):
 
         INTEGER = "[0-9]+"
         SEQUENCE_COMMA = "{number}(,{number})*".format(number=INTEGER)
+
+        # Example "{1,3},2,{3}"
         if isinstance(self.mappers, str):
-            s = re.split("({.*?})", self.mappers)
+            s = re.split("({.*?})", self.mappers) # *? means minimal catch for regular expression. {1},2,{3} will be matched as {1} not {1},2,{3}
+            # [{1,3},2,{3}]
             col_data = []
             col_list = []
             for substring in s:
@@ -215,6 +218,7 @@ class sinkCol(Col):
                 if match:
                     items = match.group().split(",")
                     for id in items:
+                        # {1,3} or {2}
                         if "{" in substring and "}" in substring:
                             # The number is the id, compare it with the sink row
                             # Find the column, and use the name as key
