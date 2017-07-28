@@ -1,6 +1,7 @@
 import logging
 from error_generator import user_error_log
 
+
 class DropRowException(Exception):
     pass
 

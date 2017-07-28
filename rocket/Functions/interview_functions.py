@@ -308,9 +308,9 @@ class GenderResponse(Function):
             return ssManager.NoDataError("Gender Response should contain 3 mapping files")
 
         # The male is "M", and "F" stands for female
-        if data_list[2].strip() == "M":
+        if data_list[2].strip() == "F":
             return data_list[0]
-        elif data_list[2].strip() == "F":
+        elif data_list[2].strip() == "M":
             return data_list[1]
         else:
             return ssManager.NoDataError()

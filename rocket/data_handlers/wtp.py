@@ -35,7 +35,6 @@ class WtpSource(sourceManager):
             fieldnames.append(column[0])
         return fieldnames
 
-
     def _read_data_from_source_(self):
         '''
         Follow the api for read data
@@ -83,8 +82,14 @@ class WtpSource(sourceManager):
                     col_parser = getattr(self, col_parser_name,
                                          self.default_parser)
 
+                    # The empty item in db will be translated into None in python.
+                    # Thus, clean the None into ""
+                    if str(datarow[index]) == "None":
+                        datarow[index] = ""
+
                     # I parse everything into datarow
                     row[col] = col_parser(str(datarow[index]), col)
+
                 except Exception as e:
                     man_log.debug('Exception while parsing %s: %s' % (col, e))
                     row[col] = self.NoDataError('%s' % e)

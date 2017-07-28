@@ -194,6 +194,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
                 # go through all the columns defined in the template
                 for sinkcoldef in self.sink.col_defs:
                     try:
+
                        # mapperslist = sinkcoldef.find_mapping_columns(srcrow=srcrow, sinkrow=self.sink[-1])
                         mapperslist, srcdat = sinkcoldef.find_mapping_columns(srcrow=srcrow, sinkrow=self.sink[-1])
                         # get col objs from src

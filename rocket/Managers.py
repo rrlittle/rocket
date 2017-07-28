@@ -294,7 +294,7 @@ class sourceManager(ssManager):
 
             Overridable: if anyone wants to get data from different source, override this function
 
-        :return: An array of ordered dictionary that contains the data
+        :return: An array of ordered dictionary that contains the data.
         '''
         data = []
         # open file
@@ -349,7 +349,8 @@ class sourceManager(ssManager):
             used when parsing the template?'''
         man_log.debug('parsing [%s] from (%s)' % (coldef, value))
 
-        if self._value_is_in_missing_list_(value, coldef):
+        # Now the empty string will be regarded as empty
+        if value == "" or self._value_is_in_missing_list_(value, coldef):
             # If the data is in missing vals, then a no data error will be return as the placeholder
             man_log.debug('replacing row[%s](%s) with NoData' % (coldef, value))
             return self.NoDataError(('value %s identified as a missing '
@@ -366,6 +367,7 @@ class sourceManager(ssManager):
         :param col_def:
         :return:
         """
+
         if hasattr(col_def, 'missing_vals'):
             man_log.debug('checking if %s in missing vals: %s' % (value,
                                                                   col_def.missing_vals))

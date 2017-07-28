@@ -78,7 +78,7 @@ class wtp2ndar (MappingManager):
                 new_row = ["" for x in mapping_header]
                 new_row[col_id_index] = col_id
                 new_row[col_name_index] = field
-                new_row[missing_value_index] = "9998, 9999"
+                new_row[missing_value_index] = "9998, 9999, "
                 mapping.content.append(new_row)
                 col_id += 1
 
