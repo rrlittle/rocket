@@ -183,8 +183,8 @@ class ssManager(Manager):
         self.col_defs = []
         for rid, template_row in enumerate(templ_csv_reader):
             # use the column to parse the part of the row as we would like it to
-            try:
 
+            try:
                 # create the column for the corresponding handler
                 # given a template_row
                 col = self.col_archetype(self, template_row)
@@ -371,7 +371,8 @@ class sourceManager(ssManager):
         if hasattr(col_def, 'missing_vals'):
             man_log.debug('checking if %s in missing vals: %s' % (value,
                                                                   col_def.missing_vals))
-            missing = col_def.missing_vals.split(",")
+            missing = [missing_val.strip() for missing_val in col_def.missing_vals.split(",")]
+
             if value in missing:
                 return True
             else:

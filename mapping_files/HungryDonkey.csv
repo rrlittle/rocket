@@ -50,13 +50,13 @@ ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins 
 7,assbdic,,,,,,,7,values.doorsselected,,"~<userSkipped>~,~<condSkipped>~,"
 8,relationship,,,,,,,8,latency,,"~<userSkipped>~,~<condSkipped>~,"
 9,actbdic,,,,,,,9,response,,"~<userSkipped>~,~<condSkipped>~,"
-10,site,,,,,,,10,values.currentgain,,"~<userSkipped>~,~<condSkipped>~,"
+10,site,,,,,,,10,values.currentgain,,"~<userSkipped>~,~<condSkipped>~, 9999"
 11,sjtyp,,,,,,,11,values.currentloss,,"~<userSkipped>~,~<condSkipped>~,"
 12,wontotal,,,,,,,12,expressions.total,,"~<userSkipped>~,~<condSkipped>~,"
 13,netscore,,,"12,29",sum,,,13,values.doorahposition,,"~<userSkipped>~,~<condSkipped>~,"
 14,block1,,,,,,,14,values.doorbhposition,,"~<userSkipped>~,~<condSkipped>~,"
 15,block2,,,,,,,15,values.doorchposition,,"~<userSkipped>~,~<condSkipped>~,"
-16,block3,,Default,3,maxLength,100,,16,values.doordhposition,,"~<userSkipped>~,~<condSkipped>~,"
+16,block3,,Default,10,,,,16,values.doordhposition,,"~<userSkipped>~,~<condSkipped>~,"
 17,block4,,Default,10,reverseBySubtractingFrom,0,,17,values.trackingcondition,,"~<userSkipped>~,~<condSkipped>~,"
 18,block5,,Default,3,maxLength,4,,18,date_2,,"~<userSkipped>~,~<condSkipped>~,"
 19,comments_misc,,,,,,,19,time_2,,"~<userSkipped>~,~<condSkipped>~,"
@@ -89,7 +89,7 @@ ndar id,ndar name,ndar range,default value,mapping,function,args,required,coins 
 ,,,,,,,,,,,
 Mapping Template>
 <Error
-,Last Run:,2017-07-24 16:32:41.770950
+,Last Run:,2017-08-15 13:42:57.751661
 
 ,Runtime Warning
 ,,Column name,Column id,Message,Type
