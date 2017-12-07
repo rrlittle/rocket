@@ -76,3 +76,5 @@ def test():
     tw.write_mapping_info(mapping_header=mapping_header)
     tw.close_and_save_file()
 
+if __name__ == "__main__":
+    test()

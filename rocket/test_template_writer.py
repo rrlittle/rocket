@@ -2,6 +2,7 @@ import unittest
 from template_kit.template_structure import  TemplateStructure
 from template_kit.TemplateComponents import  DataTableComponent
 
+print("the")
 class MyTestCase(unittest.TestCase):
     def test_something(self):
 
@@ -12,8 +13,6 @@ class MyTestCase(unittest.TestCase):
         writer.write_template("data_table_test.csv")
 
         self.assertEqual(True, False)
-
-
 
 
 if __name__ == '__main__':

@@ -25,6 +25,7 @@ class ndar_snk(sinkManager):
     def interview_date_write_formatter(self, dateobj, coldef):
         if isinstance(dateobj, self.NoDataError):
             return coldef.missing_vals
+
         if type(dateobj) == str:
             man_log.debug("date formatter catches a data string")
             return dateobj

@@ -5,6 +5,7 @@ from loggers import map_log
 from __init__ import templatedir, secretdir
 from Functions.calc_functions import Mean, Sum, FindFirstValid, TestNoData, ReverseBySubtractingFrom, Subtract, MaxLength,\
                                       ConcatString
+from tkinter import filedialog, messagebox
 #from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC, FindAgeByWBIC,\
 #                                    FindBirthdateByWBIC,FindGenderByWBIC
 from Functions.ursi_functions import FindGuid, FindGuidByWBIC, FindUrsiByWBIC
@@ -14,6 +15,14 @@ from Functions.wbic_functions import FindBirthdateByWBIC, FindAgeByWBIC, FindGen
 from Functions.subject_01_extension import GetCommentMisc, GetCotwinGuid, GetMotherGuid, GetCotwinCommentMotherUrsi
 from Functions.bdi_extension import GetBDIScore
 from Functions.interview_functions import GenderResponse
+
+from __init__ import templatedir, sinkdatdir, srcdatdir, ndartempdir
+from utils.ndar_template_parser import NdarTemplateParser, CoinsDataParser
+from typing import *
+from utils.ndar_template_parser import NdarElement
+from pathlib import Path
+from tkinter import messagebox, Tk, simpledialog
+from template_kit.TemplateComponents import MappingInfo, InstruInfo
 
 class coins2ndar(MappingManager):
     ''' this manager is to define the mappping between coins and ndar type files.
@@ -82,7 +91,6 @@ class coins2ndar(MappingManager):
                                                    "PLEASE put subject01 file name into the args!"}
                                                    '''
 
-
     def want_update_ursi_data(self):
         yes = 'y'
         no = 'n'
@@ -93,3 +101,103 @@ class coins2ndar(MappingManager):
                 return True
             elif user_in[0].lower == no:
                 return False
+
+    # Extension method to configure writing template
+
+    def add_extra_content_to_instru_info(self, instru_info: InstruInfo):
+        super().add_extra_content_to_instru_info(instru_info)
+        root = Tk()
+        root.withdraw()
+
+        name = simpledialog.askstring("Action", "Enter NDAR instrument name")
+        version = simpledialog.askstring("Action", "Enter NDAR instrument version")
+
+        # No input check right now
+        instru_info.get_instru_name = name
+        instru_info.version = version
+
+        root.destroy()
+
+    def add_extra_content_to_mapping_info(self, mapping: MappingInfo) -> None:
+        super().add_extra_content_to_mapping_info(mapping)
+
+        # find initial
+        ndar_template, coins_data = self._get_ndar_template_and_coins_data_path_()
+
+        if ndar_template is not None:
+            ndar_elements = NdarTemplateParser.get_columns(ndar_template)
+            ndar_cols = [e.col_name for e in ndar_elements]
+        else:
+            ndar_cols = []
+
+        # Need error checking
+        # parse data file, get sink column
+        if coins_data is not None:
+            coins_col = CoinsDataParser.get_columns(coins_data)
+        else:
+            coins_col = []
+
+        # add columns to data file with id.
+        mapping_header = self._add_mapping_headers_from_src_sink()
+        coins_col_id_index = mapping_header.index(self.source.template_fields["id"])
+        coins_col_name_index = mapping_header.index(self.source.template_fields["col_name"])
+        coins_missing_value_index = mapping_header.index(self.source.template_fields["missing_vals"])
+
+        ndar_col_id_index = mapping_header.index(self.sink.template_fields["id"])
+        ndar_col_name_index = mapping_header.index(self.sink.template_fields["col_name"])
+        ndar_default_index = mapping_header.index(self.sink.template_fields["default"])
+
+        longest = max(len(coins_col), len(ndar_cols))
+        # the index starts from 1, for user convenience
+        for index in range(1, longest+1):
+            # fill in each section
+            row = [""]*len(mapping_header)  # type:List[str]
+            if index <= len(coins_col):
+                row[coins_col_id_index] = index
+                row[coins_col_name_index] = coins_col[index-1]
+                row[coins_missing_value_index] = "~<userSkipped>~,~<condSkipped>~,"
+
+            if index <= len(ndar_cols):
+                row[ndar_col_id_index] = index
+                row[ndar_col_name_index] = ndar_cols[index-1]
+                row[ndar_default_index] = ""
+
+            mapping.content.append(row)
+
+    # Validate tsv and csv as well
+    def _get_ndar_template_and_coins_data_path_(self) -> Tuple[str, str]:
+
+        ndar_template = None
+        coins_data = None
+        messagebox.showinfo("Next step", "Then please choose a NDAR template. "
+                                         "\nIf you don't want. you can press cancel on next page")
+        while True:
+            ndar_template = filedialog.askopenfilename(initialdir=ndartempdir, title="Choose a NDAR template")
+
+            if ndar_template is None or ndar_template == "":
+                ndar_template = None
+                break
+
+            p = Path(ndar_template)
+            if p.suffix != '.csv':
+                messagebox.showwarning("File error", "Please choose a csv file .")
+                pass
+            else:
+                break
+
+        messagebox.showinfo("Next step", "Then please choose a COINS data file"
+                                         "\n if you don't want. you can press cancel on next page")
+        while True:
+            coins_data = filedialog.askopenfilename(initialdir=srcdatdir, title="Choose a coins data file")
+
+            if coins_data is None or coins_data == "":
+                coins_data = None
+                break
+            p = Path(coins_data)
+            if p.suffix != '.tsv' and p.suffix != '.csv':
+                messagebox.showwarning("File error", "Please choose a tsv or txt file")
+                pass
+            else:
+                break
+
+        return ndar_template, coins_data

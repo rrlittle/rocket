@@ -312,6 +312,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
 
         except Exception as e:
             handle_tmeplate_err("Template Error", e)
+
         # the template fields for each handler are defined upon initialization
         # of the handlers. they are defined in the code and extended for each
         # custom handler if they so choose.
