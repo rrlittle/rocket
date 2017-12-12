@@ -31,6 +31,9 @@ class ComponentWriteProtocol(object):
     def add_extra_content_to_mapping_info(self, mapping_info):
         pass
 
+    def before_write_instru_info(self, instru_info):
+        pass
+
     def add_extra_content_to_instru_info(self, instru_info):
         pass
 

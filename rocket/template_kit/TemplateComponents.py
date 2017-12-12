@@ -178,10 +178,10 @@ class InstruInfoComponent(TemplateComponenet):
         return self.instru_info
 
     def send_message_to_delegate(self, delegate):
-
         delegate.respond_to_instru_info(self.get_instru_info())
 
     def _extra_write_content_(self, file, delegate, delimiter):
+        delegate.before_write_instru_info(instru_info=self)
         delegate.add_extra_content_to_instru_info(instru_info=self)
 
 

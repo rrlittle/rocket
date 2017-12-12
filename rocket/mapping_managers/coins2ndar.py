@@ -22,7 +22,7 @@ from typing import *
 from utils.ndar_template_parser import NdarElement
 from pathlib import Path
 from tkinter import messagebox, Tk, simpledialog
-from template_kit.TemplateComponents import MappingInfo, InstruInfo
+from template_kit.TemplateComponents import MappingInfo, InstruInfo, InstruInfoComponent
 
 class coins2ndar(MappingManager):
     ''' this manager is to define the mappping between coins and ndar type files.
@@ -103,9 +103,8 @@ class coins2ndar(MappingManager):
                 return False
 
     # Extension method to configure writing template
-
-    def add_extra_content_to_instru_info(self, instru_info: InstruInfo):
-        super().add_extra_content_to_instru_info(instru_info)
+    def before_write_instru_info(self, instru_info: InstruInfoComponent):
+        self.before_write_instru_info(instru_info)
         root = Tk()
         root.withdraw()
 
@@ -113,8 +112,8 @@ class coins2ndar(MappingManager):
         version = simpledialog.askstring("Action", "Enter NDAR instrument version")
 
         # No input check right now
-        instru_info.get_instru_name = name
-        instru_info.version = version
+        instru_info.instru_info.instru_name = name
+        instru_info.instru_info.version = version
 
         root.destroy()
 

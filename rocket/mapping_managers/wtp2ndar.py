@@ -8,6 +8,9 @@ from Functions.interview_functions import FindGuidByWTPInt, FindGenderByWTPInt, 
                                           FindWbicByWTPInt, FindUrsiByWTPInt, GenderResponse
 import pyodbc
 from loggers import map_log
+from tkinter import messagebox, Tk, simpledialog
+from template_kit.TemplateComponents import MappingInfo, InstruInfo
+from typing import *
 
 
 class wtp2ndar (MappingManager):
@@ -59,6 +62,22 @@ class wtp2ndar (MappingManager):
         content = ["", data_table.DATA_TABLE_KEY] + data_table_names
         data_table.content.append(content)
         self.source.data_table_names = data_table_names
+
+
+    def before_write_instru_info(self, instru_info: InstruInfo):
+        super().before_write_instru_info(instru_info)
+        root = Tk()
+        root.withdraw()
+
+        name = simpledialog.askstring("Action", "Enter NDAR instrument name")
+        version = simpledialog.askstring("Action", "Enter NDAR instrument version")
+
+        # No input check right now
+        instru_info.get_instru_name = name
+        instru_info.version = version
+
+        root.destroy()
+
 
     def add_extra_content_to_mapping_info(self, mapping):
         # this will append the field names

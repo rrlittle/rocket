@@ -11,6 +11,8 @@ import csv
 from os import startfile,rename, path, remove
 from Functions.function_api import DropRowException, UserErrorNotificationException, UserWarningNotificationException
 from error_generator import user_error_log
+from typing import *
+from template_kit.TemplateComponents import InstruInfoComponent
 
 class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol):
     ''' this class is responsible for implementing the
@@ -456,8 +458,9 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         sinktemplatefields = list(self.sink.template_fields.values())
         return sinktemplatefields + srctemplatefields
 
-    def add_extra_content_to_instru_info(self, instru_info):
+    def add_extra_content_to_instru_info(self, instru_info: InstruInfoComponent):
         instru_key = instru_info.INSTRU_NAME_KEY
         version_key = instru_info.VERSION_KEY
-        instru_info_line = ["", instru_key, "", version_key, ""]
+        instru_info_struct = instru_info.instru_info
+        instru_info_line = ["", instru_key, instru_info_struct.instru_name, version_key, instru_info_struct.version]
         instru_info.content.append(instru_info_line)
