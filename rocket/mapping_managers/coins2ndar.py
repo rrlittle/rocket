@@ -5,7 +5,6 @@ from loggers import map_log
 from __init__ import templatedir, secretdir
 from Functions.calc_functions import Mean, Sum, FindFirstValid, TestNoData, ReverseBySubtractingFrom, Subtract, MaxLength,\
                                       ConcatString
-from tkinter import filedialog, messagebox
 #from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC, FindAgeByWBIC,\
 #                                    FindBirthdateByWBIC,FindGenderByWBIC
 from Functions.ursi_functions import FindGuid, FindGuidByWBIC, FindUrsiByWBIC
@@ -21,7 +20,7 @@ from utils.ndar_template_parser import NdarTemplateParser, CoinsDataParser
 from typing import *
 from utils.ndar_template_parser import NdarElement
 from pathlib import Path
-from tkinter import messagebox, Tk, simpledialog
+from tkinter import messagebox, Tk, simpledialog, filedialog
 from template_kit.TemplateComponents import MappingInfo, InstruInfo, InstruInfoComponent
 
 class coins2ndar(MappingManager):
@@ -104,16 +103,20 @@ class coins2ndar(MappingManager):
 
     # Extension method to configure writing template
     def before_write_instru_info(self, instru_info: InstruInfoComponent):
-        self.before_write_instru_info(instru_info)
+        super().before_write_instru_info(instru_info)
         root = Tk()
         root.withdraw()
 
-        name = simpledialog.askstring("Action", "Enter NDAR instrument name")
+        name = simpledialog.askstring("Action", "Enter NDAR instrument name (without version)")
         version = simpledialog.askstring("Action", "Enter NDAR instrument version")
 
         # No input check right now
-        instru_info.instru_info.instru_name = name
-        instru_info.instru_info.version = version
+        if name is not None:
+            # No input check right now
+            instru_info.instru_info.instru_name = name
+
+        if version is not None:
+            instru_info.instru_info.version = version
 
         root.destroy()
 
@@ -168,7 +171,7 @@ class coins2ndar(MappingManager):
 
         ndar_template = None
         coins_data = None
-        messagebox.showinfo("Next step", "Then please choose a NDAR template. "
+        messagebox.showinfo("Next step", "Then please choose a NDAR definition file. "
                                          "\nIf you don't want. you can press cancel on next page")
         while True:
             ndar_template = filedialog.askopenfilename(initialdir=ndartempdir, title="Choose a NDAR template")

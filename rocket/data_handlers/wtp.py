@@ -4,7 +4,7 @@ import re
 from loggers import man_log
 import pyodbc
 import enum
-
+from typing import *
 
 class TableType(enum.Enum):
     FamilyTable = 1
@@ -45,8 +45,10 @@ class WtpSource(sourceManager):
         con = pyodbc.connect("DSN=wtp_data")
 
         # To test the primary key. The primary key can be familyid and twin or just familyid.
-        table_type = self.check_table_type(self.data_table[0], con)
+        table_type = self.check_table_type(self.data_table[0], con) # type: TableType
+        # table_type only matters with the join statement
         join_cmd = self.get_join_stmt(self.data_table, table_type)
+
         cursor = con.cursor()
         cursor.execute(join_cmd)
         desc = cursor.description
