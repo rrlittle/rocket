@@ -23,7 +23,7 @@ class NdarDefinitionFetch():
             print("It's possible that you forget to close the definition.")
             i = input("Close the definition, and then press enter")
             try:
-                with open(f_name, "w+") as f:
+                with f_path.open("w+") as f:
                     f.writelines(lines)
             except IOError as e:
                 print("File not created or updated")
