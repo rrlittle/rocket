@@ -2,7 +2,6 @@ from MappingManager import MappingManager
 from data_handlers import coins, ndar
 from Functions import ursi_functions
 from loggers import map_log
-from __init__ import templatedir, secretdir
 from Functions.calc_functions import Mean, Sum, FindFirstValid, TestNoData, ReverseBySubtractingFrom, Subtract, MaxLength,\
                                       ConcatString
 #from Functions.ursi_functions import FindAge, FindBirthdate, FindGender, FindGuid, FindGuidByWBIC, FindAgeByWBIC,\
@@ -15,13 +14,15 @@ from Functions.subject_01_extension import GetCommentMisc, GetCotwinGuid, GetMot
 from Functions.bdi_extension import GetBDIScore
 from Functions.interview_functions import GenderResponse
 
-from __init__ import templatedir, sinkdatdir, srcdatdir, ndartempdir
+from __init__ import templatedir, sinkdatdir, srcdatdir, ndartempdir, ndardefdir
+from utils.ndar_definition_fetch import NdarDefinitionFetch
 from utils.ndar_template_parser import NdarTemplateParser, CoinsDataParser
 from typing import *
 from utils.ndar_template_parser import NdarElement
 from pathlib import Path
 from tkinter import messagebox, Tk, simpledialog, filedialog
 from template_kit.TemplateComponents import MappingInfo, InstruInfo, InstruInfoComponent
+from toolz.itertoolz import *
 
 class coins2ndar(MappingManager):
     ''' this manager is to define the mappping between coins and ndar type files.
@@ -33,6 +34,9 @@ class coins2ndar(MappingManager):
         MappingManager.__init__(self,
                                 source=coins.coins_src,
                                 sink=ndar.ndar_snk)
+        self.instru_name = ""
+        self.version = ""
+
         # print('functions', self.globalfuncs)
         #ursi_data_manager = ursi_functions.UrsiDataManager(secretdir)
 
@@ -114,24 +118,51 @@ class coins2ndar(MappingManager):
         if name is not None:
             # No input check right now
             instru_info.instru_info.instru_name = name
+            self.instru_name = name
 
         if version is not None:
             instru_info.instru_info.version = version
+            self.version = version
 
         root.destroy()
+
+    def _get_ndar_cols_with_def_(self) -> List[str]:
+        """
+            This function parses the ndar definition downloaded through NDAR API.
+            It only returns the ndar col name now.
+            If there is error with the fetch. Then it will return empty list
+        :return:
+        """
+        fetch = NdarDefinitionFetch(ndardefdir)
+        ndar_definition = None
+        if self.instru_name != "" and self.version != "":
+            ndar_definition = fetch.fetch_definition(self.instru_name, self.version)
+
+        if ndar_definition is None:
+            print("Can't find the Instrument with the name and version")
+            return []
+        else:
+            fields = first(ndar_definition) # type: List[str]
+            elem_index = fields.index("ElementName")
+            elem_list_names = [l[elem_index] for l in drop(1, ndar_definition)]
+
+            return elem_list_names
 
     def add_extra_content_to_mapping_info(self, mapping: MappingInfo) -> None:
         super().add_extra_content_to_mapping_info(mapping)
 
+        ndar_cols = self._get_ndar_cols_with_def_()
+
         # find initial
-        ndar_template, coins_data = self._get_ndar_template_and_coins_data_path_()
+        # ndar_template, coins_data = self._get_ndar_template_and_coins_data_path_()
+        #
+        # if ndar_template is not None:
+        #     ndar_elements = NdarTemplateParser.get_columns(ndar_template)
+        #     ndar_cols = [e.col_name for e in ndar_elements]
+        # else:
+        #     ndar_cols = []
 
-        if ndar_template is not None:
-            ndar_elements = NdarTemplateParser.get_columns(ndar_template)
-            ndar_cols = [e.col_name for e in ndar_elements]
-        else:
-            ndar_cols = []
-
+        coins_data = self._get_coins_data_path_()
         # Need error checking
         # parse data file, get sink column
         if coins_data is not None:
@@ -165,6 +196,26 @@ class coins2ndar(MappingManager):
                 row[ndar_default_index] = ""
 
             mapping.content.append(row)
+
+    def _get_coins_data_path_(self) -> str:
+        coins_data = None
+        messagebox.showinfo("Next step", "Then please choose a COINS data file"
+                                         "\n if you don't want. you can press cancel on next page")
+        while True:
+            coins_data = filedialog.askopenfilename(initialdir=srcdatdir, title="Choose a coins data file")
+
+            if coins_data is None or coins_data == "":
+                coins_data = None
+                break
+            p = Path(coins_data)
+            if p.suffix != '.tsv' and p.suffix != '.csv':
+                messagebox.showwarning("File error", "Please choose a tsv or txt file")
+                pass
+            else:
+                break
+
+        return coins_data
+
 
     # Validate tsv and csv as well
     def _get_ndar_template_and_coins_data_path_(self) -> Tuple[str, str]:

@@ -54,7 +54,7 @@ class PathFinder(object):
                   func_if_path_empty = lambda path_key, path_dict: print("Path is empty")):
         try:
             path = self.path_dict[path_key]
-            if path == None:
+            if path is None:
                 raise KeyError("The path is None")
 
             if path == "":

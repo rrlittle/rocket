@@ -44,6 +44,8 @@ sinkdatdir = path_finder.find_path("sink_data_dir", func_if_path_not_found=if_pa
                                    func_if_path_empty=if_path_not_found)
 ndartempdir = path_finder.find_path("ndar_template_dir", func_if_path_not_found=if_path_not_found,
                                     func_if_path_empty=if_path_not_found)
+ndardefdir = path_finder.find_path("ndar_def_dir", func_if_path_not_found=if_path_not_found,
+                                   func_if_path_empty=if_path_not_found)
 
 #srcdatdir = utils.join(basedir, 'source_datafiles')
 srcschdir = utils.join(basedir, 'source_schemes')

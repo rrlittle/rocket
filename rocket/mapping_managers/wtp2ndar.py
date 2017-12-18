@@ -11,18 +11,23 @@ from loggers import map_log
 from tkinter import messagebox, Tk, simpledialog, filedialog
 from template_kit.TemplateComponents import MappingInfo, InstruInfo
 from typing import *
-from __init__ import templatedir, sinkdatdir, srcdatdir, ndartempdir
+from __init__ import templatedir, sinkdatdir, srcdatdir, ndartempdir, ndardefdir
 from pathlib import Path
 from utils.ndar_template_parser import NdarTemplateParser
 from template_kit.TemplateComponents import MappingInfo, InstruInfo, InstruInfoComponent
 from itertools import chain
 from toolz.itertoolz import unique
+from utils.ndar_definition_fetch import NdarDefinitionFetch
+from toolz.itertoolz import *
 
 class wtp2ndar (MappingManager):
 
     def __init__(self):
         super(wtp2ndar, self).__init__(source=WtpSource,
                                         sink=ndar_snk)
+        self.instru_name = ""
+        self.version = ""
+
 
     def load_functions(self):
         function_list = []
@@ -86,49 +91,75 @@ class wtp2ndar (MappingManager):
         root = Tk()
         root.withdraw()
 
-        name = simpledialog.askstring("Action", "Enter NDAR instrument name")
+        name = simpledialog.askstring("Action", "Enter NDAR instrument name (without version)")
         version = simpledialog.askstring("Action", "Enter NDAR instrument version")
 
         if name is not None:
             # No input check right now
             instru_info.instru_info.instru_name = name
+            self.instru_name = name
 
         if version is not None:
             instru_info.instru_info.version = version
+            self.version = version
 
         root.destroy()
 
-    def _get_ndar_template_(self)->Optional[str]:
-        ndar_template = None
+    def _get_ndar_definition_(self)->Optional[str]:
+        ndar_definition = None
         messagebox.showinfo("Next step", "Then please choose a NDAR definition file. "
                                          "\nIf you don't want. you can press cancel on next page")
         while True:
-            ndar_template = filedialog.askopenfilename(initialdir=ndartempdir, title="Choose a NDAR template")
+            ndar_definition = filedialog.askopenfilename(initialdir=ndartempdir, title="Choose a NDAR template")
 
-            if ndar_template is None or ndar_template == "":
-                ndar_template = None
+            if ndar_definition is None or ndar_definition == "":
+                ndar_definition = None
                 break
 
-            p = Path(ndar_template)
+            p = Path(ndar_definition)
             if p.suffix != '.csv':
                 messagebox.showwarning("File error", "Please choose a csv file .")
                 pass
             else:
                 break
 
-        return ndar_template
+        return ndar_definition
+
+    def _get_ndar_cols_with_def_(self) -> List[str]:
+        """
+            This function parses the ndar definition downloaded through NDAR API.
+            It only returns the ndar col name now.
+            If there is error with the fetch. Then it will return empty list
+        :return:
+        """
+        fetch = NdarDefinitionFetch(ndardefdir)
+        ndar_definition = None
+        if self.instru_name != "" and self.version != "":
+            ndar_definition = fetch.fetch_definition(self.instru_name, self.version)
+
+        if ndar_definition is None:
+            print("Can't find the Instrument with the name and version")
+            return []
+        else:
+            fields = first(ndar_definition) # type: List[str]
+            elem_index = fields.index("ElementName")
+            elem_list_names = [l[elem_index] for l in drop(1, ndar_definition)]
+
+            return elem_list_names
 
     def add_extra_content_to_mapping_info(self, mapping):
         # this will append the field names
         super().add_extra_content_to_mapping_info(mapping)
 
-        ndar_template = self._get_ndar_template_()
+        ndar_cols = self._get_ndar_cols_with_def_()
 
-        if ndar_template is not None:
-            ndar_elements = NdarTemplateParser.get_columns(ndar_template)
-            ndar_cols = [e.col_name for e in ndar_elements]
-        else:
-            ndar_cols= []
+#        ndar_definition = self._get_ndar_definition_()
+
+        # if ndar_definition is not None:
+        #     ndar_elements = NdarTemplateParser.get_columns(ndar_definition)
+        #     ndar_cols = [e.col_name for e in ndar_elements]
+        # else:
+        #     ndar_cols = []
 
         fields_for_tables = [self._get_table_fields_(f) for f in self.source.data_table_names] # type: List[List[str]]
         all_fields_with_no_duplicate = list(unique(chain.from_iterable(fields_for_tables)))
