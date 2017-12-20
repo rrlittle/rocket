@@ -34,8 +34,6 @@ class coins2ndar(MappingManager):
         MappingManager.__init__(self,
                                 source=coins.coins_src,
                                 sink=ndar.ndar_snk)
-        self.instru_name = ""
-        self.version = ""
 
         # print('functions', self.globalfuncs)
         #ursi_data_manager = ursi_functions.UrsiDataManager(secretdir)
@@ -113,16 +111,21 @@ class coins2ndar(MappingManager):
 
         name = simpledialog.askstring("Action", "Enter NDAR instrument name (without version)")
         version = simpledialog.askstring("Action", "Enter NDAR instrument version")
+        respondent = simpledialog.askstring("Action", "Enter the respondent for this instrument. (e.g, twin, cotwin)")
 
         # No input check right now
         if name is not None:
             # No input check right now
             instru_info.instru_info.instru_name = name
-            self.instru_name = name
+            self.instru_info.instru_name = name
 
         if version is not None:
             instru_info.instru_info.version = version
-            self.version = version
+            self.instru_info.version = version
+
+        if respondent is not None:
+            instru_info.instru_info.respondent = respondent
+            self.instru_info.respondent = respondent
 
         root.destroy()
 
@@ -135,8 +138,10 @@ class coins2ndar(MappingManager):
         """
         fetch = NdarDefinitionFetch(ndardefdir)
         ndar_definition = None
-        if self.instru_name != "" and self.version != "":
-            ndar_definition = fetch.fetch_definition(self.instru_name, self.version)
+        instru_info = self.instru_info
+
+        if instru_info.instru_name != "" and instru_info.version != "":
+            ndar_definition = fetch.fetch_definition(instru_info.instru_name, instru_info.version)
 
         if ndar_definition is None:
             print("Can't find the Instrument with the name and version")

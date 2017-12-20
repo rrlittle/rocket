@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/Managers.py" line="292" />
+    <bookmark url="file://$PROJECT_DIR$/Managers.py" line="295" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="114a0d77-f8bc-4345-b2e4-869185add349" name="Default" comment="Added">
       <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" afterPath="$PROJECT_DIR$/../.idea/misc.xml" />
       <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/../mapping_files/HungryDonkey.csv" afterPath="$PROJECT_DIR$/../mapping_files/HungryDonkey.csv" />
+      <change beforePath="$PROJECT_DIR$/../mapping_files/WTPTemplate.csv" afterPath="$PROJECT_DIR$/../mapping_files/WTPTemplate.csv" />
       <change beforePath="$PROJECT_DIR$/../mapping_files/jjtest.csv" afterPath="$PROJECT_DIR$/../mapping_files/jjtest.csv" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/Managers.py" afterPath="$PROJECT_DIR$/Managers.py" />
       <change beforePath="$PROJECT_DIR$/MappingManager.py" afterPath="$PROJECT_DIR$/MappingManager.py" />
+      <change beforePath="$PROJECT_DIR$/data_handlers/ndar.py" afterPath="$PROJECT_DIR$/data_handlers/ndar.py" />
       <change beforePath="$PROJECT_DIR$/mapping_managers/coins2ndar.py" afterPath="$PROJECT_DIR$/mapping_managers/coins2ndar.py" />
       <change beforePath="$PROJECT_DIR$/mapping_managers/wtp2ndar.py" afterPath="$PROJECT_DIR$/mapping_managers/wtp2ndar.py" />
       <change beforePath="$PROJECT_DIR$/template_kit/TemplateComponents.py" afterPath="$PROJECT_DIR$/template_kit/TemplateComponents.py" />
@@ -35,36 +37,48 @@
     <favorites_list name="rocket" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5656494">
+    <splitter split-orientation="horizontal" split-proportion="0.4941435">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="Managers.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Managers.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="0">
-                  <caret line="379" column="0" lean-forward="false" selection-start-line="379" selection-start-column="0" selection-end-line="379" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ndar_template_parser.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/utils/ndar_template_parser.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="19">
-                  <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+                <state relative-caret-position="114">
+                  <caret line="414" column="11" lean-forward="true" selection-start-line="414" selection-start-column="11" selection-end-line="414" selection-end-column="11" />
                   <folding>
-                    <element signature="e#0#20#0" expanded="true" />
+                    <element signature="e#0#12#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="wtp2ndar.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="ndar.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/data_handlers/ndar.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="856">
+                  <caret line="100" column="25" lean-forward="true" selection-start-line="100" selection-start-column="25" selection-end-line="100" selection-end-column="25" />
+                  <folding>
+                    <element signature="e#0#32#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Controller.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Controller.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="321">
+                  <caret line="31" column="36" lean-forward="false" selection-start-line="31" selection-start-column="36" selection-end-line="31" selection-end-column="36" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="wtp2ndar.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/mapping_managers/wtp2ndar.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="286">
-                  <caret line="84" column="0" lean-forward="true" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+                <state relative-caret-position="-1227">
+                  <caret line="24" column="23" lean-forward="true" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
                   <folding>
                     <element signature="e#0#39#0" expanded="true" />
                   </folding>
@@ -72,27 +86,11 @@
               </provider>
             </entry>
           </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="coins2ndar.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/mapping_managers/coins2ndar.py">
+          <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/__init__.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="849">
-                  <caret line="106" column="50" lean-forward="false" selection-start-line="106" selection-start-column="50" selection-end-line="106" selection-end-column="50" />
-                  <folding>
-                    <element signature="e#0#41#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="TemplateComponents.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/template_kit/TemplateComponents.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="139">
-                  <caret line="182" column="12" lean-forward="true" selection-start-line="182" selection-start-column="12" selection-end-line="182" selection-end-column="12" />
+                <state relative-caret-position="-12">
+                  <caret line="51" column="16" lean-forward="false" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
                   <folding />
                 </state>
               </provider>
@@ -101,21 +99,106 @@
           <file leaf-file-name="components_behavior_protocols.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/template_kit/components_behavior_protocols.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="222">
-                  <caret line="33" column="50" lean-forward="false" selection-start-line="33" selection-start-column="50" selection-end-line="33" selection-end-column="50" />
+                <state relative-caret-position="0">
+                  <caret line="0" column="20" lean-forward="true" selection-start-line="0" selection-start-column="20" selection-end-line="0" selection-end-column="20" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="MappingManager.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="ndar_definition_fetch.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/utils/ndar_definition_fetch.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="132">
+                  <caret line="9" column="8" lean-forward="false" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="MappingManager.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/MappingManager.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="339">
-                  <caret line="465" column="27" lean-forward="true" selection-start-line="465" selection-start-column="27" selection-end-line="465" selection-end-column="27" />
+                <state relative-caret-position="202">
+                  <caret line="312" column="33" lean-forward="false" selection-start-line="312" selection-start-column="33" selection-end-line="312" selection-end-column="33" />
                   <folding>
                     <element signature="e#0#56#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="TemplateComponents.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/template_kit/TemplateComponents.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="330">
+                  <caret line="262" column="19" lean-forward="true" selection-start-line="262" selection-start-column="19" selection-end-line="262" selection-end-column="19" />
+                  <folding>
+                    <element signature="e#53#475#0" expanded="false" />
+                    <element signature="e#564#5054#0" expanded="false" />
+                    <element signature="e#5111#5362#0" expanded="false" />
+                    <element signature="e#5403#5905#0" expanded="false" />
+                    <element signature="e#9996#10787#0" expanded="false" />
+                    <element signature="e#10840#12588#0" expanded="false" />
+                    <element signature="e#12641#13139#0" expanded="false" />
+                    <element signature="e#13167#13273#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="workspace_path_config.json" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/workspace_path_config.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="252" lean-forward="false" selection-start-line="0" selection-start-column="252" selection-end-line="0" selection-end-column="252" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="coins2ndar.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mapping_managers/coins2ndar.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="720">
+                  <caret line="260" column="40" lean-forward="true" selection-start-line="260" selection-start-column="40" selection-end-line="260" selection-end-column="40" />
+                  <folding>
+                    <element signature="e#0#41#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="template_writer_old.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/template_kit/template_writer_old.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="188">
+                  <caret line="42" column="7" lean-forward="true" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mapping_managers/__init__.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="990">
+                  <caret line="81" column="0" lean-forward="false" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="template_writer.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/template_kit/template_writer.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -138,6 +221,15 @@
       <find>with_suffix</find>
       <find>InstruInfo</find>
       <find>add_extra_content_to_instru_info</find>
+      <find>Template</find>
+      <find>_get_ndar_definition_</find>
+      <find>NdarDefinitionFetch</find>
+      <find>template</find>
+      <find>MappingMa</find>
+      <find>_auto_generate_file_path_</find>
+      <find>_KEY</find>
+      <find>set_instru_info</find>
+      <find>_auto</find>
     </findStrings>
     <dirStrings>
       <dir>Q:\Source_Code\rocket\rocket\rocket</dir>
@@ -145,11 +237,15 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="master" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/NewTemplateParserTest.py" />
         <option value="$PROJECT_DIR$/template_parser.py" />
         <option value="$PROJECT_DIR$/components_behavior_protocals.py" />
         <option value="$PROJECT_DIR$/template_writer.py" />
@@ -161,7 +257,6 @@
         <option value="$PROJECT_DIR$/convert_template.bat" />
         <option value="$PROJECT_DIR$/Functions/__init__.py" />
         <option value="$PROJECT_DIR$/Functions/update_ursi_info.py" />
-        <option value="$PROJECT_DIR$/path_finder.py" />
         <option value="$PROJECT_DIR$/Functions/subject_01_extension.py" />
         <option value="$PROJECT_DIR$/Functions/bdi_extension.py" />
         <option value="$PROJECT_DIR$/data_handlers/__init__.py" />
@@ -176,7 +271,6 @@
         <option value="$PROJECT_DIR$/Functions/wtpdata_functions.py" />
         <option value="$PROJECT_DIR$/__main__.py" />
         <option value="$PROJECT_DIR$/template_error_design" />
-        <option value="$PROJECT_DIR$/template_kit/template_structure.py" />
         <option value="$PROJECT_DIR$/data_handlers/coins.py" />
         <option value="$PROJECT_DIR$/template_kit/template_parser.py" />
         <option value="$PROJECT_DIR$/error_generator.py" />
@@ -188,18 +282,21 @@
         <option value="$PROJECT_DIR$/columns.py" />
         <option value="$PROJECT_DIR$/Functions/function_api.py" />
         <option value="$PROJECT_DIR$/Functions/interview_functions.py" />
-        <option value="$PROJECT_DIR$/data_handlers/wtp.py" />
         <option value="$PROJECT_DIR$/loggers.py" />
-        <option value="$PROJECT_DIR$/Managers.py" />
-        <option value="$PROJECT_DIR$/data_handlers/ndar.py" />
         <option value="$PROJECT_DIR$/utils/ndar_template_parser.py" />
+        <option value="$PROJECT_DIR$/data_handlers/wtp.py" />
         <option value="$PROJECT_DIR$/__init__.py" />
+        <option value="$PROJECT_DIR$/path_finder.py" />
         <option value="$PROJECT_DIR$/workspace_path_config.json" />
-        <option value="$PROJECT_DIR$/template_kit/components_behavior_protocols.py" />
-        <option value="$PROJECT_DIR$/template_kit/TemplateComponents.py" />
-        <option value="$PROJECT_DIR$/MappingManager.py" />
-        <option value="$PROJECT_DIR$/mapping_managers/wtp2ndar.py" />
+        <option value="$PROJECT_DIR$/utils/ndar_definition_fetch.py" />
+        <option value="$PROJECT_DIR$/template_kit/template_structure.py" />
         <option value="$PROJECT_DIR$/mapping_managers/coins2ndar.py" />
+        <option value="$PROJECT_DIR$/mapping_managers/wtp2ndar.py" />
+        <option value="$PROJECT_DIR$/template_kit/TemplateComponents.py" />
+        <option value="$PROJECT_DIR$/template_kit/components_behavior_protocols.py" />
+        <option value="$PROJECT_DIR$/MappingManager.py" />
+        <option value="$PROJECT_DIR$/data_handlers/ndar.py" />
+        <option value="$PROJECT_DIR$/Managers.py" />
       </list>
     </option>
   </component>
@@ -225,7 +322,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -233,6 +329,16 @@
             <path>
               <item name="rocket" type="b2602c69:ProjectViewProjectNode" />
               <item name="rocket" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="rocket" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rocket" type="462c0819:PsiDirectoryNode" />
+              <item name="data_handlers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="rocket" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rocket" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="rocket" type="b2602c69:ProjectViewProjectNode" />
@@ -253,12 +359,14 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="last.edited.regexp" value="" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://Q:/Source_Code/rocket/rocket/rocket/utils/ndar_definition_fetch.py" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -281,7 +389,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.create_template_coins">
+  <component name="RunManager" selected="Python.run_wtp2ndar_convert">
     <configuration name="MappingManager" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -332,6 +440,24 @@
       <module name="rocket" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$" />
       <option name="PARAMETERS" value="-t -mm coins2ndar" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="create_template_wtp" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Anaconda3\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="rocket" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$" />
+      <option name="PARAMETERS" value="-t -mm wtp2ndar" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -390,7 +516,7 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="run_coins2ndar" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="run_coins2ndar_convert" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -408,7 +534,7 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="run_wtp2ndar" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="run_wtp2ndar_convert" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -629,18 +755,19 @@
       <option name="_new_target" value="&quot;&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
     </configuration>
-    <list size="11">
+    <list size="12">
       <item index="0" class="java.lang.String" itemvalue="Python.path_finder" />
       <item index="1" class="java.lang.String" itemvalue="Python.make_template" />
-      <item index="2" class="java.lang.String" itemvalue="Python.run_coins2ndar" />
+      <item index="2" class="java.lang.String" itemvalue="Python.run_coins2ndar_convert" />
       <item index="3" class="java.lang.String" itemvalue="Python.create_template_coins" />
-      <item index="4" class="java.lang.String" itemvalue="Python.run_wtp2ndar" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.Nosetests in MyTestCase" />
-      <item index="6" class="java.lang.String" itemvalue="Python.template_structure" />
-      <item index="7" class="java.lang.String" itemvalue="Python.TemplateComponents" />
-      <item index="8" class="java.lang.String" itemvalue="Python.MappingManager" />
-      <item index="9" class="java.lang.String" itemvalue="Python.test_parse_schema" />
-      <item index="10" class="java.lang.String" itemvalue="Python.ndar_template_parser" />
+      <item index="4" class="java.lang.String" itemvalue="Python.create_template_wtp" />
+      <item index="5" class="java.lang.String" itemvalue="Python.run_wtp2ndar_convert" />
+      <item index="6" class="java.lang.String" itemvalue="Python tests.Nosetests in MyTestCase" />
+      <item index="7" class="java.lang.String" itemvalue="Python.template_structure" />
+      <item index="8" class="java.lang.String" itemvalue="Python.TemplateComponents" />
+      <item index="9" class="java.lang.String" itemvalue="Python.MappingManager" />
+      <item index="10" class="java.lang.String" itemvalue="Python.test_parse_schema" />
+      <item index="11" class="java.lang.String" itemvalue="Python.ndar_template_parser" />
     </list>
     <recent_temporary>
       <list size="5">
@@ -676,7 +803,42 @@
       <option name="project" value="LOCAL" />
       <updated>1512687617597</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Fixed the instru and version">
+      <created>1513118928742</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1513118928742</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Finalize the workflow of the making template">
+      <created>1513361167807</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1513361167813</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added way to fetch ndar definition from ndar website. Remove the step of feeding ndar definition. Instead now it relies on the instrument and its version. Added one more path to the workspace_path_config">
+      <created>1513619600283</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1513619600283</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix small bug">
+      <created>1513621670123</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1513621670123</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Start implementing auto-generated name">
+      <created>1513791074722</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1513791074723</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -724,22 +886,22 @@
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16130953" sideWeight="0.5902439" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18690476" sideWeight="0.5902439" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293348" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39824945" sideWeight="0.50476193" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41684902" sideWeight="0.5279762" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28993437" sideWeight="0.4904762" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3249453" sideWeight="0.5279762" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24940476" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15645514" sideWeight="0.45" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29540482" sideWeight="0.4952381" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.4097561" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29540482" sideWeight="0.4952381" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29007635" sideWeight="0.4904762" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -758,7 +920,12 @@
   <component name="VcsManagerConfiguration">
     <option name="SHOW_UNVERSIONED_FILES_WHILE_COMMIT" value="false" />
     <MESSAGE value="Added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added" />
+    <MESSAGE value="Fixed the instru and version" />
+    <MESSAGE value="Finalize the workflow of the making template" />
+    <MESSAGE value="Added way to fetch ndar definition from ndar website. Remove the step of feeding ndar definition. Instead now it relies on the instrument and its version. Added one more path to the workspace_path_config" />
+    <MESSAGE value="fix small bug" />
+    <MESSAGE value="Start implementing auto-generated name" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start implementing auto-generated name" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -768,41 +935,20 @@
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/mapping_managers/coins2ndar.py</url>
-          <line>123</line>
-          <option name="timeStamp" value="83" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/mapping_managers/coins2ndar.py</url>
-          <line>115</line>
-          <option name="timeStamp" value="85" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/MappingManager.py</url>
-          <line>464</line>
-          <option name="timeStamp" value="86" />
+          <url>file://$PROJECT_DIR$/Controller.py</url>
+          <line>62</line>
+          <option name="timeStamp" value="98" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="87" />
+      <option name="time" value="99" />
     </breakpoint-manager>
-    <watches-manager />
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="ndar_col_name_index" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/Anaconda3/Lib/site-packages/MappingManager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="71" column="8" lean-forward="false" selection-start-line="71" selection-start-column="8" selection-end-line="71" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rdoc_subject01_data_20160623.csv" />
-    <entry file="file://$PROJECT_DIR$/template_kit/test_template.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Anaconda3/Lib/site-packages/unicodecsv/py3.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -902,20 +1048,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/template_kit/template_structure.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="682">
-          <caret line="35" column="28" lean-forward="false" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/template_kit/template_writer_old.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="518">
-          <caret line="57" column="17" lean-forward="false" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test_parse_schema.py" />
     <entry file="file://$PROJECT_DIR$/Functions/function_api.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -952,20 +1084,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data_handlers/wtp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="704">
-          <caret line="37" column="16" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data_handlers/coins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="27" column="16" lean-forward="false" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/loggers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
@@ -977,7 +1095,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="679">
           <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -985,14 +1102,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data_handlers/ndar.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="679">
-          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1024,16 +1133,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Controller.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="67" column="48" lean-forward="false" selection-start-line="67" selection-start-column="48" selection-end-line="67" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utils/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2178">
@@ -1045,51 +1144,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="515">
           <caret line="73" column="68" lean-forward="false" selection-start-line="73" selection-start-column="68" selection-end-line="73" selection-end-column="68" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/template_kit/template_writer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#101#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Managers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="379" column="0" lean-forward="false" selection-start-line="379" selection-start-column="0" selection-end-line="379" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/path_finder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="858">
-          <caret line="44" column="11" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/workspace_path_config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="174" lean-forward="false" selection-start-line="0" selection-start-column="174" selection-end-line="0" selection-end-column="174" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1097,9 +1151,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1107,65 +1158,188 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Anaconda3/Lib/importlib/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="125" column="0" lean-forward="false" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/path_finder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1122">
+          <caret line="55" column="43" lean-forward="false" selection-start-line="55" selection-start-column="43" selection-end-line="55" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_handlers/wtp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2200">
+          <caret line="106" column="48" lean-forward="false" selection-start-line="106" selection-start-column="48" selection-end-line="106" selection-end-column="48" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#47#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/utils/ndar_template_parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        <state relative-caret-position="374">
+          <caret line="19" column="8" lean-forward="false" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MappingManager.py">
+    <entry file="file://$PROJECT_DIR$/data_handlers/coins.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="465" column="27" lean-forward="true" selection-start-line="465" selection-start-column="27" selection-end-line="465" selection-end-column="27" />
+        <state relative-caret-position="525">
+          <caret line="27" column="16" lean-forward="false" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/template_kit/template_structure.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-366">
+          <caret line="7" column="24" lean-forward="true" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapping_managers/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="990">
+          <caret line="81" column="0" lean-forward="false" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/template_kit/template_writer_old.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="42" column="7" lean-forward="true" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workspace_path_config.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="252" lean-forward="false" selection-start-line="0" selection-start-column="252" selection-end-line="0" selection-end-column="252" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/ndar_definition_fetch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="9" column="8" lean-forward="false" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-12">
+          <caret line="51" column="16" lean-forward="false" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapping_managers/wtp2ndar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1227">
+          <caret line="24" column="23" lean-forward="true" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
           <folding>
-            <element signature="e#0#56#0" expanded="true" />
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/template_kit/TemplateComponents.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="262" column="19" lean-forward="true" selection-start-line="262" selection-start-column="19" selection-end-line="262" selection-end-column="19" />
+          <folding>
+            <element signature="e#53#475#0" expanded="false" />
+            <element signature="e#564#5054#0" expanded="false" />
+            <element signature="e#5111#5362#0" expanded="false" />
+            <element signature="e#5403#5905#0" expanded="false" />
+            <element signature="e#9996#10787#0" expanded="false" />
+            <element signature="e#10840#12588#0" expanded="false" />
+            <element signature="e#12641#13139#0" expanded="false" />
+            <element signature="e#13167#13273#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/template_kit/components_behavior_protocols.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="33" column="50" lean-forward="false" selection-start-line="33" selection-start-column="50" selection-end-line="33" selection-end-column="50" />
+        <state relative-caret-position="0">
+          <caret line="0" column="20" lean-forward="true" selection-start-line="0" selection-start-column="20" selection-end-line="0" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/template_kit/TemplateComponents.py">
+    <entry file="file://$PROJECT_DIR$/data_handlers/ndar.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="182" column="12" lean-forward="true" selection-start-line="182" selection-start-column="12" selection-end-line="182" selection-end-column="12" />
+        <state relative-caret-position="856">
+          <caret line="100" column="25" lean-forward="true" selection-start-line="100" selection-start-column="25" selection-end-line="100" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Managers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="414" column="11" lean-forward="true" selection-start-line="414" selection-start-column="11" selection-end-line="414" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controller.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="31" column="36" lean-forward="false" selection-start-line="31" selection-start-column="36" selection-end-line="31" selection-end-column="36" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MappingManager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="312" column="33" lean-forward="false" selection-start-line="312" selection-start-column="33" selection-end-line="312" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mapping_managers/coins2ndar.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="849">
-          <caret line="106" column="50" lean-forward="false" selection-start-line="106" selection-start-column="50" selection-end-line="106" selection-end-column="50" />
+        <state relative-caret-position="720">
+          <caret line="260" column="40" lean-forward="true" selection-start-line="260" selection-start-column="40" selection-end-line="260" selection-end-column="40" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mapping_managers/wtp2ndar.py">
+    <entry file="file://$PROJECT_DIR$/template_kit/template_writer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="84" column="0" lean-forward="true" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

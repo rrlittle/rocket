@@ -4,7 +4,7 @@ from __init__ import templatedir, templ_delimiter, secretdir
 from loggers import map_log
 from  template_kit.template_writer import TemplateWriter
 from template_kit.template_parser import TemplateParser, TemplateParseError
-from template_kit.TemplateComponents import Header
+from template_kit.TemplateComponents import Header, InstruInfo
 from template_kit.components_behavior_protocols import ComponentResponseProtocol, ComponentWriteProtocol
 from template_kit.template_structure import TemplateStructure
 import csv
@@ -56,6 +56,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         # I want to update the structure
         self.template_structure = self.get_template_structure()
         self.user_notice = ""
+        self.instru_info = InstruInfo()
 
     def get_template_structure(self):
         """
@@ -385,10 +386,10 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
     # These are the delegates method that is used to determine what to do
     # with different components
     ##################################################################################
-    def respond_to_instru_info(self, instru_info):
-        self.sink.set_instru_info(instru_name=instru_info.get_instru_name(), version=instru_info.get_version())
+    def respond_to_instru_info(self, instru_info: InstruInfo):
+        self.sink.set_instru_info(instru_info)
 
-    def respond_to_header(self, header):
+    def respond_to_header(self, header: List[List[str]]):
         self.header = header
 
     def respond_to_mapping_info(self, mapping_info):
@@ -398,7 +399,7 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
             mapping_info.seek(0)
             handler.load_template(mapping_info)
 
-    def respond_to_user_notice(self, user_notice):
+    def respond_to_user_notice(self, user_notice: List[str]):
         self.user_notice = user_notice
 
     # delegate method for writing the tempalte
@@ -462,5 +463,6 @@ class MappingManager(Manager, ComponentResponseProtocol, ComponentWriteProtocol)
         instru_key = instru_info.INSTRU_NAME_KEY
         version_key = instru_info.VERSION_KEY
         instru_info_struct = instru_info.instru_info
-        instru_info_line = ["", instru_key, instru_info_struct.instru_name, version_key, instru_info_struct.version]
+        instru_info_line = ["", instru_key, instru_info_struct.instru_name, version_key, instru_info_struct.version,
+                            instru_info.RESPONDENT_KEY, instru_info_struct.respondent]
         instru_info.content.append(instru_info_line)

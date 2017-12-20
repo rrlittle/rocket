@@ -16,8 +16,6 @@ class ndar_snk(sinkManager):
         self.template_fields['mappers'] = 'mapping'
         self.template_fields['default'] = 'default value'
         self.template_fields['required'] = 'required'
-        self.instrument_name = ""
-        self.version = ""
 
     def parse_required(self, req, coldef):
         return req.lower() in ('true', 't')
@@ -46,13 +44,9 @@ class ndar_snk(sinkManager):
                     man_log.critical("\n\n\nRAISING DROPROW")
                     raise DropRowException('%s' % elem)
 
-    def set_instru_info(self, instru_name="", version=""):
-        self.instrument_name = instru_name
-        self.version = version
-
     def write_header(self, outfile):
-        insr = self.instrument_name
-        vers = self.version
+        insr = self.instru_info.instru_name
+        vers = self.instru_info.version
         outwriter = utils.writer(outfile, delimiter=self.delimiter)
         outwriter.writerow([insr, vers])
 
@@ -88,13 +82,22 @@ class ndar_snk(sinkManager):
         # how do I get cotwin or parent or twin? I would say ask: please enter respondent "cotwin, parent, twin"
 
         mm = self.mapping_manager
-        if self.instrument_name == "" and self.version == "":
+        instru_info = self.instru_info
+
+        if instru_info.instru_name == "" and instru_info.version == "":
             return super()._auto_generate_file_path_()
 
         mm_name = type(mm).__name__
-        instru_name = self.instrument_name
+        instru_name_full = self.instru_info.instru_name + self.instru_info.version
         time = datetime.now().strftime("%b_%d_%y_%H")
 
+        if instru_info.respondent != "":
+            components = [instru_name_full, time, instru_info.respondent, mm_name]
+        else:
+            components = [instru_name_full, time, mm_name]
+
         # I need to add the respondent information in the template
-        return super()._auto_generate_file_path_()
+        return "{name}.csv".format(
+            name="_".join(components)
+        )
 

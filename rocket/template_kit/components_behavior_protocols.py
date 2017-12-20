@@ -1,3 +1,6 @@
+from typing import *
+
+
 class ComponentResponseProtocol(object):
     def respond_to_mapping_info(self, mapping_info):
         """Mapping info will be passed as a string IO"""

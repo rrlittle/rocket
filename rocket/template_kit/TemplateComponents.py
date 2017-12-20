@@ -1,7 +1,28 @@
 import csv
 import io
 
+
+class InstruInfo(object):
+    '''This package serves a place to store the instrument name and version. It will be used by
+    others to get those information'''
+
+    def __init__(self):
+        self.instru_name = ""
+        self.version = ""
+        self.respondent = ""
+
+    def get_instru_name(self):
+        return self.instru_name
+
+    def get_version(self):
+        return self.version
+
+    def get_respondent(self):
+        return self.respondent
+
+
 class TemplateStructureError(Exception): pass
+
 
 class TemplateComponenet(object):
     '''
@@ -106,6 +127,18 @@ class TemplateComponenet(object):
 
         pass
 
+
+class RocketIgnoredComponent(TemplateComponenet):
+    """
+        This component won't get scanned in the rocket, thus no need to be present in the template
+    """
+    def read_in_line(self, file):
+        try:
+            super().read_in_line(file)
+        except Exception as e:
+            return None
+
+
 class Header(TemplateComponenet):
     def __init__(self):
         super(Header, self).__init__()
@@ -144,6 +177,7 @@ class InstruInfoComponent(TemplateComponenet):
         self.line_num = 0
         self.INSTRU_NAME_KEY = "Instrument Name:"
         self.VERSION_KEY = "Version:"
+        self.RESPONDENT_KEY = "Respondent:"
 
         # The object holding the data information
         self.instru_info = InstruInfo()
@@ -152,6 +186,7 @@ class InstruInfoComponent(TemplateComponenet):
 
         def find_info_line(list_line):
             for line in list_line:
+                # RESPONDENT_KEY will be optional for backward version compatiable
                 if self.INSTRU_NAME_KEY in line and self.VERSION_KEY in line:
                     return line
             raise Exception("The template is wrong for instrument name")
@@ -167,6 +202,8 @@ class InstruInfoComponent(TemplateComponenet):
                         instru_info.instru_name = i.__next__()
                     elif item == self.VERSION_KEY:
                         instru_info.version = i.__next__()
+                    elif item == self.RESPONDENT_KEY:
+                        instru_info.respondent = i.__next__()
             except StopIteration as e:
                 return instru_info
 
@@ -183,21 +220,6 @@ class InstruInfoComponent(TemplateComponenet):
     def _extra_write_content_(self, file, delegate, delimiter):
         delegate.before_write_instru_info(instru_info=self)
         delegate.add_extra_content_to_instru_info(instru_info=self)
-
-
-class InstruInfo(object):
-    '''This package serves a place to store the instrument name and version. It will be used by
-    others to get those information'''
-
-    def __init__(self):
-        self.instru_name = ""
-        self.version = ""
-
-    def get_instru_name(self):
-        return self.instru_name
-
-    def get_version(self):
-        return self.version
 
 
 class MappingInfo(TemplateComponenet):
@@ -316,17 +338,6 @@ class DataTableComponent(TemplateComponenet):
     def _extra_write_content_(self, file, delegate, delimiter):
         'data table content should look like this: [,,Data table:,data_3_ ]'
         delegate.add_extra_content_to_data_table(self)
-
-
-class RocketIgnoredComponent(TemplateComponenet):
-    """
-        This component won't get scanned in the rocket, thus no need to be present in the template
-    """
-    def read_in_line(self, file):
-        try:
-            super().read_in_line(file)
-        except Exception as e:
-            return None
 
 
 class ErrorComponent(RocketIgnoredComponent):

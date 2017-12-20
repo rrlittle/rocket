@@ -5,7 +5,8 @@ from loggers import man_log
 from Functions.function_api import DropRowException
 from error_generator import user_error_log
 from datetime import datetime
-from mapping_managers import MappingManager
+from template_kit.TemplateComponents import InstruInfo
+from tkinter import messagebox
 
 class Manager(object):
     ''' the generic manager ensuring all managers have basic
@@ -144,7 +145,7 @@ class ssManager(Manager):
         # ordered list of col objects in the data files
 
         # The mapping_manager for this specific manager
-        self.mapping_manager = None # type: MappingManager
+        self.mapping_manager = None
 
     # used to set what type of column to use to parse the template files
 
@@ -409,6 +410,7 @@ class sinkManager(ssManager):
         self.template_fields['mappers'] = 'sink mappers'
         self.template_fields['func'] = 'function'
         self.template_fields['args'] = 'args'
+        self.instru_info = InstruInfo()
 
     def write_outfile(self):
         ''' writes self.data to a the outfile. which the user provides'''
@@ -439,6 +441,9 @@ class sinkManager(ssManager):
             outwriter.writerow(row)
 
         return outpath
+
+    def set_instru_info(self, instru_info: InstruInfo):
+        self.instru_info = instru_info
 
     def read_output_file(self):
         """
@@ -480,6 +485,13 @@ class sinkManager(ssManager):
 
         if hasattr(self, 'outpath'):
             return self.outpath
+
+        auto_generated = self._auto_generate_file_path_()
+        result = messagebox.askyesno("Output File Name", "Rocket has generated this file name: {name}, do you want to use it? Press 'No' to "
+                            "create your own".format(name = auto_generated))
+
+        if result:
+            self.outpath = auto_generated
         else:
             self.outpath = self.get_filepath(save=True, filetype='outpath',
                                              initialdir=self.defaultdatadir,
