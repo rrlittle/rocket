@@ -3,11 +3,12 @@ from template_kit.TemplateComponents import TemplateComponenet, Header, InstruIn
 from template_kit.TemplateComponents import DataTableComponent
 from template_kit.template_parser import TemplateParser
 from template_kit.template_writer import TemplateWriter
+from typing import *
 
 class TemplateStructure:
 
     def __init__(self):
-        self.components = []
+        self.components = [] # type: List[TemplateComponenet]
 
     def insert_component(self, component, index=None):
         '''The component should be a subclass of TemplateComponent
@@ -20,6 +21,12 @@ class TemplateStructure:
                 self.components.append(component)
             else:
                 self.components.insert(index, component)
+
+    def get_component(self, component_type: Type[TemplateComponenet]) -> Optional[TemplateComponenet]:
+        for c in self.components:
+            if isinstance(c, component_type):
+                return c
+        return None
 
     def component_count(self):
         return len(self.components)

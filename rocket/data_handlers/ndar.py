@@ -2,6 +2,7 @@ from Managers import sinkManager
 from loggers import man_log
 import utils
 from Functions.function_api import DropRowException
+from datetime import datetime
 
 class ndar_snk(sinkManager):
     ''' ndar sink manager
@@ -15,6 +16,8 @@ class ndar_snk(sinkManager):
         self.template_fields['mappers'] = 'mapping'
         self.template_fields['default'] = 'default value'
         self.template_fields['required'] = 'required'
+        self.instrument_name = ""
+        self.version = ""
 
     def parse_required(self, req, coldef):
         return req.lower() in ('true', 't')
@@ -53,7 +56,6 @@ class ndar_snk(sinkManager):
         outwriter = utils.writer(outfile, delimiter=self.delimiter)
         outwriter.writerow([insr, vers])
 
-
     def parse_mappers(self, mappers, coldef):
         # This will check the syntax for the mappers, and do some clean up
         # The syntax should always be number seperated by comma. It's also possible to contain a pair of curly bracket,
@@ -78,3 +80,21 @@ class ndar_snk(sinkManager):
                 #user_error_log.log_mapping_error("Syntax for the mapper is wrong")
                 raise Exception()
             return mappers
+
+    def _auto_generate_file_path_(self):
+        # gonna override it
+        # I want to have the ability to use an automatically assigned name
+        # The automatically generated name will be "apes01_12_18_2017_hour_cotwin_WTP.csv" so question becomes
+        # how do I get cotwin or parent or twin? I would say ask: please enter respondent "cotwin, parent, twin"
+
+        mm = self.mapping_manager
+        if self.instrument_name == "" and self.version == "":
+            return super()._auto_generate_file_path_()
+
+        mm_name = type(mm).__name__
+        instru_name = self.instrument_name
+        time = datetime.now().strftime("%b_%d_%y_%H")
+
+        # I need to add the respondent information in the template
+        return super()._auto_generate_file_path_()
+
