@@ -10,6 +10,8 @@ from tkinter import messagebox
 from pathlib import Path
 from columns import Col
 from typing import *
+from collections import OrderedDict
+from typing import TextIO
 
 class Manager(object):
     ''' the generic manager ensuring all managers have basic
@@ -27,7 +29,7 @@ class Manager(object):
         pass
 
     def get_filepath(self,
-                     save=False,
+                     save=False,    # This flag is used to specify whether the file is for output or input
                      title='open file',
                      filetype='file',
                      quit=True,
@@ -45,6 +47,8 @@ class Manager(object):
             - defaultextension - str expression for default extensions
             - others check out utils.askopenfilename docs for more
             - initialdir - str path to where you would like to open
+            - initialfile - str default filename
+
             TODO: figure out how to disallow new files being made/ allow
         """
         fpath = None
@@ -142,10 +146,10 @@ class ssManager(Manager):
 
         # Col_defs are the columns for the dataf file for both input and output. They are the
         # row of the mapping files
-        self.col_defs = []
+        self.col_defs = []  # type: List[Col]
 
-        self.row_pointer_for_iter = 0
         # ordered list of col objects in the data files
+        self.row_pointer_for_iter = 0
 
         # The mapping_manager for this specific manager
         self.mapping_manager = None
@@ -206,7 +210,7 @@ class ssManager(Manager):
         ''' if self.data exist then clear it
             create a new fresh self.data
         '''
-        self.data = []
+        self.data = []  # type: List[OrderedDict]
 
     def default_template_parser(self, value, coldef):
         ''' unifies how we parse the template fields.
@@ -294,14 +298,15 @@ class sourceManager(ssManager):
             man_log.debug('Data source corrupted.')
             raise Exception("Data source corrupted. Please check the data source")
 
+
     def _read_data_from_source_(self):
-        '''
+        """
             The implementation of reading data from a local file. It uses a dialog to get data path
 
             Overridable: if anyone wants to get data from different source, override this function
 
         :return: An array of ordered dictionary that contains the data.
-        '''
+        """
         data = []
         # open file
         srcfile = open(self.get_src_datpath(), errors='ignore')
@@ -310,17 +315,8 @@ class sourceManager(ssManager):
         # assert the file has all the expected fields
         man_log.debug('expected fieldnames: %s' % self.col_defs)
 
-        error_flag = False
-        for index, col_name in enumerate(self.col_defs):
-            if col_name not in srcreader.fieldnames:
-                user_error_log.log_mapping_error(col_name, column_id=index + 1, message="this field missing in data file")
-                error_flag = True
-                continue
-
-        if error_flag:
-            raise self.TemplateError(('expected columns not '
-                                      'found in source datafile, with fields: %s') % (
-                                         list(srcreader.fieldnames)))
+        # this will throw TemplateException
+        self._check_whether_all_src_cols_in_src_fields_(src_cols=self.col_defs, fieldnames=list(srcreader.fieldnames))
 
         # load each row with each col's parser
         for rowid, datarow in enumerate(srcreader):
@@ -341,6 +337,17 @@ class sourceManager(ssManager):
             data.append(row)
 
         return data
+
+    def _check_whether_all_src_cols_in_src_fields_(self, src_cols: List[Col], fieldnames: List[str]) -> None:
+        # check whether the src col is inconsistent from the actual data file header
+        missing_cols = [col for col in src_cols if col not in fieldnames]
+        if len(missing_cols) > 0:
+            for c in missing_cols:
+                user_error_log.log_mapping_error(c, column_id=c.id, message="this field missing in data file")
+            raise self.TemplateError(('Missing those fields: %s \n'
+                                      'expected columns not '
+                                      'found in source datafile, with fields: %s') % (
+                                         str(missing_cols), fieldnames))
 
     def _parse_value_with_corresponding_parser_(self, value, col):
         col_parser_name = 'parse_' + str(col)
@@ -427,32 +434,9 @@ class sinkManager(ssManager):
                                      delimiter=self.delimiter)
         outwriter.writeheader()
 
-        self.write_sink_data_with_outwriter(outwriter)
+        self.write_sink_data_with_outwriter(self.data, outwriter)
 
         return outpath
-
-    def write_sink_data_with_outwriter(self, outwriter: utils.DictWriter) -> None:
-        for rowid, row in enumerate(self.data):
-            for coldef, elem in row.items():
-                if isinstance(elem, ssManager.NoDataError):  # print the default value.
-                    elem = ''  # ??
-                formatter = getattr(self, coldef + '_write_formatter',
-                                    self.default_write_formatter)
-
-                man_log.debug('trying formatter %s' % (
-                        coldef + '_write_formatter'))
-                man_log.debug('formatting row[%s][%s](%s) with %s' % (rowid,
-                                                                      coldef, row[coldef], formatter.__name__))
-
-                row[coldef] = formatter(row[coldef], coldef)
-                man_log.debug('writing row[%s][%s] is %s' % (rowid, coldef,
-                                                             row[coldef]))
-            outwriter.writerow(row)
-
-        return None
-
-    def set_instru_info(self, instru_info: InstruInfo):
-        self.instru_info = instru_info
 
     def read_output_file(self) -> Tuple[str, TextIO]:
         """
@@ -473,9 +457,33 @@ class sinkManager(ssManager):
             input(('%s was not opened successfully. perhaps it is open. '
                    'close it and hit neter to cont') % outpath)
             outfile = open(outpath, 'w', newline="")
-            return outpath,outfile
+            return outpath, outfile
 
-    def _auto_generate_file_path_(self) :
+    def write_sink_data_with_outwriter(self, data, outwriter: utils.DictWriter) -> None:
+        for rowid, row in enumerate(data):
+            for coldef, elem in row.items():
+
+                # get formatter (especially for date output). If no customized formatter provided, then nothing.
+                formatter = getattr(self, coldef + '_write_formatter',  # formatter is a function
+                                    self.default_write_formatter)
+
+
+                man_log.debug('trying formatter %s' % (
+                        coldef + '_write_formatter'))
+                man_log.debug('formatting row[%s][%s](%s) with %s' % (rowid,
+                                                                      coldef, row[coldef], formatter.__name__))
+
+                row[coldef] = formatter(row[coldef], coldef)
+                man_log.debug('writing row[%s][%s] is %s' % (rowid, coldef,
+                                                             row[coldef]))
+            outwriter.writerow(row)
+
+        return None
+
+    def set_instru_info(self, instru_info: InstruInfo):
+        self.instru_info = instru_info
+
+    def _auto_generate_file_path_(self):
         """
             This function should be overrided by subclass to provide possible autogenerated filepath.
             The default output format is "rocket_output_{month_day_year_hour}.csv"

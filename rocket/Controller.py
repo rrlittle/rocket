@@ -54,6 +54,8 @@ class controller(object):
             managers
         '''
         try:
+
+
             # parse the template, setting up src and sink
             # different managers will prompt the user for what they need when they
             # need it. So I don't have to do it here
