@@ -155,6 +155,18 @@ class Mean(Function):
         return mean
 
 
+class AddHundred(Function):
+
+    def get_name(self):
+        return "add_hundred"
+
+    def get_documentation(self):
+        return "Adds one hundred to the number"
+
+    def _func_(self, data_list, args=None):
+        return int(data_list[0]) + 100
+
+
 class FindFirstValid(Function):
 
     def get_name(self):

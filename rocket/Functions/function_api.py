@@ -105,7 +105,7 @@ class DropRowFunction(Function):
         except Exception as e:
             raise DropRowException("%s" % e)
 
-        logger.debug("The function:%s finishes correctly" %self.get_name())
+        logger.debug("The function:%s finishes correctly" % self.get_name())
         return result
 
 class PlainCopy(Function):

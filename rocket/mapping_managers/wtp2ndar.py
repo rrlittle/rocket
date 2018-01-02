@@ -91,16 +91,21 @@ class wtp2ndar (MappingManager):
         root = Tk()
         root.withdraw()
 
-        name = simpledialog.askstring("Action", "Enter NDAR instrument name (without version)")
+        name = simpledialog.askstring("Action", "Enter NDAR instrument name (without version and not case sensitive)")
         version = simpledialog.askstring("Action", "Enter NDAR instrument version")
         respondent = simpledialog.askstring("Action", "Enter the respondent for this instrument. (e.g, twin, cotwin)")
 
         if name is not None:
             # No input check right now
+            name = name.lower()
             instru_info.instru_info.instru_name = name
             self.instru_info.instru_name = name
 
         if version is not None:
+            # A '0' is added to the version string because NDAR requires
+            # single digit versions numbers to have a leading '0'
+            if version.len() == 1:
+                version = "0" + version
             instru_info.instru_info.version = version
             self.instru_info.version = version
 

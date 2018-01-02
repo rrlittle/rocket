@@ -26,6 +26,7 @@ class ComponentResponseProtocol(object):
     def respond_to_error(self, error_componenet):
         pass
 
+
 class ComponentWriteProtocol(object):
 
     def add_extra_content_to_header(self, header):
