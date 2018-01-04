@@ -254,7 +254,7 @@ class ConcatString (Function):
         if len(data_list) == 0:
             return ssManager.NoDataError()
 
-        return ";".join([str(x) for x in data_list])
+        return ";".join([str(x) for x in data_list if not isinstance(x, ssManager.NoDataError) ])
 
 def mean(*srcdat, args=None):
     # data will be coerced in the sum
