@@ -1,7 +1,7 @@
 from data_handlers.wtp import WtpSource
 from data_handlers.ndar import ndar_snk
 from MappingManager import MappingManager
-from Functions.calc_functions import Sum, Mean, Subtract, MaxLength, ConcatString
+from Functions.calc_functions import Sum, Mean, Subtract, MaxLength, ConcatString, RecodeTwinToAB
 from template_kit.template_structure import TemplateStructure
 from template_kit.TemplateComponents import DataTableComponent
 from Functions.interview_functions import FindGuidByWTPInt, FindGenderByWTPInt, FindAgeByWTPInt, FindAssessByWTPInt, \
@@ -37,6 +37,7 @@ class wtp2ndar (MappingManager):
         function_list.append(MaxLength())
         function_list.append(ConcatString())
         function_list.append(GenderResponse())
+        function_list.append(RecodeTwinToAB())
 
         function_list.append(FindGuidByWTPInt())
         function_list.append(FindGenderByWTPInt())
@@ -145,6 +146,7 @@ class wtp2ndar (MappingManager):
         fetch = NdarDefinitionFetch(ndardefdir)
         ndar_definition = None
         instru_info = self.instru_info
+        import ipdb;ipdb.set_trace()
         if instru_info.instru_name != "" and instru_info.version != "":
             ndar_definition = fetch.fetch_definition(instru_info.instru_name, instru_info.version)
 

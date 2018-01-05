@@ -243,6 +243,29 @@ class MaxLength(Function):
         return data_list[0][0: max_length]
 
 
+class RecodeTwinToAB(Function):
+
+    def get_name(self):
+        return "recodeTwinToAB"
+
+    def get_documentation(self):
+        return "Given the twin number in the mapping id, it will convert twin number 1 to A, " \
+               "twin number 2 to B."
+
+    def _func_(self, data_list, args=None):
+        twin_num_str = data_list[0]
+        try:
+            twin_num = int(twin_num_str)
+
+            if twin_num == 1:
+                return "A"
+
+            elif twin_num == 2:
+                return "B"
+        except ValueError as e:
+            return ssManager.NoDataError("No data for this field")
+
+
 class ConcatString (Function):
     def get_name(self):
         return "concatString"

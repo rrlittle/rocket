@@ -125,7 +125,7 @@ class coins2ndar(MappingManager):
         if version is not None:
             # A '0' is added to the version string because NDAR requires
             # single digit versions numbers to have a leading '0'
-            if version.len() == 1:
+            if len(version) == 1:
                 version = "0" + version
             instru_info.instru_info.version = version
             self.instru_info.version = version

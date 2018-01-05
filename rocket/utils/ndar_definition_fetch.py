@@ -45,6 +45,7 @@ class NdarDefinitionFetch():
 
             # the respone will get str in binary, with double quote in it
             b_lines = response.readlines()  # type: List[str]
+            import ipdb; ipdb.set_trace()
             lines = [s.decode('ascii').replace('"', '') for s in b_lines]
 
             if self.need_save_definition:
