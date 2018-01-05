@@ -384,6 +384,7 @@ class sourceManager(ssManager):
         if hasattr(col_def, 'missing_vals'):
             man_log.debug('checking if %s in missing vals: %s' % (value,
                                                                   col_def.missing_vals))
+
             missing = [missing_val.strip() for missing_val in col_def.missing_vals.split(",")]
 
             if value in missing:
@@ -467,7 +468,6 @@ class sinkManager(ssManager):
                 formatter = getattr(self, coldef + '_write_formatter',  # formatter is a function
                                     self.default_write_formatter)
 
-
                 man_log.debug('trying formatter %s' % (
                         coldef + '_write_formatter'))
                 man_log.debug('formatting row[%s][%s](%s) with %s' % (rowid,
@@ -510,7 +510,7 @@ class sinkManager(ssManager):
         if operated_manually:
             self.outpath = self.get_filepath(save=True, filetype='outpath',
                                              initialdir=self.defaultdatadir,
-                                             initialfile = self._auto_generate_file_path_(),
+                                             initialfile=self._auto_generate_file_path_(),
                                              title=('please select a new or exisiting file to '
                                                     'save sink datafile to'))
         else:

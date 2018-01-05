@@ -28,7 +28,6 @@ class NdarDefinitionFetch():
             except IOError as e:
                 print("File not created or updated")
 
-
     def fetch_definition(self, struct_name: str, version: str) -> Optional[List[List[str]]]:
         """
             This function returns a list that contains csv line. Each csv line is already split
@@ -46,7 +45,7 @@ class NdarDefinitionFetch():
 
             # the respone will get str in binary, with double quote in it
             b_lines = response.readlines()  # type: List[str]
-            lines = [s.decode('ascii').replace('"', "") for s in b_lines]
+            lines = [s.decode('ascii').replace('"', '') for s in b_lines]
 
             if self.need_save_definition:
                 self.save_definition_to_output_path(lines, InstruInfo(struct_name, version))
