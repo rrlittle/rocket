@@ -266,6 +266,7 @@ class FindGuidByWBIC (DropRowFunction):
         wbic = data_list[0]
         assert wbic != "", "The wbic passed in has nothing "
 
+        # import ipdb;ipdb.set_trace()
 
         #ursi_data_manager = UrsiDataManager(temp_data_path, first_time_enter)
         ursi_data_manager = get_ursi_data_manager()

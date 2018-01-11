@@ -146,7 +146,6 @@ class wtp2ndar (MappingManager):
         fetch = NdarDefinitionFetch(ndardefdir)
         ndar_definition = None
         instru_info = self.instru_info
-        import ipdb;ipdb.set_trace()
         if instru_info.instru_name != "" and instru_info.version != "":
             ndar_definition = fetch.fetch_definition(instru_info.instru_name, instru_info.version)
 

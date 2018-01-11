@@ -28,6 +28,7 @@ class coins_src(sourceManager):
         :return:
         '''
         for dateformat in dateformat_candidates:
+
             try:
                 assessment_date = utils.datetime.strptime(assessment_date,
                     dateformat)
@@ -47,6 +48,3 @@ class coins_src(sourceManager):
                 pass
 
         raise ValueError("The assessment_date in data file is not matched in any acceptable date format in rocket")
-
-
-    
