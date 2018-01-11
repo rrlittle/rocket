@@ -60,6 +60,22 @@ class Subtract(Function):
             raise e
 
 
+class MapFrequencyScaleToYesAndNo(self):
+
+    def get_documentation(self):
+        return "Data 1 and greater will be changed to 1 for yes. 0 will remain the same representing no"
+
+    def get_name(self):
+        return "mapFrequencyScaleToYesAndNo"
+
+    def _func_(self, data_list, args=None):
+        if data_list[0] >= 1:
+            return 1
+        elif data_list == 0:
+            return 0
+        else:
+            raise e
+
 class Sum(Function):
 
     def get_documentation(self):
@@ -153,7 +169,6 @@ class Mean(Function):
 
         mean = mean_sum / valid_num
         return mean
-
 
 class AddHundred(Function):
 
