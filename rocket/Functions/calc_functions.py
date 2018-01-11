@@ -4,8 +4,11 @@
     Every data passed will be in the form of a list of string. If you want to do
     numerical calculation, change that into the number.
 '''
+
+
 from Managers import ssManager
 from Functions.function_api import Function
+from typing import *
 
 def sum(*data, args = [0.8,'int']):
  #   import ipdb; ipdb.set_trace()
@@ -68,10 +71,11 @@ class MapFrequencyScaleToYesAndNo(Function):
     def get_name(self):
         return "mapFrequencyScaleToYesAndNo"
 
-    def _func_(self, data_list, args=None):
-        if data_list[0] >= 1:
+    def _func_(self, data_list: List[str], args=None):
+
+        if int(data_list[0]) >= 1:
             return 1
-        elif data_list[0] == 0:
+        elif int(data_list[0]) == 0:
             return 0
         else:
             return ssManager.NoDataError("Invalid value.")

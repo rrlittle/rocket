@@ -1,4 +1,7 @@
 from utils import make_logger, logging, truncfile
+from __init__ import basedir
+
+#import ipdb; ipdb.set_trace()
 
 debuglog = 'debug.log'
 frmt = '%(name)s:%(levelno)s:%(lineno)s:%(message)s'
