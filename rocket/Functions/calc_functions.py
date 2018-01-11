@@ -60,7 +60,7 @@ class Subtract(Function):
             raise e
 
 
-class MapFrequencyScaleToYesAndNo(self):
+class MapFrequencyScaleToYesAndNo(Function):
 
     def get_documentation(self):
         return "Data 1 and greater will be changed to 1 for yes. 0 will remain the same representing no"
