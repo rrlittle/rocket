@@ -69,11 +69,17 @@ def make_logger(logname,
         l.addHandler(fh)
 
     return l
+
 def truncfile(fpath):
     if isfile(fpath): # if it's an exisiting file, truncate it  
-        f = open(fpath, mode='w')
-        f.truncate()
-        f.close()
+        f = ""
+        try:
+            f = open(fpath, mode='w')
+            f.truncate()
+        except Exception as e:
+            pass
+        finally:
+            f.close()
 
 # run som setup stuff
 systemName = platform.system()
