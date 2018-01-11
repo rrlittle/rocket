@@ -71,10 +71,11 @@ class MapFrequencyScaleToYesAndNo(self):
     def _func_(self, data_list, args=None):
         if data_list[0] >= 1:
             return 1
-        elif data_list == 0:
+        elif data_list[0] == 0:
             return 0
         else:
-            raise e
+            return ssManager.NoDataError("Invalid value.")
+
 
 class Sum(Function):
 
