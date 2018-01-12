@@ -201,6 +201,91 @@ class FindAgeByWTPInt(Function):
         return "return the age given the familyid and twin or just familyid. Twin should always follow familyid"
 
 
+class FindAgeForImagingByWTPInt(Function):
+    """
+        This functions represents the function that gets the age for a twin or caregiver based on the key
+        It fetches the assessment date from data_r1_tr column "twadps". It fetches the dob from gen_twin column dateofbirth
+        for twin.
+        Then use the function to calculate the age.
+    """
+
+    argument_number = 2
+
+    def get_name(self):
+        return "findAgeForImagingByWTPInt"
+
+    def _func_(self, data_list, args=None):
+        if len(data_list) != 1 and len(data_list) !=2:
+            raise Exception("data_list should be length of 1 or 2")
+
+        if len(data_list) == 1:
+            # decide parent gender
+            # then decide whether i should mother dob or father dob
+            #
+            dob_date = self._get_birth_date_ (familyid=data_list[0], twin=3)
+
+            if dob_date is None:
+                return ssManager.NoDataError()
+
+            assessment = self._get_assessment_date_(familyid=data_list[0])
+            return self._calculate_age_(dob_date, assessment)
+
+        else:
+            dob_date = self._get_birth_date_(familyid=data_list[0], twin=data_list[1])
+            if dob_date is None:
+                return ssManager.NoDataError()
+            assessment_date = self._get_assessment_date_(familyid=data_list[0])
+            return self._calculate_age_(dob_date,assessment_date)
+
+    def _get_birth_date_(self, familyid, twin):
+        con = get_open_connection()
+        cur = con.cursor()
+        sql = "SELECT dateofbirth FROM {0} WHERE familyid = '{1}' AND twin = {2} ;".format(rdoc_info, familyid, twin)
+        cur.execute(sql)
+        rows = cur.fetchmany()
+        if len(rows) > 1:
+            raise Exception("Duplicate dob for twin: familyid: {0}, twin: {1}".format(familyid, twin))
+        if len(rows) == 0:
+            raise Exception("No dob for familyid: %s" % familyid)
+        con.close()
+        date_string = rows[0][0]
+        if date_string == "9998":
+            raise Exception("NoDOBDataForParticipant")
+        return datetime.strptime(date_string, '%m/%d/%Y')
+
+    def _get_assessment_date_(self, familyid):
+        con = get_open_connection()
+        cur = con.cursor()
+        sql = "SELECT mrvisit FROM data_rdmr_tr WHERE familyid = '{0}';".format(familyid)
+        cur.execute(sql)
+        rows = cur.fetchmany()
+        if len(rows) > 1:
+            raise Exception("Duplicate dob for twin: familyid: {0}".format(familyid))
+        if len(rows) == 0:
+            raise Exception("No guid for familyid: %s " %familyid)
+        con.close()
+        date_string = rows[0][0]
+
+        if date_string == "9998":
+            raise Exception("NoAssessDataForParticipant")
+
+        return datetime.strptime(date_string, '%m/%d/%Y')
+
+    def _calculate_age_(self, olddate, recentdate):
+        age = relativedelta.relativedelta(olddate, recentdate)
+        year = abs(age.years)
+        month = abs(age.months)
+        day = abs(age.days)
+        if day > 15:
+            month = month + 1
+
+        total_months = year * 12 + month
+        return total_months
+
+    def get_documentation(self):
+        return "return the age given the familyid and twin or just familyid. Twin should always follow familyid"
+
+
 class FindAssessByWTPInt(Function):
 
     argument_number = 2
@@ -215,6 +300,41 @@ class FindAssessByWTPInt(Function):
         con = get_open_connection()
         cur = con.cursor()
         sql = "SELECT twadps FROM data_r1_tr WHERE familyid = '{0}';".format(familyid)
+        cur.execute(sql)
+        rows = cur.fetchmany()
+        if len(rows) > 1:
+            raise Exception("Duplicate assessment date for twin: familyid: {0}".format(familyid))
+        if len(rows) == 0:
+            raise Exception("No assessment date for familyid: %s " %familyid)
+        con.close()
+        date_string = rows[0][0]
+
+        if date_string == "9998":
+            raise Exception("NoAssessDataForParticipant")
+
+        return date_string
+
+    def _func_(self, data_list, args=None):
+        if len(data_list) != 1 and len(data_list) != 2:
+            raise Exception("data_list should be length of 1 or 2")
+
+        return self._get_assessment_date_(data_list[0])
+
+
+class FindAssessForImaginingByWTPInt(Function):
+
+    argument_number = 2
+
+    def get_name(self):
+        return "findAssessForImaginingByWTPInt"
+
+    def get_documentation(self):
+        return "Given the familyid and twin or just familyid. it will give you interview date string, like 09/30/1995"
+
+    def _get_assessment_date_(self, familyid):
+        con = get_open_connection()
+        cur = con.cursor()
+        sql = "SELECT mrvisit FROM data_rdmr_tr WHERE familyid = '{0}';".format(familyid)
         cur.execute(sql)
         rows = cur.fetchmany()
         if len(rows) > 1:

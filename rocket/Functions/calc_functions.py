@@ -299,6 +299,23 @@ class ConcatString (Function):
 
         return ";".join([str(x) for x in data_list if not isinstance(x, ssManager.NoDataError)])
 
+
+class RoundToNearestWhole(Function):
+
+    def get_name(self):
+        return "roundToNearestWhole"
+
+    def get_documentation(self):
+        return "It rounds the number to the nearest whole number. If the decimal part is bigger than .4, then return round up" \
+               "If the decimal part is smaller than .4, then round down"
+
+    def _func_(self, data_list, args=None):
+        if len(data_list) == 0:
+            return ssManager.NoDataError()
+
+        raw_data = float(data_list[0])
+        return round(raw_data)
+
 def mean(*srcdat, args=None):
     # data will be coerced in the sum
     #import ipdb; ipdb.set_trace()

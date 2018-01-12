@@ -1,12 +1,14 @@
 from data_handlers.wtp import WtpSource
 from data_handlers.ndar import ndar_snk
 from MappingManager import MappingManager
-from Functions.calc_functions import Sum, Mean, Subtract, MaxLength, ConcatString, RecodeTwinToAB, MapFrequencyScaleToYesAndNo
+from Functions.calc_functions import Sum, Mean, Subtract, MaxLength, ConcatString, RecodeTwinToAB, \
+                                MapFrequencyScaleToYesAndNo, RoundToNearestWhole
 from template_kit.template_structure import TemplateStructure
 from template_kit.TemplateComponents import DataTableComponent
-from Functions.interview_functions import FindGuidByWTPInt, FindGenderByWTPInt, FindAgeByWTPInt, FindAssessByWTPInt, \
-                                          FindWbicByWTPInt, FindUrsiByWTPInt, GenderResponse
 import pyodbc
+from Functions.interview_functions import FindGuidByWTPInt, FindGenderByWTPInt, FindAgeByWTPInt, FindAssessByWTPInt, \
+                                          FindWbicByWTPInt, FindUrsiByWTPInt, GenderResponse, FindAssessForImaginingByWTPInt, \
+                                          FindAgeForImagingByWTPInt
 from loggers import map_log
 from tkinter import messagebox, Tk, simpledialog, filedialog
 from template_kit.TemplateComponents import MappingInfo, InstruInfo
@@ -46,6 +48,9 @@ class wtp2ndar (MappingManager):
         function_list.append(FindAssessByWTPInt())
         function_list.append(FindWbicByWTPInt())
         function_list.append(FindUrsiByWTPInt())
+        function_list.append(FindAssessForImaginingByWTPInt())
+        function_list.append(FindAgeForImagingByWTPInt())
+        function_list.append(RoundToNearestWhole())
         return function_list
 
     def _set_template_structure_(self):
